@@ -1,8 +1,10 @@
 import * as webpack from 'webpack'
 import * as WebpackDevServer from 'webpack-dev-server'
 import { Service, ServiceCallback } from '../service'
+import getLibraryOptions from './webpack/library'
+import getScriptRules from './webpack/script-rules'
 
-const enum ErrorCode {
+export const enum ErrorCode {
   ServerListenError = 40001,
   ServerAlreadyRun = 40002,
   ServerNotRun = 40003,
@@ -16,10 +18,42 @@ export default class Webpack {
 
   constructor(_service: Service) {}
   
-  configure() {
-    this.compiler = webpack({})
-    this.server = new WebpackDevServer(this.compiler, {})
+  configure(context: string) {
+    const options = this.makeOptions(context)
+    this.compiler = webpack(options.compiler)
+    this.server = new WebpackDevServer(this.compiler, options.server)
     return this
+  }
+
+  makeOptions(context: string): { compiler: webpack.Configuration, server: WebpackDevServer.Configuration } {
+    const libraryOptions = getLibraryOptions()
+    const scriptRules = getScriptRules()
+    const compiler: webpack.Configuration = {
+      mode: 'development',
+      name: 'app',
+      context,
+      resolve: {
+        extensions: ['.js', '.json', '.ts', '.tsx'],
+        alias: {
+          ...libraryOptions.alias
+        }
+      },
+      module: {
+        rules: [
+          ...scriptRules
+        ]
+      },
+      plugins: [
+        ...Object.values(libraryOptions.plugins)
+      ]
+    }
+
+    const server: WebpackDevServer.Configuration = {}
+    
+    return {
+      compiler,
+      server
+    }
   }
 
   cleanup() {
@@ -29,13 +63,13 @@ export default class Webpack {
     return this
   }
 
-  start(_args: string[], callback: ServiceCallback): void {
+  start(args: { context: string }, callback: ServiceCallback): void {
     if(null !== this.server) return callback({
       code: ErrorCode.ServerAlreadyRun,
       message: 'server was running'
     })
 
-    this.configure().server!.listen(8080, `0.0.0.0`, err => {
+    this.configure(args.context || process.cwd()).server!.listen(8080, `0.0.0.0`, err => {
       if(err) return callback({
         code: ErrorCode.ServerListenError,
         message: err.message,
@@ -64,6 +98,15 @@ export default class Webpack {
     })
 
     callback(null, this.stats)
+  }
+
+  makeBuildOptions(): webpack.Configuration {
+    return {
+      mode: 'production'
+    }
+  }
+  build() {
+
   }
 
   exports = {
