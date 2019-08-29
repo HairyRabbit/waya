@@ -1,0 +1,28 @@
+name: Publish master barnch
+
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: 'https://registry.npmjs.org'
+    - name: Build
+      run: npm ci && npm run build
+    - name: Publish
+      run: |
+        npm --no-git-tag-version version `npm view . version`-`git rev-parse --verify --short HEAD`
+        npx bin-file-gen -y
+        cp package.json ./dist
+        cp README.md ./dist
+        cd ./dist && npm publish --tag master && cd ../
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

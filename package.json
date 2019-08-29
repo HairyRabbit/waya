@@ -1,0 +1,41 @@
+{
+  "name": "webin",
+  "version": "0.0.0",
+  "description": "Yet another way to build web app",
+  "main": "index.js",
+  "bin": "bin/webin",
+  "scripts": {
+    "start": "tsc -w",
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HairyRabbit/webin.git"
+  },
+  "keywords": [],
+  "author": "Rabbit <yfhj1990@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HairyRabbit/webin/issues"
+  },
+  "homepage": "https://github.com/HairyRabbit/webin#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jayson": "^3.0.2",
+    "webpack": "^4.39.2",
+    "webpack-dev-server": "^3.8.0",
+    "ws": "^7.1.2",
+    "yargs": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.17.1",
+    "@types/node": "^12.7.2",
+    "@types/webpack": "^4.39.1",
+    "@types/webpack-dev-server": "^3.1.7",
+    "@types/ws": "^6.0.3",
+    "@types/yargs": "^13.0.2",
+    "typescript": "^3.5.3"
+  }
+}

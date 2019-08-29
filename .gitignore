@@ -59,3 +59,10 @@ typings/
 
 # next.js build output
 .next
+
+# build directory
+dist
+
+# test temps example
+test
+example
