@@ -16,4 +16,8 @@ for (const mod in services) {
 }
 service.initial()
 
-export default service.startServer.bind(service)
+export default async function main() {
+  const port = await service.start()
+  console.info(`Service listen on port ${port}`)
+  service.client.request(`webpack/start`, [], () => {})
+}

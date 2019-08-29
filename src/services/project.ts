@@ -54,7 +54,7 @@ export default class Project {
   unlink() {}
 
   start(_args: string[], callback: ServiceCallback) {
-    this.service.client.request('webpack/startServer', { context: this.context }, (_err: any, response: any) => {
+    this.service.client.request('webpack/start', { context: this.context }, (_err: any, response: any) => {
       if(response.error) return callback(response.error)
       callback(null)
     })

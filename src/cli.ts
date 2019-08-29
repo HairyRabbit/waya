@@ -10,7 +10,7 @@ export default function cli(args: string[] = process.argv.slice(2)): void {
         return yargs;
       },
       args => {
-        const { _, $0 } = args;
+        const {  } = args;
         main();
       }
     )

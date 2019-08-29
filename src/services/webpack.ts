@@ -29,7 +29,7 @@ export default class Webpack {
     return this
   }
 
-  startServer(_args: string[], callback: ServiceCallback): void {
+  start(_args: string[], callback: ServiceCallback): void {
     if(null !== this.server) return callback({
       code: ErrorCode.ServerAlreadyRun,
       message: 'server was running'
@@ -45,7 +45,7 @@ export default class Webpack {
     })
   }
 
-  stopServer(_args: string, callback: ServiceCallback): void {
+  stop(_args: string, callback: ServiceCallback): void {
     if(null === this.server) return callback({
       code: ErrorCode.ServerNotRun,
       message: 'server not running'
@@ -57,7 +57,7 @@ export default class Webpack {
     })
   }
 
-  getStats(_args: string, callback: ServiceCallback<this['stats']>): void {
+  status(_args: string, callback: ServiceCallback<this['stats']>): void {
     if(null === this.stats) return callback({
       code: ErrorCode.StatusNotExists,
       message: 'status not exists'
@@ -67,7 +67,7 @@ export default class Webpack {
   }
 
   exports = {
-    startServer: this.startServer.bind(this),
-    stopServer: this.stopServer.bind(this)
+    start: this.start.bind(this),
+    stop: this.stop.bind(this)
   }
 }
