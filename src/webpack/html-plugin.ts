@@ -6,6 +6,6 @@ export default function makeHtmlPlugin(): webpack.Plugin {
   return new HTMLWebpackPlugin({
     template: HTMLEWebpackTemplate,
     inject: false,
-    mountId: 'app'
+    appMountId: 'app'
   })
 }

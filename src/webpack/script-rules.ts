@@ -3,6 +3,9 @@ import * as tsLoader from 'ts-loader'
 import * as ts from 'typescript'
 import transformImportFactory from '../transform/ts-import-factory'
 import transformReactMemo from '../transform/ts-react-memo'
+import './tsconfig.json'
+
+const TSConfig = require.resolve('./tsconfig.json')
 
 export default function makeScriptRules(context: string): webpack.RuleSetRule[] {
   return [{
@@ -18,10 +21,7 @@ export function makeTSLoaderOptions(context: string): Partial<tsLoader.Options> 
   return {
     context,
     transpileOnly: true,
-    compilerOptions: {
-      module: ts.ModuleKind.ESNext,
-      target: ts.ScriptTarget.ESNext
-    },
+    configFile: TSConfig,
     getCustomTransformers: (program: ts.Program) => {
       return {
         before: [

@@ -28,11 +28,10 @@ export function gen(context: Context): string {
     `import * as React from 'react';`,
     `import { render } from 'react-dom';`,
     `import { BrowserRouter as Router } from 'react-router-dom'`,
-    `import WDYR from '@welldone-software/why-did-you-render'`,
+    // `import WDYR from '@welldone-software/why-did-you-render'`,
     context.store ? `import { Provider } from 'react-redux'` : '',
-    `import ensureNode from 'util-extra/dom/ensureNode'`,
 
-    `const wdyr = WDYR(React, {  exclude: [/^(BrowserRouter|Router|Provider)$/], logOnDifferentValues: true })`,
+    // `const wdyr = WDYR(React, {  exclude: [/^(BrowserRouter|Router|Provider)$/], logOnDifferentValues: true })`,
 
     `export default async function main() {`,
       `const Root = require(${context.entry}).default`,
@@ -44,7 +43,7 @@ export function gen(context: Context): string {
           context.store ? `)` : '',
         `)`,
       `)`,
-      `return render(node, ensureNode(${context.mountNode}))`,
+      `return render(node, document.getElementById(${context.mountNode}))`,
     `}`,
 
     `main();`

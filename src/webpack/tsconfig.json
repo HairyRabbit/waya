@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { 
+      "*": ["types/*"]
+    },
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "dom", 
+      "dom.iterable", 
+      "esnext"
+    ],
+    "jsx": "react",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "downlevelIteration": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowUmdGlobalAccess": true,
+    "rootDirs": [],
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ]
+  }
+}
