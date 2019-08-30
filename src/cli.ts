@@ -1,11 +1,22 @@
 import * as yargs from "yargs";
-import main from "./index";
+import main, { build } from "./index";
 export default function cli(args: string[] = process.argv.slice(2)): void {
   yargs
     .strict()
     .command(
-      "$0",
-      "",
+      "build", 
+      "Build project", 
+      yargs => {
+        return yargs;
+      },
+      args => {
+        const {  } = args;
+        build();
+      }
+    )
+    .command(
+      "*",
+      "Serve",
       yargs => {
         return yargs;
       },

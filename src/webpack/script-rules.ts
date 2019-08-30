@@ -7,21 +7,34 @@ import './tsconfig.json'
 
 const TSConfig = require.resolve('./tsconfig.json')
 
-export default function makeScriptRules(context: string): webpack.RuleSetRule[] {
+export default function makeScriptRules(context: string, isProduction: boolean = false): webpack.RuleSetRule[] {
+  const uses = []
+  const tsUse = {
+    loader: require.resolve('ts-loader'),
+    options: makeTSLoaderOptions(context, isProduction)
+  }
+
+  if(isProduction) uses.push({
+    loader: require.resolve('babel-loader'),
+    options: makeBabelLoaderOptions()
+  })
+
+  uses.push(tsUse)
   return [{
     test: /\.tsx?/,
-    use: [{
-      loader: require.resolve('ts-loader'),
-      options: makeTSLoaderOptions(context)
-    }]
+    use: uses
   }]
 }
 
-export function makeTSLoaderOptions(context: string): Partial<tsLoader.Options> {
+export function makeTSLoaderOptions(context: string, isProduction: boolean): Partial<tsLoader.Options> {
+  const jsx: any = isProduction ? 'preserve': 'react'
   return {
     context,
     transpileOnly: true,
     configFile: TSConfig,
+    compilerOptions: {
+      jsx
+    },
     getCustomTransformers: (program: ts.Program) => {
       return {
         before: [
@@ -32,5 +45,11 @@ export function makeTSLoaderOptions(context: string): Partial<tsLoader.Options> 
         ]
       }
     }
+  }
+}
+
+export function makeBabelLoaderOptions() {
+  return {
+
   }
 }

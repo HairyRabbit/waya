@@ -1,5 +1,6 @@
 import * as webpack from 'webpack'
 import * as WebpackDevServer from 'webpack-dev-server'
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import resolveEntry from './entry-resolver'
 import getLibraryOptions from './library'
 import getScriptRules from './script-rules'
@@ -17,7 +18,7 @@ export default function makeOptions(context: string): { compiler: webpack.Config
 
   const compiler: webpack.Configuration = {
     mode: 'development',
-    name: 'app',
+    name: 'app-dev',
     context,
     entry: {
       main: entries
@@ -45,5 +46,39 @@ export default function makeOptions(context: string): { compiler: webpack.Config
   return {
     compiler,
     server
+  }
+}
+
+export function makeBuildOptions(context: string): webpack.Configuration {
+  const entries = resolveEntry(context)
+  const libraryOptions = getLibraryOptions()
+  const scriptRules = getScriptRules(context, true)
+  const styleRules = getStyleRules([])
+  
+  return {
+    mode: 'production',
+    name: 'app',
+    context,
+    entry: { main: entries },
+    output: {
+      filename: '[name].[chunkhash].js',
+      library: 'APP'
+    },
+    resolve: {
+      extensions: EXTENSIONS
+    },
+    externals: {
+      ...libraryOptions.externals
+    },
+    module: {
+      rules: [
+        ...scriptRules,
+        ...styleRules
+      ]
+    },
+    plugins: [
+      new webpack.ProgressPlugin(),
+      new CleanWebpackPlugin()
+    ]
   }
 }

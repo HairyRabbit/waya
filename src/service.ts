@@ -1,6 +1,6 @@
 import * as jayson from 'jayson'
 import * as WebSocket from 'ws'
-import ConfigService from './services/config'
+import ConfigService, { Config } from './services/config'
 
 export interface ServiceError<T = {}> {
   code: number
@@ -21,7 +21,8 @@ export class Service {
   ws!: WebSocket.Server
   server!: jayson.Server
   client!: jayson.Client
-  config!: ConfigService
+  private configService!: ConfigService
+  config!: Config
   status: ServiceStatus = ServiceStatus.None
   private services: Map<string, jayson.MethodLike> = new Map
 
@@ -38,7 +39,7 @@ export class Service {
     this.server = new jayson.Server(services)
     this.client = new jayson.Client(this.server)
     this.ws = new WebSocket.Server({ server: this.server.http() })
-    this.config = new ConfigService(this)
+    this.configService = new ConfigService(this)
     this.status++
     return this
   }
@@ -59,10 +60,12 @@ export class Service {
   }
 
   async start(): Promise<number> {
-    if(this.status === ServiceStatus.None) this.initial()
+    if(ServiceStatus.Start === this.status) return this.config.port
+    if(ServiceStatus.None === this.status) this.initial()
 
     return new Promise(resolve => {
-      this.config.read([], (error: any, data?: any) => {
+      this.configService.read([], (error: any, data?: any) => {
+        this.config = data
         if(error) return
         this.server.http().listen(data.port, data.host, () => {
           this.status++

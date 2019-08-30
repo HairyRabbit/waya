@@ -1,13 +1,14 @@
 import * as webpack from 'webpack'
 import * as WebpackDevServer from 'webpack-dev-server'
 import { Service, ServiceCallback } from '../service'
-import makeOptions from '../webpack/options-maker'
+import makeOptions, { makeBuildOptions } from '../webpack/options-maker'
 
 export const enum ErrorCode {
   ServerListenError = 40001,
   ServerAlreadyRun = 40002,
   ServerNotRun = 40003,
-  StatusNotExists = 40004
+  StatusNotExists = 40004,
+  BuildError = 40005
 }
 
 
@@ -24,7 +25,7 @@ export default class Webpack {
     this.server = new WebpackDevServer(this.compiler, options.server)
     return this
   }
-  
+
   cleanup() {
     this.compiler = null
     this.server = null
@@ -69,18 +70,23 @@ export default class Webpack {
     callback(null, this.stats)
   }
 
-  makeBuildOptions(): webpack.Configuration {
-    return {
-      mode: 'production'
-    }
-  }
+  build(args: { context: string }, callback: ServiceCallback<webpack.Stats.ToJsonOutput>) {
+    const options = makeBuildOptions(args.context || process.cwd())
+    webpack(options).run((err, stats) => {
+      console.log(err, stats.toString({}))
+      if(err) return callback({
+        code: ErrorCode.BuildError,
+        message: 'webpack build error',
+        data: err
+      })
 
-  build() {
-
+      callback(null, stats.toJson({}))
+    })
   }
 
   exports = {
     start: this.start.bind(this),
-    stop: this.stop.bind(this)
+    stop: this.stop.bind(this),
+    build: this.build.bind(this)
   }
 }

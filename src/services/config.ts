@@ -6,7 +6,7 @@ import { Service, ServiceCallback } from '../service'
 const CONFIG_FILENAME: string = 'webin.json'
 const CONFIG_FILEPATH: string = path.join(os.homedir(), CONFIG_FILENAME)
 
-interface Config {
+export interface Config {
   port: number
   host: string
 }
