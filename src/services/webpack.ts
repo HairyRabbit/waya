@@ -1,8 +1,10 @@
 import * as webpack from 'webpack'
 import * as WebpackDevServer from 'webpack-dev-server'
 import { Service, ServiceCallback } from '../service'
-import getLibraryOptions from './webpack/library'
-import getScriptRules from './webpack/script-rules'
+import getLibraryOptions from '../webpack/library'
+import getScriptRules from '../webpack/script-rules'
+import getStyleRules from '../webpack/style-rules'
+import getHtmlPlugin from '../webpack/html-plugin'
 
 export const enum ErrorCode {
   ServerListenError = 40001,
@@ -10,6 +12,8 @@ export const enum ErrorCode {
   ServerNotRun = 40003,
   StatusNotExists = 40004
 }
+
+const EXTENSIONS: string[] = ['.js', '.json', '.ts', '.tsx']
 
 export default class Webpack {
   compiler: webpack.Compiler | null = null
@@ -27,24 +31,29 @@ export default class Webpack {
 
   makeOptions(context: string): { compiler: webpack.Configuration, server: WebpackDevServer.Configuration } {
     const libraryOptions = getLibraryOptions()
-    const scriptRules = getScriptRules()
+    const scriptRules = getScriptRules(context)
+    const styleRules = getStyleRules([])
+    const htmlPlugin = getHtmlPlugin()
+
     const compiler: webpack.Configuration = {
       mode: 'development',
       name: 'app',
       context,
       resolve: {
-        extensions: ['.js', '.json', '.ts', '.tsx'],
+        extensions: EXTENSIONS,
         alias: {
           ...libraryOptions.alias
         }
       },
       module: {
         rules: [
-          ...scriptRules
+          ...scriptRules,
+          ...styleRules
         ]
       },
       plugins: [
-        ...Object.values(libraryOptions.plugins)
+        ...Object.values(libraryOptions.plugins),
+        htmlPlugin
       ]
     }
 
@@ -105,6 +114,7 @@ export default class Webpack {
       mode: 'production'
     }
   }
+
   build() {
 
   }
