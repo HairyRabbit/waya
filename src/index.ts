@@ -19,11 +19,12 @@ service.initial()
 export default async function main() {
   const port = await service.start()
   console.info(`Service listen on port ${port}`)
-  service.client.request(`webpack/start`, [], () => {})
+  await service.call('webpack/start')
 }
 
 export async function build() {
   const port = await service.start()
   console.info(`Service listen on port ${port}`)
-  service.client.request(`webpack/build`, [], () => {})
+  await service.call('webpack/build')
+  await service.stop()
 }

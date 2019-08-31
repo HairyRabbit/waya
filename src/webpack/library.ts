@@ -17,7 +17,8 @@ export const BUILDIN_LIBS: Map<string, Library> = new Map([
   [ 'react-redux', { name: 'react-redux', type: LibraryType.Script, globalName: 'ReactRedux' } ],
   [ 'normalize.css', { name: 'normalize.css', type: LibraryType.Style } ],
   [ 'sanitize.css', { name: 'sanitize.css', type: LibraryType.Style } ],
-  [ 'style-extra', { name: 'style-extra', type: LibraryType.Unknown } ]
+  [ 'style-extra', { name: 'style-extra', type: LibraryType.Unknown } ],
+  [ '@babel/polyfill', { name: '@babel/polyfill', type: LibraryType.Unknown }]
 ])
 
 type LibraryOptions = {

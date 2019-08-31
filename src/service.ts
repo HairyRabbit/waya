@@ -21,6 +21,7 @@ export class Service {
   ws!: WebSocket.Server
   server!: jayson.Server
   client!: jayson.Client
+  private http!: jayson.HttpServer
   private configService!: ConfigService
   config!: Config
   status: ServiceStatus = ServiceStatus.None
@@ -38,7 +39,8 @@ export class Service {
 
     this.server = new jayson.Server(services)
     this.client = new jayson.Client(this.server)
-    this.ws = new WebSocket.Server({ server: this.server.http() })
+    this.http = this.server.http()
+    this.ws = new WebSocket.Server({ server: this.http })
     this.configService = new ConfigService(this)
     this.status++
     return this
@@ -67,10 +69,20 @@ export class Service {
       this.configService.read([], (error: any, data?: any) => {
         this.config = data
         if(error) return
-        this.server.http().listen(data.port, data.host, () => {
+        this.http.listen(data.port, data.host, () => {
           this.status++
           resolve(data.port)
         })
+      })
+    })
+  }
+
+  async stop(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http.close(err => {
+        if(err) return reject(err)
+        this.status--
+        resolve()
       })
     })
   }
