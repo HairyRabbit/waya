@@ -2,10 +2,30 @@ import * as HTMLWebpackPlugin from 'html-webpack-plugin'
 import * as HTMLEWebpackTemplate from 'html-webpack-template'
 import * as webpack from 'webpack'
 
-export default function makeHtmlPlugin(): webpack.Plugin {
+interface Options {
+  name: string,
+  description: string
+  metas: HTMLEWebpackTemplate.Options['meta']
+  links: HTMLEWebpackTemplate.Options['links']
+  scripts: HTMLEWebpackTemplate.Options['scripts']
+}
+
+const DEFAULT_TITLE: string = 'App'
+
+export default function makeHtmlPlugin(options: Partial<Readonly<Options>> = {}): webpack.Plugin {
+  const metas = []
+  if(options.description) metas.push({ content: options.description, name: 'description' })
+
   return new HTMLWebpackPlugin({
     template: HTMLEWebpackTemplate,
     inject: false,
-    appMountId: 'app'
-  })
+    appMountId: 'app',
+    mobile: true,
+    title: options.name || DEFAULT_TITLE,
+    meta: metas,
+    scripts: options.scripts || [],
+    links: options.links || [],
+    lang: undefined,
+    window: undefined
+  } as HTMLEWebpackTemplate.Options)
 }

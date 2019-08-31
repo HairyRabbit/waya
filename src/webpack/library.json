@@ -1,0 +1,54 @@
+{
+  "react": {
+    "name": "react",
+    "globalName": "React",
+    "type": "script",
+    "bundle": "umd/react.production.min.js"
+  },
+  "react-dom": {
+    "name": "react-dom",
+    "globalName": "ReactDOM",
+    "type": "script",
+    "bundle": "umd/react-dom.production.min.js"
+  },
+  "react-router-dom": {
+    "name": "react-router-dom",
+    "globalName": "ReactRouterDOM",
+    "type": "script",
+    "bundle": "umd/react-router-dom.min.js"
+  },
+  "redux": {
+    "name": "redux",
+    "globalName": "Redux",
+    "type": "script",
+    "bundle": "dist/redux.min.js"
+  },
+  "react-redux": {
+    "name": "react-redux",
+    "globalName": "ReactRedux",
+    "type": "script",
+    "bundle": "dist/react-redux.min.js"
+  },
+  "normalize.css": {
+    "name": "normalize.css",
+    "type": "style",
+    "bundle": "normalize.css"
+  },
+  "sanitize.css": {
+    "name": "sanitize.css",
+    "type": "style",
+    "bundle": [
+      "sanitize.css",
+      "typography.css",
+      "forms.css"
+    ]
+  },
+  "style-extra": {
+    "name": "style-extra",
+    "type": "unknown"
+  },
+  "@babel/polyfill": {
+    "name": "@babel/ployfill",
+    "type": "unknown"
+  }
+}

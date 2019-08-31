@@ -23,8 +23,8 @@ export class Service {
   client!: jayson.Client
   private http!: jayson.HttpServer
   private configService!: ConfigService
-  config!: Config
-  status: ServiceStatus = ServiceStatus.None
+  private config!: Config
+  private status: ServiceStatus = ServiceStatus.None
   private services: Map<string, jayson.MethodLike> = new Map
 
   initial() {

@@ -6,6 +6,7 @@ import getLibraryOptions from './library'
 import getScriptRules from './script-rules'
 import getStyleRules from './style-rules'
 import getHtmlPlugin from './html-plugin'
+import resolvePackage from './package-resolver';
 
 const EXTENSIONS: string[] = ['.js', '.json', '.ts', '.tsx']
 
@@ -50,14 +51,21 @@ export default function makeOptions(context: string): { compiler: webpack.Config
 }
 
 export function makeBuildOptions(context: string): webpack.Configuration {
+  const pkg = resolvePackage(context)
   const entries = resolveEntry(context)
   const libraryOptions = getLibraryOptions()
   const scriptRules = getScriptRules(context, true)
   const styleRules = getStyleRules([])
+  const htmlPlugin = getHtmlPlugin({ 
+    name: pkg.name, 
+    description: pkg.description,
+    links: libraryOptions.style,
+    scripts: libraryOptions.script
+  })
   
   return {
     mode: 'production',
-    name: 'app',
+    name: pkg.name,
     context,
     entry: { main: entries },
     output: {
@@ -77,8 +85,8 @@ export function makeBuildOptions(context: string): webpack.Configuration {
       ]
     },
     plugins: [
-      new webpack.ProgressPlugin(),
-      new CleanWebpackPlugin()
+      new CleanWebpackPlugin(),
+      htmlPlugin
     ]
   }
 }

@@ -1,7 +1,12 @@
 import * as path from 'path'
 import * as fs from 'fs'
 
-const ScriptMatches: string[] = ['index.ts', 'App.tsx', 'view/index.ts', 'view/App.tsx', 'view/index.tsx']
+const ScriptMatches: string[] = [
+  'index.ts', 'index.tsx',
+  'App.tsx', 
+  'pages/index.ts', 'view/index.tsx',
+  'pages/App.tsx'
+]
 const StyleMatches: string[] = [
   'style.scss', 'style.css',
   'index.scss', 'index.css',
