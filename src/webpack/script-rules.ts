@@ -6,7 +6,7 @@ import transformImportFactory from '../transform/ts-import-factory'
 import transformReactMemo from '../transform/ts-react-memo'
 import './tsconfig.json'
 
-const TSConfig = require.resolve('./tsconfig.json')
+const TSConfig = require.resolve('./_tsconfig.json')
 
 export default function makeScriptRules(context: string, isProduction: boolean = false): webpack.RuleSetRule[] {
   const use = []

@@ -17,14 +17,27 @@ const StyleMatches: string[] = [
 const RootLoader = require.resolve('./root-loader')
 const BootLoader = require.resolve('./boot-loader')
 
-export default function resolveEntry(context: string, prepends: string[] = []): string[] {
+interface Options {
+  prepends: string[],
+  isProduction: boolean
+}
+
+const DEFAULT_OPTIONS: Options = {
+  prepends: [],
+  isProduction: false
+}
+
+export default function resolveEntry(context: string, options: Partial<Readonly<Options>> = {}): string[] {
+  const { prepends, isProduction } = { ...DEFAULT_OPTIONS, ...options }
   const scriptEntry = filter(context, ScriptMatches)
   const styleEntry = filter(context, StyleMatches)
 
   return [
     ...prepends,
     styleEntry,
-    [ BootLoader, RootLoader, scriptEntry ].join('!')
+    [ isProduction ? null : BootLoader, RootLoader, scriptEntry ]
+      .filter((filePath): filePath is string => null !== filePath)
+      .join('!')
   ].filter((entry): entry is string => undefined !== entry)
 }
 

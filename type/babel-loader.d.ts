@@ -1,6 +1,6 @@
 import { TransformOptions } from '@babel/core'
 
-declare module 'babel-loader' {
+declare module "babel-loader" {
   export interface Options extends TransformOptions {
     cacheDirectory: boolean | string
     cacheIdentifier: string

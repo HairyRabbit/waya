@@ -52,7 +52,9 @@ export default function makeOptions(context: string): { compiler: webpack.Config
 
 export function makeBuildOptions(context: string): webpack.Configuration {
   const pkg = resolvePackage(context)
-  const entries = resolveEntry(context)
+  const entries = resolveEntry(context, {
+    isProduction: true
+  })
   const libraryOptions = getLibraryOptions()
   const scriptRules = getScriptRules(context, true)
   const styleRules = getStyleRules([])
