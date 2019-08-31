@@ -14,6 +14,7 @@ const StyleMatches: string[] = [
   'style/style.scss', 'style/style.css'
 ]
 
+const RootLoader = require.resolve('./root-loader')
 const BootLoader = require.resolve('./boot-loader')
 
 export default function resolveEntry(context: string, prepends: string[] = []): string[] {
@@ -23,7 +24,7 @@ export default function resolveEntry(context: string, prepends: string[] = []): 
   return [
     ...prepends,
     styleEntry,
-    BootLoader + '!' + scriptEntry
+    [ BootLoader, RootLoader, scriptEntry ].join('!')
   ].filter((entry): entry is string => undefined !== entry)
 }
 

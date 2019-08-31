@@ -1,23 +1,33 @@
 import * as webpack from 'webpack'
+import * as path from 'path'
 import { getOptions } from 'loader-utils'
 
-export default function loader(data: string) { return data }
+interface Options {
+  store: string,
+  strict: boolean,
+  pages: string
+}
 
 interface Context {
   entry: string
   mountNode: string
   store?: string
+  strict: boolean
+  page: boolean
 }
 
 export function pitch(this: webpack.loader.LoaderContext, remainingRequest: string) {
   this.cacheable && this.cacheable(true)
 
-  const options = getOptions(this) || {}
+  const options: Partial<Readonly<Options>> = getOptions(this) || {}
   const url = JSON.stringify('-!' + remainingRequest)
+
   const context = {
     entry: url,
     mountNode: JSON.stringify(`app`),
-    store: options.store ? JSON.stringify('-!' + this.loaders[1].request + '!' + options.store) : undefined
+    store: options.store ? JSON.stringify('-!' + this.loaders[1].request + '!' + options.store) : undefined,
+    strict: options.strict || true,
+    page: path.dirname(remainingRequest).endsWith(options.pages || 'pages')
   }
 
   return gen(context)
@@ -25,27 +35,16 @@ export function pitch(this: webpack.loader.LoaderContext, remainingRequest: stri
 ///*include: [/.*/],*/
 export function gen(context: Context): string {
   return [
-    `import * as React from 'react';`,
     `import { render } from 'react-dom';`,
-    `import { BrowserRouter as Router } from 'react-router-dom'`,
-    // `import WDYR from '@welldone-software/why-did-you-render'`,
-    context.store ? `import { Provider } from 'react-redux'` : '',
-
+    // // `import WDYR from '@welldone-software/why-did-you-render'`,
     // `const wdyr = WDYR(React, {  exclude: [/^(BrowserRouter|Router|Provider)$/], logOnDifferentValues: true })`,
 
     `export default async function main() {`,
-      `const Root = require(${context.entry}).default`,
-      context.store ? `const store = require(${context.store}).default` : '',
-      `const node = React.createElement(React.StrictMode, undefined,`,
-        `React.createElement(Router, undefined,`,
-          context.store ? `React.createElement(Provider, { store },` : '',
-            `React.createElement(Root)`,
-          context.store ? `)` : '',
-        `)`,
-      `)`,
-      `return render(node, document.getElementById(${context.mountNode}))`,
+      `const app = require(${context.entry}).default`,
+      `const node = document.getElementById(${context.mountNode})`,
+      `return render(app, node)`,
     `}`,
 
     `main();`
-  ].filter(Boolean).join(`\n`)
+  ].join(`\n`)
 }
