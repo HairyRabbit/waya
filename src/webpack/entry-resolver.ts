@@ -4,7 +4,7 @@ import * as fs from 'fs'
 const ScriptMatches: string[] = [
   'index.ts', 'index.tsx',
   'App.tsx', 
-  'pages/index.ts', 'view/index.tsx',
+  'pages/index.ts', 'pages/index.tsx',
   'pages/App.tsx'
 ]
 const StyleMatches: string[] = [
@@ -15,7 +15,6 @@ const StyleMatches: string[] = [
 ]
 
 const RootLoader = require.resolve('./root-loader')
-const BootLoader = require.resolve('./boot-loader')
 
 interface Options {
   prepends: string[],
@@ -28,17 +27,16 @@ const DEFAULT_OPTIONS: Options = {
 }
 
 export default function resolveEntry(context: string, options: Partial<Readonly<Options>> = {}): string[] {
-  const { prepends, isProduction } = { ...DEFAULT_OPTIONS, ...options }
+  const { prepends, } = { ...DEFAULT_OPTIONS, ...options }
   const scriptEntry = filter(context, ScriptMatches)
   const styleEntry = filter(context, StyleMatches)
 
   return [
     ...prepends,
     styleEntry,
-    [ // isProduction ? null : BootLoader, 
-      RootLoader, scriptEntry ]
-      .filter((filePath): filePath is string => null !== filePath)
-      .join('!')
+    [ RootLoader, scriptEntry ].join('!')
+      // .filter((filePath): filePath is string => null !== filePath)
+      // .join('!')
   ].filter((entry): entry is string => undefined !== entry)
 }
 

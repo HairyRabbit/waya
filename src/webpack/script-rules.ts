@@ -4,9 +4,9 @@ import * as babelLoader from 'babel-loader'
 import * as ts from 'typescript'
 import transformImportFactory from '../transform/ts-import-factory'
 import transformReactMemo from '../transform/ts-react-memo'
-import './_tsconfig.json'
+import './default-tsconfig.json'
 
-const TSConfig = require.resolve('./_tsconfig.json')
+const TSConfig = require.resolve('./default-tsconfig.json')
 
 export default function makeScriptRules(context: string, isProduction: boolean = false): webpack.RuleSetRule[] {
   const use = []
