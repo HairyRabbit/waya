@@ -35,7 +35,8 @@ export default function resolveEntry(context: string, options: Partial<Readonly<
   return [
     ...prepends,
     styleEntry,
-    [ isProduction ? null : BootLoader, RootLoader, scriptEntry ]
+    [ // isProduction ? null : BootLoader, 
+      RootLoader, scriptEntry ]
       .filter((filePath): filePath is string => null !== filePath)
       .join('!')
   ].filter((entry): entry is string => undefined !== entry)

@@ -4,7 +4,7 @@ import * as babelLoader from 'babel-loader'
 import * as ts from 'typescript'
 import transformImportFactory from '../transform/ts-import-factory'
 import transformReactMemo from '../transform/ts-react-memo'
-import './tsconfig.json'
+import './_tsconfig.json'
 
 const TSConfig = require.resolve('./_tsconfig.json')
 

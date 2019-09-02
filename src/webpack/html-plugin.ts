@@ -12,20 +12,23 @@ interface Options {
 
 const DEFAULT_TITLE: string = 'App'
 
-export default function makeHtmlPlugin(options: Partial<Readonly<Options>> = {}): webpack.Plugin {
+export default function makeHtmlPlugin(options: Partial<Readonly<Options>> = {}): webpack.Plugin[] {
   const metas = []
   if(options.description) metas.push({ content: options.description, name: 'description' })
 
-  return new HTMLWebpackPlugin({
-    template: HTMLEWebpackTemplate,
-    inject: false,
-    appMountId: 'app',
-    mobile: true,
-    title: options.name || DEFAULT_TITLE,
-    meta: metas,
-    scripts: options.scripts || [],
-    links: options.links || [],
-    lang: undefined,
-    window: undefined
-  } as HTMLEWebpackTemplate.Options)
+  return [ 
+    new HTMLWebpackPlugin({
+      template: HTMLEWebpackTemplate,
+      inject: false,
+      appMountId: 'app',
+      mobile: true,
+      title: options.name || DEFAULT_TITLE,
+      meta: metas,
+      scripts: options.scripts || [],
+      links: options.links || [],
+      lang: undefined,
+      window: undefined,
+      devServer: 'http://localhost:8080'
+    } as HTMLEWebpackTemplate.Options)
+  ]
 }

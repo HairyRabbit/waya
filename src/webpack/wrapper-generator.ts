@@ -90,14 +90,7 @@ export function makeNodes(entry: string, options: Options): ts.Node[] {
         undefined,
         ts.createImportClause(
           undefined,
-          ts.createNamedImports(
-            [
-              ts.createImportSpecifier(
-                ts.createIdentifier(options.router),
-                ts.createIdentifier('Router')
-              )
-            ]
-          )
+          ts.createNamespaceImport(ts.createIdentifier('router'))
         ),
         ts.createStringLiteral('react-router-dom')
       )
@@ -143,24 +136,33 @@ export function makeNodes(entry: string, options: Options): ts.Node[] {
   return [
     ...imports,
 
-    // ts.createFunctionDeclaration(
-    //   undefined,
-    //   [
-    //     ts.createModifier(ts.SyntaxKind.ExportKeyword),
-    //     ts.createModifier(ts.SyntaxKind.DefaultKeyword)
-    //   ],
-    //   undefined,
-    //   ts.createIdentifier('Wrapper'),
-    //   undefined,
-    //   [],
-    //   undefined,
-    //   ts.createBlock(
-    //     [
-    //       ts.createReturn(node)
-    //     ],
-    //     true
-    //   )
-    // )
+    ts.createVariableStatement(
+      undefined,
+      ts.createVariableDeclarationList(
+        [
+          ts.createVariableDeclaration(
+            ts.createIdentifier('Router'),
+            undefined,
+            ts.createConditional(
+              ts.createPropertyAccess(
+                ts.createIdentifier('globalThis'),
+                ts.createIdentifier('document')
+              ),
+              ts.createPropertyAccess(
+                ts.createIdentifier('router'),
+                ts.createIdentifier('BrowserRouter')
+              ),
+              ts.createPropertyAccess(
+                ts.createIdentifier('router'),
+                ts.createIdentifier('StaticRouter')
+              )
+            )
+          )
+        ],
+        ts.NodeFlags.Const
+      )
+    ),
+
     ts.createExportAssignment(
       undefined,
       undefined,
