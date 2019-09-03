@@ -13,7 +13,12 @@ const StyleMatches: string[] = [
   'style/index.scss', 'style/index.css',
   'style/style.scss', 'style/style.css'
 ]
+const StoreScriptMatches: string[] = [
+  'store.ts',
+  'actions/index.ts'
+]
 
+const BootLoader = require.resolve('./boot-loader')
 const RootLoader = require.resolve('./root-loader')
 
 interface Options {
@@ -30,13 +35,22 @@ export default function resolveEntry(context: string, options: Partial<Readonly<
   const { prepends, } = { ...DEFAULT_OPTIONS, ...options }
   const scriptEntry = filter(context, ScriptMatches)
   const styleEntry = filter(context, StyleMatches)
+  const storeEntry = filter(context, StoreScriptMatches)
+  
+  const rootLoaderOptions = makeRootLoaderOptions({
+    store: storeEntry,
+  })
 
   return [
     ...prepends,
     styleEntry,
-    [ RootLoader, scriptEntry ].join('!')
-      // .filter((filePath): filePath is string => null !== filePath)
-      // .join('!')
+    [ 
+      BootLoader,
+      RootLoader + '?' + rootLoaderOptions, 
+      scriptEntry 
+    ]
+      .filter((filePath): filePath is string => null !== filePath)
+      .join('!')
   ].filter((entry): entry is string => undefined !== entry)
 }
 
@@ -46,4 +60,10 @@ function filter(context: string, matches: string[]): string | undefined {
     const isExists = fs.existsSync(absoluteFilePath)
     return isExists ? absoluteFilePath : null
   }).find((filePath): filePath is string => null !== filePath)
+}
+
+function makeRootLoaderOptions({ store }: { store: string | undefined }) {
+  const params = new URLSearchParams
+  store && params.append('store', store)
+  return params.toString()
 }

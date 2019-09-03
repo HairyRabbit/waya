@@ -5,6 +5,10 @@ import generateWrapper from './wrapper-generator'
 export function pitch(this: webpack.loader.LoaderContext, remainingRequest: string) {
   this.cacheable && this.cacheable(true)
   const options = getOptions(this) || {}
-  const { result } = generateWrapper(remainingRequest, options)
+  const tsLoader = this.loaders[1]
+  const { result } = generateWrapper(remainingRequest, {
+    ...options,
+    store: options.store ? tsLoader.request + '!' + options.store : undefined
+  })
   return result
 }

@@ -1,21 +1,16 @@
 import { Project, printNode, ts } from 'ts-morph'
 import * as path from 'path'
 
-enum RouterType {
-  Client = 'BrowserRouter',
-  Server = 'StaticRouter'
-}
-
 interface Options {
   store: string | null
   strict: boolean
-  router: RouterType | null
+  router: boolean
 }
 
 const DEFAULT_OPTIONS: Options = {
   store: null,
   strict: true,
-  router: RouterType.Client
+  router: false
 }
 
 export default function GenerateWrapper(entry: string, options: Partial<Readonly<Options>> = {}): { result: string, map: { file: string, content: string }} {
@@ -66,6 +61,17 @@ export function makeNodes(entry: string, options: Options): ts.Node[] {
         undefined,
         undefined,
         ts.createImportClause(
+          ts.createIdentifier('store'), undefined
+        ),
+        ts.createStringLiteral(options.store)
+      )
+    )
+
+    imports.push(
+      ts.createImportDeclaration(
+        undefined,
+        undefined,
+        ts.createImportClause(
           undefined,
           ts.createNamedImports(
             [
@@ -76,14 +82,14 @@ export function makeNodes(entry: string, options: Options): ts.Node[] {
             ]
           )
         ),
-        ts.createStringLiteral('redux')
+        ts.createStringLiteral('react-redux')
       )
     )
     
     node = makeStoreProviderNode(node)
   }
 
-  if(null !== options.router) {
+  if(options.router) {
     imports.push(
       ts.createImportDeclaration(
         undefined,
@@ -136,49 +142,51 @@ export function makeNodes(entry: string, options: Options): ts.Node[] {
   return [
     ...imports,
 
-    ts.createVariableStatement(
-      undefined,
-      ts.createVariableDeclarationList(
-        [
-          ts.createVariableDeclaration(
-            ts.createIdentifier('RouterProps'),
-            undefined,
-            ts.createPropertyAccess(
-              ts.createIdentifier('globalThis'),
-              ts.createIdentifier('RouterProps')
-            )
-          )
-        ],
-        ts.NodeFlags.Const
-      )
-    ),
-
-    ts.createVariableStatement(
-      undefined,
-      ts.createVariableDeclarationList(
-        [
-          ts.createVariableDeclaration(
-            ts.createIdentifier('Router'),
-            undefined,
-            ts.createConditional(
+    ...options.router ? [
+      ts.createVariableStatement(
+        undefined,
+        ts.createVariableDeclarationList(
+          [
+            ts.createVariableDeclaration(
+              ts.createIdentifier('RouterProps'),
+              undefined,
               ts.createPropertyAccess(
                 ts.createIdentifier('globalThis'),
-                ts.createIdentifier('document')
-              ),
-              ts.createPropertyAccess(
-                ts.createIdentifier('router'),
-                ts.createIdentifier('BrowserRouter')
-              ),
-              ts.createPropertyAccess(
-                ts.createIdentifier('router'),
-                ts.createIdentifier('StaticRouter')
+                ts.createIdentifier('RouterProps')
               )
             )
-          )
-        ],
-        ts.NodeFlags.Const
-      )
-    ),
+          ],
+          ts.NodeFlags.Const
+        )
+      ),
+
+      ts.createVariableStatement(
+        undefined,
+        ts.createVariableDeclarationList(
+          [
+            ts.createVariableDeclaration(
+              ts.createIdentifier('Router'),
+              undefined,
+              ts.createConditional(
+                ts.createPropertyAccess(
+                  ts.createIdentifier('globalThis'),
+                  ts.createIdentifier('document')
+                ),
+                ts.createPropertyAccess(
+                  ts.createIdentifier('router'),
+                  ts.createIdentifier('BrowserRouter')
+                ),
+                ts.createPropertyAccess(
+                  ts.createIdentifier('router'),
+                  ts.createIdentifier('StaticRouter')
+                )
+              )
+            )
+          ],
+          ts.NodeFlags.Const
+        )
+      ),
+    ] : [],
 
     ts.createExportAssignment(
       undefined,

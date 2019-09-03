@@ -17,7 +17,6 @@ const DEFAULT_TITLE: string = 'App'
 export default function makeHtmlPlugin(options: Partial<Readonly<Options>> = {}): webpack.Plugin[] {
   const metas = []
   if(options.description) metas.push({ content: options.description, name: 'description' })
-
   return [ 
     new HTMLWebpackPlugin({
       template: HTMLEWebpackTemplate,
@@ -30,7 +29,7 @@ export default function makeHtmlPlugin(options: Partial<Readonly<Options>> = {})
       lang: undefined,
       window: undefined,
       bodyHtmlSnippet: '<div id="app">__SSR_PLACEHOLDER__</div>',
-      devServer: options.isProduction ? undefined : options.url ? options.url.toString() : undefined
+      devServer: options.isProduction ? undefined : options.url ? options.url.origin : undefined
     } as HTMLEWebpackTemplate.Options)
   ]
 }

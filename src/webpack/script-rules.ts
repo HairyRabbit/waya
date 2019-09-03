@@ -10,7 +10,7 @@ const TSConfig = require.resolve('./default-tsconfig.json')
 
 export default function makeScriptRules(context: string, isProduction: boolean = false): webpack.RuleSetRule[] {
   const use = []
-
+  
   if(isProduction) use.push({
     loader: require.resolve('babel-loader'),
     options: makeBabelLoaderOptions()

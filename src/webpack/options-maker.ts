@@ -7,7 +7,7 @@ import getScriptRules from './script-rules'
 import getStyleRules from './style-rules'
 import getHtmlPlugin from './html-plugin'
 import resolvePackage from './package-resolver'
-import * as LoadablePlugin from '@loadable/webpack-plugin'
+// import * as LoadablePlugin from '@loadable/webpack-plugin'
 import * as path from 'path'
 import * as vm from 'vm'
 
@@ -34,23 +34,21 @@ const DEFAULT_OPTIONS: Options = {
 export default function makeOptions(context: string, options: Partial<Readonly<Options>> = {}): { compiler: webpack.Configuration, server: WebpackDevServer.Configuration } {
   const opts = { ...DEFAULT_OPTIONS, ...options }
   const url = new URL('http://localhost:8080')
+  const pkg = resolvePackage(context)
   const libraryOptions = getLibraryOptions()
   const scriptRules = getScriptRules(context)
   const styleRules = getStyleRules([])
   const htmlPlugin = getHtmlPlugin({
     url
   })
-  const entries = resolveEntry(context)
+  const entry = resolveEntry(context)
 
   const compilerOptions: webpack.Configuration = {
     mode: 'development',
-    name: 'app-dev',
+    name: pkg.name + '-dev',
     devtool: 'inline-source-map',
     context,
-    entry: {
-      main: entries,
-      boot: require.resolve('./app-bootstrapper')
-    },
+    entry,
     output: {
       library: 'Application',
       libraryTarget: 'this',
@@ -74,7 +72,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     plugins: [
       ...Object.values(libraryOptions.plugins),
       ...htmlPlugin,
-      new LoadablePlugin()
+      // new LoadablePlugin()
     ]
   }
 
@@ -85,6 +83,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
       verbose: true
     },
     injectClient: false,
+    stats: 'minimal',
 
     before(app: express.Application, server) {
       if(opts.ssr) app.use((req, res, next) => {
