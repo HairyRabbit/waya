@@ -8,6 +8,7 @@ import getStyleRules from './style-rules'
 import getHtmlPlugin from './html-plugin'
 import resolvePackage from './package-resolver'
 // import * as LoadablePlugin from '@loadable/webpack-plugin'
+import { WebpackDevMiddleware } from 'webpack-dev-middleware'
 import * as path from 'path'
 import * as vm from 'vm'
 
@@ -19,7 +20,7 @@ declare module 'webpack-dev-server' {
   }
 
   interface WebpackDevServer {
-    middleware: any
+    middleware: WebpackDevMiddleware
   }
 }
 
@@ -41,7 +42,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
   const htmlPlugin = getHtmlPlugin({
     url
   })
-  const entry = resolveEntry(context)
+  const entry = () => { console.log(42); return resolveEntry(context) }
 
   const compilerOptions: webpack.Configuration = {
     mode: 'development',

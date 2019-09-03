@@ -1,19 +1,17 @@
 import * as path from 'path'
 import * as fs from 'fs'
 
-const ScriptMatches: string[] = [
-  'index.ts', 'index.tsx',
+export const ScriptMatches: string[] = [
   'App.tsx', 
-  'pages/index.ts', 'pages/index.tsx',
-  'pages/App.tsx'
+  'index.ts', 'index.tsx',
+  'pages/index.ts', 'pages/index.tsx'
 ]
-const StyleMatches: string[] = [
+export const StyleMatches: string[] = [
   'style.scss', 'style.css',
   'index.scss', 'index.css',
-  'style/index.scss', 'style/index.css',
-  'style/style.scss', 'style/style.css'
+  'style/index.scss', 'style/index.css'
 ]
-const StoreScriptMatches: string[] = [
+export const StoreScriptMatches: string[] = [
   'store.ts',
   'actions/index.ts'
 ]
