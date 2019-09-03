@@ -11,7 +11,6 @@ export const enum ErrorCode {
   BuildError = 40005
 }
 
-
 export default class Webpack {
   compiler: webpack.Compiler | null = null
   server: WebpackDevServer | null = null
@@ -20,9 +19,9 @@ export default class Webpack {
   constructor(_service: Service) {}
   
   configure(context: string) {
-    const options = makeOptions(context)
-    this.compiler = webpack(options.compiler)
-    this.server = new WebpackDevServer(this.compiler, options.server)
+    const webpackOptions = makeOptions(context)
+    this.compiler = webpack(webpackOptions.compiler)
+    this.server = new WebpackDevServer(this.compiler, webpackOptions.server)
     return this
   }
 
@@ -39,7 +38,7 @@ export default class Webpack {
       message: 'server was running'
     })
 
-    this.configure(args.context || process.cwd()).server!.listen(8080, `0.0.0.0`, err => {
+    this.configure(args.context || process.cwd()).server!.listen(8080, err => {
       if(err) return callback({
         code: ErrorCode.ServerListenError,
         message: err.message,

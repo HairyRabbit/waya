@@ -13,7 +13,7 @@ export type Library = {
 
 type LibraryOptions = {
   alias: { [key: string]: string },
-  externals: { [key: string]: string },
+  externals: { [key: string]: string | { this: string, commonjs2: string } },
   style: string[],
   script: string[],
   plugins: { [key: string]: webpack.PrefetchPlugin }
@@ -36,7 +36,7 @@ export default function getLibraryOptions(): LibraryOptions {
         : require.resolve(name)
       
       acc.alias[name] = modulePath
-      if(globalName) acc.externals[name] = globalName
+      if(globalName) acc.externals[name] = { this: globalName, commonjs2: name }
       if(LibraryType.Unknown !== type) acc.plugins[name] = new webpack.PrefetchPlugin(path.dirname(modulePath), name)
 
       switch(type) {

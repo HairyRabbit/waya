@@ -1,7 +1,6 @@
 import * as webpack from 'webpack'
 import * as WebpackDevServer from 'webpack-dev-server'
 import * as express from 'express'
-import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import resolveEntry from './entry-resolver'
 import getLibraryOptions from './library'
 import getScriptRules from './script-rules'
@@ -24,14 +23,26 @@ declare module 'webpack-dev-server' {
   }
 }
 
-export default function makeOptions(context: string): { compiler: webpack.Configuration, server: WebpackDevServer.Configuration } {
+interface Options {
+  ssr: boolean
+}
+
+const DEFAULT_OPTIONS: Options = {
+  ssr: false
+}
+
+export default function makeOptions(context: string, options: Partial<Readonly<Options>> = {}): { compiler: webpack.Configuration, server: WebpackDevServer.Configuration } {
+  const opts = { ...DEFAULT_OPTIONS, ...options }
+  const url = new URL('http://localhost:8080')
   const libraryOptions = getLibraryOptions()
   const scriptRules = getScriptRules(context)
   const styleRules = getStyleRules([])
-  const htmlPlugin = getHtmlPlugin()
+  const htmlPlugin = getHtmlPlugin({
+    url
+  })
   const entries = resolveEntry(context)
 
-  const compiler: webpack.Configuration = {
+  const compilerOptions: webpack.Configuration = {
     mode: 'development',
     name: 'app-dev',
     devtool: 'inline-source-map',
@@ -67,33 +78,22 @@ export default function makeOptions(context: string): { compiler: webpack.Config
     ]
   }
 
-  const server: WebpackDevServer.Configuration = {
+  const serverOptions: WebpackDevServer.Configuration = {
+    port: parseInt(url.port),
+    host: url.host,
     historyApiFallback: {
-      verbose: true,
-      // rewrites: [{
-      //   from: /.*/,
-      //   to(context) {
-      //     const RuntimeCacheContent = JSON.parse(fs.readFileSync(RuntimeCache, 'utf-8'))
-      //     fs.writeFileSync(RuntimeCache, JSON.stringify({ ...RuntimeCacheContent, href: context.parsedUrl.href }))
-      //     return '/index.html?__SSR__=' + context.parsedUrl.href
-      //   }
-      // }]
+      verbose: true
     },
     injectClient: false,
 
     before(app: express.Application, server) {
-      app.use((req, res, next) => {
+      if(opts.ssr) app.use((req, res, next) => {
         const url = req.url
         const re = /\.\w+$/
         if(re.test(url)) return next()
         const send = res.send
         res.send = (...args: any[]): any => {
           const bundle = server.middleware.fileSystem.readFileSync(path.resolve(context, 'dist', 'main.js'), 'utf-8')
-          // const pageFoo = server.middleware.fileSystem.readFileSync(path.resolve(context, 'dist', 'foo.js'), 'utf-8')
-          // const pageBar = server.middleware.fileSystem.readFileSync(path.resolve(context, 'dist', 'bar.js'), 'utf-8')
-          // const { ChunkExtractor } = require('@loadable/server')
-          // var extractor = new ChunkExtractor({ stats})
-          const statsFile = server.middleware.fileSystem.readFileSync(path.resolve(context, 'dist', 'loadable-stats.json'), 'utf-8')
           const code = new vm.Script(`\
 globalThis.RouterProps = {
   location: ${JSON.stringify(url)},
@@ -106,16 +106,9 @@ ${bundle};
   const App = globalThis.Application.default
   const { renderToString } = require('react-dom/server')
   const { renderToStringAsync } = require('react-async-ssr')
-  const { ChunkExtractor } = require('@loadable/server')
-  const extractor = new ChunkExtractor({ stats: ${statsFile} })
-  const jsx = extractor.collectChunks(App)
-  const html = await renderToStringAsync(jsx)
-  const scriptTags = extractor.getScriptTags()
-  const linkTags = extractor.getLinkTags()
-  const styleTags = extractor.getStyleTags()
 
   console.log(html)
-  // console.log(require('util').inspect(globalThis.Application.default, { depth: null }))
+  // console.log(require('util').inspect(App, { depth: null }))
   return await renderToStringAsync(App)
 })
 `)
@@ -138,12 +131,12 @@ ${bundle};
   }
   
   return {
-    compiler,
-    server
+    compiler: compilerOptions,
+    server: serverOptions
   }
 }
 
-export function makeBuildOptions(context: string): webpack.Configuration {
+export function makeBuildOptions(context: string): webpack.Configuration[] {
   const pkg = resolvePackage(context)
   const entries = resolveEntry(context, {
     isProduction: true
@@ -159,7 +152,7 @@ export function makeBuildOptions(context: string): webpack.Configuration {
     isProduction: true
   })
   
-  return {
+  const compilerOptions: webpack.Configuration = {
     mode: 'production',
     name: pkg.name,
     context,
@@ -189,8 +182,25 @@ export function makeBuildOptions(context: string): webpack.Configuration {
       ]
     },
     plugins: [
-      new CleanWebpackPlugin(),
       ...htmlPlugin
     ]
   }
+
+  return [
+    compilerOptions,
+    {
+      ...compilerOptions,
+      name: compilerOptions.name + '-server',
+      target: 'node',
+      output: {
+        ...compilerOptions.output,
+        libraryTarget: 'commonjs2',
+        filename: '[name].server.js',
+      },
+      optimization: {
+        ...compilerOptions.optimization,
+        minimize: false
+      }
+    }
+  ]
 }

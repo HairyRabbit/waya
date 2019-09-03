@@ -9,6 +9,7 @@ interface Options {
   links: HTMLEWebpackTemplate.Options['links']
   scripts: HTMLEWebpackTemplate.Options['scripts'],
   isProduction: boolean
+  url: URL
 }
 
 const DEFAULT_TITLE: string = 'App'
@@ -21,7 +22,6 @@ export default function makeHtmlPlugin(options: Partial<Readonly<Options>> = {})
     new HTMLWebpackPlugin({
       template: HTMLEWebpackTemplate,
       inject: false,
-      appMountId: 'app',
       mobile: true,
       title: options.name || DEFAULT_TITLE,
       meta: metas,
@@ -29,7 +29,8 @@ export default function makeHtmlPlugin(options: Partial<Readonly<Options>> = {})
       links: options.links || [],
       lang: undefined,
       window: undefined,
-      devServer: options.isProduction ? undefined : 'http://localhost:8080'
+      bodyHtmlSnippet: '<div id="app">__SSR_PLACEHOLDER__</div>',
+      devServer: options.isProduction ? undefined : options.url ? options.url.toString() : undefined
     } as HTMLEWebpackTemplate.Options)
   ]
 }
