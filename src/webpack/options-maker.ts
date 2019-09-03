@@ -42,7 +42,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
   const htmlPlugin = getHtmlPlugin({
     url
   })
-  const entry = () => { console.log(42); return resolveEntry(context) }
+  const entry = resolveEntry(context)
 
   const compilerOptions: webpack.Configuration = {
     mode: 'development',

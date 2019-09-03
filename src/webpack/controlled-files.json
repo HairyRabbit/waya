@@ -1,0 +1,19 @@
+{
+  "app": [
+    "App.tsx",
+    "index.tsx", "index.ts",
+    "pages/index.tsx", "pages/index.ts"
+  ],
+  "style": [
+    "style.scss",
+    "index.scss", "index.css",
+    "style/index.scss", "index.css"
+  ],
+  "store": [
+    "store.ts",
+    "actions/index.ts"
+  ],
+  "cssvar": [
+    "style.json"
+  ]
+}
