@@ -141,6 +141,23 @@ export function makeNodes(entry: string, options: Options): ts.Node[] {
       ts.createVariableDeclarationList(
         [
           ts.createVariableDeclaration(
+            ts.createIdentifier('RouterProps'),
+            undefined,
+            ts.createPropertyAccess(
+              ts.createIdentifier('globalThis'),
+              ts.createIdentifier('RouterProps')
+            )
+          )
+        ],
+        ts.NodeFlags.Const
+      )
+    ),
+
+    ts.createVariableStatement(
+      undefined,
+      ts.createVariableDeclarationList(
+        [
+          ts.createVariableDeclaration(
             ts.createIdentifier('Router'),
             undefined,
             ts.createConditional(
@@ -193,7 +210,9 @@ function makeRouterNode(children: ts.JsxChild): ts.JsxElement {
     ts.createJsxOpeningElement(
       ts.createIdentifier('Router'), 
       undefined, 
-      ts.createJsxAttributes([])
+      ts.createJsxAttributes([
+        ts.createJsxSpreadAttribute(ts.createIdentifier('RouterProps'))
+      ])
     ),
     [
       children

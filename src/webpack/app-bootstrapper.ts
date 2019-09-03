@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { hydrate } from 'react-dom'
+// import { loadableReady } from '@loadable/component'
 
 declare namespace globalThis {
   var Application: { default: React.ReactElement }

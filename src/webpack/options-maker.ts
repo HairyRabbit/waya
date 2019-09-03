@@ -8,6 +8,7 @@ import getScriptRules from './script-rules'
 import getStyleRules from './style-rules'
 import getHtmlPlugin from './html-plugin'
 import resolvePackage from './package-resolver'
+import * as LoadablePlugin from '@loadable/webpack-plugin'
 import * as path from 'path'
 import * as vm from 'vm'
 
@@ -33,6 +34,7 @@ export default function makeOptions(context: string): { compiler: webpack.Config
   const compiler: webpack.Configuration = {
     mode: 'development',
     name: 'app-dev',
+    devtool: 'inline-source-map',
     context,
     entry: {
       main: entries,
@@ -42,6 +44,9 @@ export default function makeOptions(context: string): { compiler: webpack.Config
       library: 'Application',
       libraryTarget: 'this',
       globalObject: 'globalThis'
+    },
+    node: {
+      process: true
     },
     resolve: {
       extensions: EXTENSIONS,
@@ -57,7 +62,8 @@ export default function makeOptions(context: string): { compiler: webpack.Config
     },
     plugins: [
       ...Object.values(libraryOptions.plugins),
-      ...htmlPlugin
+      ...htmlPlugin,
+      new LoadablePlugin()
     ]
   }
 
@@ -81,18 +87,50 @@ export default function makeOptions(context: string): { compiler: webpack.Config
         const re = /\.\w+$/
         if(re.test(url)) return next()
         const send = res.send
-        res.send = (...args: any[]) => {
+        res.send = (...args: any[]): any => {
           const bundle = server.middleware.fileSystem.readFileSync(path.resolve(context, 'dist', 'main.js'), 'utf-8')
-          const code = new vm.Script(`${bundle};((require) => require('react-dom/server').renderToString(globalThis.Application.default))`)
-          const result = code.runInThisContext()(require)
-          const html = args[0].toString().replace(
-            /<div id="app">(?:[^<]*)<\/div>/,
-            `<div id="app">${result}</div>`
-          )
-          
-          console.debug(url)
-          console.debug(result)
-          return send.apply(res, [Buffer.from(html), ...args.slice(1)] as any)
+          // const pageFoo = server.middleware.fileSystem.readFileSync(path.resolve(context, 'dist', 'foo.js'), 'utf-8')
+          // const pageBar = server.middleware.fileSystem.readFileSync(path.resolve(context, 'dist', 'bar.js'), 'utf-8')
+          // const { ChunkExtractor } = require('@loadable/server')
+          // var extractor = new ChunkExtractor({ stats})
+          const statsFile = server.middleware.fileSystem.readFileSync(path.resolve(context, 'dist', 'loadable-stats.json'), 'utf-8')
+          const code = new vm.Script(`\
+globalThis.RouterProps = {
+  location: ${JSON.stringify(url)},
+  context: {}
+};
+${bundle};
+// {pageFoo};
+// {pageBar};
+(async (require) => {
+  const App = globalThis.Application.default
+  const { renderToString } = require('react-dom/server')
+  const { renderToStringAsync } = require('react-async-ssr')
+  const { ChunkExtractor } = require('@loadable/server')
+  const extractor = new ChunkExtractor({ stats: ${statsFile} })
+  const jsx = extractor.collectChunks(App)
+  const html = await renderToStringAsync(jsx)
+  const scriptTags = extractor.getScriptTags()
+  const linkTags = extractor.getLinkTags()
+  const styleTags = extractor.getStyleTags()
+
+  console.log(html)
+  // console.log(require('util').inspect(globalThis.Application.default, { depth: null }))
+  return await renderToStringAsync(App)
+})
+`)
+          const promise: Promise<string> = code.runInThisContext()(require)
+          promise.then(result => {
+            console.log(result)
+            const html = args[0].toString().replace(
+              /<div id="app">(?:[^<]*)<\/div>/,
+              `<div id="app">${result}</div>`
+            )
+            
+            console.debug(url)
+            console.debug(result)
+            send.apply(res, [Buffer.from(html), ...args.slice(1)] as any)
+          })
         }
         next()
       })
@@ -117,22 +155,29 @@ export function makeBuildOptions(context: string): webpack.Configuration {
     name: pkg.name, 
     description: pkg.description,
     links: libraryOptions.style,
-    scripts: libraryOptions.script
+    scripts: libraryOptions.script,
+    isProduction: true
   })
   
   return {
     mode: 'production',
     name: pkg.name,
     context,
-    entry: { main: entries },
+    entry: { 
+      main: entries,
+      boot: require.resolve('./app-bootstrapper')
+    },
     output: {
-      filename: '[name].[chunkhash].js',
-      // library: 'APP',
+      filename: '[name].[hash].js',
+      library: 'Application',
       libraryTarget: 'this',
       globalObject: 'globalThis'
     },
     resolve: {
-      extensions: EXTENSIONS
+      extensions: EXTENSIONS,
+      alias: {
+        'core-js': libraryOptions.alias['core-js']
+      }
     },
     externals: {
       ...libraryOptions.externals

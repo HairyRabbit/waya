@@ -50,5 +50,13 @@
   "@babel/polyfill": {
     "name": "@babel/ployfill",
     "type": "unknown"
+  },
+  "core-js": {
+    "name": "core-js",
+    "type": "unknown"
+  },
+  "@loadable/component": {
+    "name": "core-js",
+    "type": "unknown"
   }
 }

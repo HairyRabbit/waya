@@ -7,7 +7,8 @@ interface Options {
   description: string
   metas: HTMLEWebpackTemplate.Options['meta']
   links: HTMLEWebpackTemplate.Options['links']
-  scripts: HTMLEWebpackTemplate.Options['scripts']
+  scripts: HTMLEWebpackTemplate.Options['scripts'],
+  isProduction: boolean
 }
 
 const DEFAULT_TITLE: string = 'App'
@@ -28,7 +29,7 @@ export default function makeHtmlPlugin(options: Partial<Readonly<Options>> = {})
       links: options.links || [],
       lang: undefined,
       window: undefined,
-      devServer: 'http://localhost:8080'
+      devServer: options.isProduction ? undefined : 'http://localhost:8080'
     } as HTMLEWebpackTemplate.Options)
   ]
 }
