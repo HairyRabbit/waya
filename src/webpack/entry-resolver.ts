@@ -4,6 +4,7 @@ import * as files from './controlled-files.json'
 
 const BootLoader = require.resolve('./boot-loader')
 const RootLoader = require.resolve('./root-loader')
+// const RootCssvarLoader = require.resolve('./root-cssvar-loader')
 
 interface Options {
   prepends: string[],
@@ -20,6 +21,7 @@ export default function resolveEntry(context: string, options: Partial<Readonly<
   const scriptEntry = filter(context, files.app)
   const styleEntry = filter(context, files.style)
   const storeEntry = filter(context, files.store)
+  const cssvarEntry = filter(context, files.cssvar)
   
   const rootLoaderOptions = makeRootLoaderOptions({
     store: storeEntry,
@@ -27,6 +29,7 @@ export default function resolveEntry(context: string, options: Partial<Readonly<
 
   return [
     ...prepends,
+    cssvarEntry,
     styleEntry,
     [ 
       BootLoader,

@@ -38,11 +38,11 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
   const pkg = resolvePackage(context)
   const libraryOptions = getLibraryOptions()
   const scriptRules = getScriptRules(context)
-  const styleRules = getStyleRules([])
+  const styleRules = getStyleRules(context)
   const htmlPlugin = getHtmlPlugin({
     url
   })
-  const entry = resolveEntry(context)
+  const entry = () => resolveEntry(context)
 
   const compilerOptions: webpack.Configuration = {
     mode: 'development',
@@ -84,7 +84,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
       verbose: true
     },
     injectClient: false,
-    stats: 'minimal',
+    // stats: 'minimal',
 
     before(app: express.Application, server) {
       if(opts.ssr) app.use((req, res, next) => {
@@ -143,7 +143,7 @@ export function makeBuildOptions(context: string): webpack.Configuration[] {
   })
   const libraryOptions = getLibraryOptions()
   const scriptRules = getScriptRules(context, true)
-  const styleRules = getStyleRules([])
+  const styleRules = getStyleRules(context)
   const htmlPlugin = getHtmlPlugin({ 
     name: pkg.name, 
     description: pkg.description,

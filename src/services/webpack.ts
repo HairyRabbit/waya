@@ -3,13 +3,10 @@ import * as WebpackDevServer from 'webpack-dev-server'
 import { Service, ServiceCallback } from '../service'
 import makeOptions, { makeBuildOptions } from '../webpack/options-maker'
 import * as controlledFiles from '../webpack/controlled-files.json'
-// import { ScriptMatches, StyleMatches, StoreScriptMatches } from '../webpack/entry-resolver'
-// import * as chokidar from 'chokidar'
 import * as fs from 'fs'
-import * as path from 'path'
 
-
-const controlled: string[] = Object.values(controlledFiles).flat()
+const files: ReadonlyArray<string> = Object.values(controlledFiles).flat()
+console.log(files)
 
 export const enum ErrorCode {
   ServerListenError = 40001,
@@ -49,14 +46,15 @@ export default class Webpack {
       message: 'server was running'
     })
 
-    this.configure(args.context || process.cwd()).server!.listen(8080, err => {
-      this.watcher = fs.watch(path.resolve(process.cwd()), { recursive: true }, (eventType, filename) => {
-        if('change' === eventType) return
-        if(!filename) return
-        if(!controlled.includes(filename.replace(/\\/, '\/'))) return
-        (this.server as unknown as WebpackDevServer.WebpackDevServer).middleware.invalidate()
-      })
+    this.watcher = fs.watch(args.context || process.cwd(), { persistent: false, recursive: true }, (eventType, filename) => {
+      if('change' === eventType) return
+      console.log(eventType, filename)
+      if(!filename) return
+      if(!files.includes(filename.replace(/\\/, '\/'))) return
+      (this.server as unknown as WebpackDevServer.WebpackDevServer).middleware.invalidate()
+    })
 
+    this.configure(args.context || process.cwd()).server!.listen(8080, err => {
       if(err) return callback({
         code: ErrorCode.ServerListenError,
         message: err.message,

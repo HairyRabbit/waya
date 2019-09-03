@@ -1,8 +1,12 @@
 import * as webpack from 'webpack'
+import * as postcssSyntaxScss from 'postcss-scss'
+import * as postcssPresetEnv from 'postcss-preset-env'
+import * as path from 'path'
+import * as files from './controlled-files.json'
 
 const enum StyleLoader { Style = 'style', Css = 'css', Sass = 'sass', Postcss = 'postcss' }
 
-const StyleLoaders: StyleLoader[] = [
+const StyleLoaders: ReadonlyArray<StyleLoader> = [
   StyleLoader.Style, 
   StyleLoader.Css,
   StyleLoader.Sass,
@@ -15,21 +19,40 @@ const Loader: { [K in StyleLoader]: string } = StyleLoaders.reduce((acc, name) =
 }, Object.create(null))
 
 
-export default function makeStyleRules(globals: string[]): webpack.RuleSetRule[] {
+export default function makeStyleRules(context: string): webpack.RuleSetRule[] {
+  const styles = files.style.map(fileName => path.resolve(context, fileName))
+  const cssvar = path.resolve(context, files.cssvar[0])
   const test = /s?css$/
   
   return [{
     test,
-    include: globals,
+    include: styles,
     use: makeGlobalRules()
   },{
     test,
-    exclude: globals,
+    exclude: styles,
     use: makeNormaleRules()
+  },{
+    test: cssvar,
+    type: 'javascript/auto',
+    use: makeRootCssVariableRules()
   }]
 }
 
-export function makeGlobalRules(): webpack.RuleSetUse {
+export function makeRootCssVariableRules(): webpack.RuleSetUseItem[] {
+  return [
+    ...makeGlobalRules(3),
+    {
+      loader: require.resolve('./root-cssvar-loader'),
+      options: {}
+    },
+    // {
+    //   loader: require.resolve('json-loader')
+    // }
+  ]
+}
+
+export function makeGlobalRules(loaders: number = 2): webpack.RuleSetUseItem[] {
   return [{
     loader: Loader.style,
     options: {}
@@ -37,7 +60,7 @@ export function makeGlobalRules(): webpack.RuleSetUse {
     loader: Loader.css,
     options: {
       sourceMap: true,
-      importLoaders: 2
+      importLoaders: loaders
     }
   },{
     loader: Loader.sass,
@@ -47,16 +70,16 @@ export function makeGlobalRules(): webpack.RuleSetUse {
   },{
     loader: Loader.postcss,
     options: {
-      syntax: require(`postcss-scss`),
+      syntax: postcssSyntaxScss,
       sourceMap: true,
       plugins: [
-        require(`postcss-preset-env`)()
+        postcssPresetEnv()
       ]
     }
   }]
 }
 
-export function makeNormaleRules(): webpack.RuleSetUse {
+export function makeNormaleRules(): webpack.RuleSetUseItem[] {
   return [{
     loader: Loader.style,
     options: {}
