@@ -49,6 +49,11 @@ _`npm i -g webin `_
 
 ## Getting Start
 
+```sh
+mkdir app && cd app
+webin
+```
+
 [[ back to index ]](#Index)
 
 <br />

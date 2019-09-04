@@ -1,0 +1,24 @@
+name: Publish master barnch
+
+on: 
+  push:
+    tags:
+      - *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: 'https://registry.npmjs.org'
+    - name: Build
+      run: npm i && npm run build && npx bin-file-gen -y
+    - uses: HairyRabbit/actions/release-tag@latest
+      with:
+        context: 'dist'
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
