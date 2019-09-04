@@ -12,46 +12,76 @@ _Yet another way to build web app_
 
 _TypeScript . React/Redux . Sass_
 
-_`npm i -g webin`_
+_`npm i -g webin `_
 
 </div>
 
 <br />
+<br />
+
+## Index
+
+- [Features](#Features)
+- [Getting Start](#Getting_Start)
+- [Script](#Script)
+  - [Router](#Router)
+  - [Actions](#Actions)
+- [Style](#Style)
+  - [Themes](#Themes)
+  - [Variables](#Variables)
+- Static
+  - Logo
+  - Icon
+  - Image
+  - Others
+- [Cli](#Cli)
+
+<br />
+<br />
 
 
-## script
+## Features
+
+[[ back to index ]](#Index)
+
+<br />
+<br />
+
+## Getting Start
+
+[[ back to index ]](#Index)
+
+<br />
+<br />
+
+## Script
 
 `<root>/App.tsx` will auto load when exists
 
-## router
+[[ back to index ]](#Index)
 
-## store
+### Router
+
+[[ back to index ]](#Index)
+
+### Actions
 
 `<root>/store.ts` will auto load when exists
+
+[[ back to index ]](#Index)
+
+<br />
+<br />
 
 ## style
 
 `<root>/style.scss` will auto load when exists
 
-### root css variables
+[[ back to index ]](#Index)
 
-If `<root>/style.json` provide, inject the `root` selector to entrypoint and transform to json data to css properties. Like:
+### Themes
 
-```json style.json
-{
-  "color-primary": "lightblue"
-}
-```
-
-Will transform to:
-
-```css
-:root {
-  --color-primary: lightblue;
-}
-```
-
-### themes
+[[ back to index ]](#Index)
 
 #### light/dark theme
 
@@ -79,6 +109,8 @@ Or short for:
 }]
 ```
 
+[[ back to index ]](#Index)
+
 #### multi themes
 
 ```json style.json
@@ -95,4 +127,30 @@ Or short for:
 }]
 ```
 
+[[ back to index ]](#Index)
+
+### Variables
+
+If `<root>/style.json` provide, inject the `root` selector to entrypoint and transform to json data to css properties. Like:
+
+```json style.json
+{
+  "color-primary": "lightblue"
+}
+```
+
+Will transform to:
+
+```css
+:root {
+  --color-primary: lightblue;
+}
+```
+[[ back to index ]](#Index)
+
+<br />
+<br />
+
 ## cli
+
+[[ back to index ]](#Index)
