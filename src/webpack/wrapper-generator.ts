@@ -1,6 +1,8 @@
 import { Project, printNode, ts } from 'ts-morph'
 import * as path from 'path'
 
+const TSConfig = path.resolve(__dirname, './default-tsconfig.json')
+
 interface Options {
   store: string | null
   strict: boolean
@@ -18,7 +20,7 @@ export default function GenerateWrapper(entry: string, options: Partial<Readonly
   const nodes = makeNodes(entry, opts)
   const code = nodes.map(node => printNode(node)).join('\n')
   const project = new Project({
-    tsConfigFilePath: path.resolve(__dirname, './default-tsconfig.json')
+    tsConfigFilePath: TSConfig
   })
   const sf = project.createSourceFile('__WRAPPER_GENERATOR__.tsx', code)
   const [ map, result ] = sf.getEmitOutput().getOutputFiles()
