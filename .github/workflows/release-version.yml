@@ -2,7 +2,10 @@ name: Release versions
 
 on: 
   push:
+    branches:
+      - '!*'
     tags:
+      - '*'
 
 jobs:
   build:
@@ -10,8 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
       with:
-        fetch-depth: 1
-        clean: false
+        ref: refs/tags
     - uses: actions/setup-node@v1
       with:
         registry-url: 'https://registry.npmjs.org'
