@@ -1,4 +1,4 @@
-name: Publish master barnch
+name: Release versions
 
 on: 
   push:
