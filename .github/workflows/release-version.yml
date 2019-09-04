@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
       with:
-        ref: refs/tags
+        ref: ${{ github.ref }}
     - uses: actions/setup-node@v1
       with:
         registry-url: 'https://registry.npmjs.org'
