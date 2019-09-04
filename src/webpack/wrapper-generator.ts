@@ -18,7 +18,7 @@ export default function GenerateWrapper(entry: string, options: Partial<Readonly
   const nodes = makeNodes(entry, opts)
   const code = nodes.map(node => printNode(node)).join('\n')
   const project = new Project({
-    tsConfigFilePath: path.resolve(__dirname, './tsconfig.json')
+    tsConfigFilePath: path.resolve(__dirname, './default-tsconfig.json')
   })
   const sf = project.createSourceFile('__WRAPPER_GENERATOR__.tsx', code)
   const [ map, result ] = sf.getEmitOutput().getOutputFiles()
