@@ -3,9 +3,7 @@ name: Release versions
 on: 
   push:
     branches:
-      - '!*'
-    tags:
-      - '*'
+      - 'release/*'
 
 jobs:
   build:
