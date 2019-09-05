@@ -52,7 +52,7 @@ _`npm i -g waya `_
 
 ```sh
 mkdir app && cd app
-webin
+waya
 ```
 
 [[ Back to index ]](#Index)
