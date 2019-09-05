@@ -1,6 +1,6 @@
 {
   "name": "waya",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Yet another way to build web app",
   "main": "index.js",
   "bin": "bin/waya",
