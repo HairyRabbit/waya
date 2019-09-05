@@ -1,9 +1,9 @@
 {
-  "name": "webin",
+  "name": "waya",
   "version": "0.0.0",
   "description": "Yet another way to build web app",
   "main": "index.js",
-  "bin": "bin/webin",
+  "bin": "bin/waya",
   "scripts": {
     "start": "tsc -w",
     "build": "tsc",

@@ -3,16 +3,17 @@
 <div align=center>
 
 <br />
-<img src="https://user-images.githubusercontent.com/5752902/64232713-1421a680-cf25-11e9-9a09-e2c6da83c5a7.png" alt="logo" title="logo" width="260" />
+<img src="https://user-images.githubusercontent.com/5752902/64310762-0840ed80-cfd4-11e9-88ac-67e6b4d7f9aa.png" alt="logo" title="logo" width="240" />
+<br />
 <br />
 
-# webin
+# waya
 
 _Yet another way to build web app_
 
 _TypeScript . React/Redux . Sass_
 
-_`npm i -g webin `_
+_`npm i -g waya `_
 
 </div>
 
@@ -42,7 +43,7 @@ _`npm i -g webin `_
 
 ## Features
 
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
 
 <br />
 <br />
@@ -54,7 +55,7 @@ mkdir app && cd app
 webin
 ```
 
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
 
 <br />
 <br />
@@ -63,17 +64,17 @@ webin
 
 `<root>/App.tsx` will auto load when exists
 
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
 
 ### Router
 
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
 
 ### Actions
 
 `<root>/store.ts` will auto load when exists
 
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
 
 <br />
 <br />
@@ -82,11 +83,11 @@ webin
 
 `<root>/style.scss` will auto load when exists
 
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
 
 ### Themes
 
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
 
 #### light/dark theme
 
@@ -114,7 +115,7 @@ Or short for:
 }]
 ```
 
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
 
 #### multi themes
 
@@ -132,7 +133,7 @@ Or short for:
 }]
 ```
 
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
 
 ### Variables
 
@@ -151,11 +152,11 @@ Will transform to:
   --color-primary: lightblue;
 }
 ```
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
 
 <br />
 <br />
 
 ## cli
 
-[[ back to index ]](#Index)
+[[ Back to index ]](#Index)
