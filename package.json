@@ -1,12 +1,13 @@
 {
   "name": "waya",
   "version": "0.0.2",
-  "description": "Yet another way to build web app",
+  "description": "Yet another builder",
   "main": "index.js",
   "bin": "bin/waya",
   "files": [
     "project/**/*",
     "**/*.js",
+    "**/*.json",
     "**/*.d.ts",
     "./favicon.ico"
   ],

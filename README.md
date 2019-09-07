@@ -9,9 +9,9 @@
 
 # waya
 
-_Yet another way to build web app_
+_Yet another builder_
 
-_TypeScript . React/Redux . Sass_
+_VSCode . TypeScript . React/Redux . Sass . Chrome_
 
 _`npm i -g waya `_
 
@@ -22,20 +22,22 @@ _`npm i -g waya `_
 
 ## Index
 
-- [Features](#Features)
-- [Getting Start](#Getting_Start)
-- [Script](#Script)
-  - [Router](#Router)
-  - [Actions](#Actions)
-- [Style](#Style)
-  - [Themes](#Themes)
-  - [Variables](#Variables)
+- [Features](#features)
+- [Getting Start](#getting-start)
+- [Script](#script)
+  - [Router](#router)
+  - [Actions](#actions)
+- [Style](#style)
+  - [Themes](#themes)
+  - [Variables](#variables)
 - Static
   - Logo
   - Icon
   - Image
   - Others
-- [Cli](#Cli)
+- [VSCode](#vscode)
+- [Chrome](#chrome)
+- [Cli](#cli)
 
 <br />
 <br />
@@ -43,7 +45,7 @@ _`npm i -g waya `_
 
 ## Features
 
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
 
 <br />
 <br />
@@ -55,7 +57,7 @@ mkdir app && cd app
 waya
 ```
 
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
 
 <br />
 <br />
@@ -64,17 +66,17 @@ waya
 
 `<root>/App.tsx` will auto load when exists
 
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
 
 ### Router
 
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
 
 ### Actions
 
 `<root>/store.ts` will auto load when exists
 
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
 
 <br />
 <br />
@@ -83,11 +85,11 @@ waya
 
 `<root>/style.scss` will auto load when exists
 
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
 
 ### Themes
 
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
 
 #### light/dark theme
 
@@ -115,7 +117,7 @@ Or short for:
 }]
 ```
 
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
 
 #### multi themes
 
@@ -133,7 +135,7 @@ Or short for:
 }]
 ```
 
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
 
 ### Variables
 
@@ -152,11 +154,26 @@ Will transform to:
   --color-primary: lightblue;
 }
 ```
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
+
+<br />
+<br />
+
+## VSCode
+
+[[ Back to index ]](#index)
+
+<br />
+<br />
+
+
+## Chrome
+
+[[ Back to index ]](#index)
 
 <br />
 <br />
 
 ## cli
 
-[[ Back to index ]](#Index)
+[[ Back to index ]](#index)
