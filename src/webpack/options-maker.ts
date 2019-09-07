@@ -68,22 +68,29 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
         ...libraryOptions.alias,
         '@': context
       },
-      unsafeCache: true,
-      cachePredicate: (data) => {
-        if([
-          path.resolve(context, 'index.ts'),
-          require.resolve('../project/index.ts'),
-        ].includes(data.path)) return false
-        return true
-      },
-      plugins: [
+      // unsafeCache: true,
+      // cachePredicate: (data) => {
+      //   if([
+      //     path.resolve(context, 'index.ts'),
+      //     require.resolve('../project/index.ts'),
+      //   ].includes(data.path)) return false
+      //   return true
+      // },
+      // plugins: [
         
-      ]
+      // ]
     },
     module: {
       rules: [
         ...scriptRules,
-        ...styleRules
+        ...styleRules,
+        {
+          test: /logo\.svg$/,
+          use: [{
+            loader: require.resolve('@svgr/webpack'),
+            options: {}
+          }]
+        }
       ]
     },
     plugins: [
@@ -91,13 +98,23 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
       ...htmlPlugin,
 
       new ResolveFallbackPlugin(
+        path.resolve(context, 'boot.ts'),
+        path.resolve(PROJECT_CONTEXT, 'boot.ts')
+      ),
+
+      new ResolveFallbackPlugin(
         path.resolve(context, 'index.ts'),
+        path.resolve(PROJECT_CONTEXT, 'index.ts')
+      ),
+
+      new ResolveFallbackPlugin(
+        path.resolve(context, 'index.tsx'),
         path.resolve(PROJECT_CONTEXT, 'index.ts')
       ),
       
       new ResolveFallbackPlugin(
-        path.resolve(context, 'boot.ts'),
-        path.resolve(PROJECT_CONTEXT, 'boot.ts')
+        path.resolve(context, 'App.tsx'),
+        path.resolve(PROJECT_CONTEXT, 'App.tsx')
       ),
 
       // new LoadablePlugin()

@@ -1,0 +1,58 @@
+@import '~normalize.css';
+@import '~sanitize.css';
+
+html, body, :global(#app) {
+  height: 100%;
+}
+
+body {
+  background-color: #f8bd05;
+}
+
+.main {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  background-color: transparent;
+  border-color: transparent;
+  color: transparent;
+
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  border-radius: 2px;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  color: white;
+
+  transition: background-color 0.28s ease-out 0s;
+  background-color: rgba(black, 0.36);
+  &:hover {
+    background-color: rgba(black, 0.48);
+  }
+  &:active {
+    background-color: rgba(black, 0.56);
+  }
+}
+
+.svg {
+  width: 300px;
+  margin: 5rem;
+}
+
+.header {
+  font-size: 2.25rem;
+  margin-bottom: 3rem;
+}
+
+.section {
+  margin-bottom: -3rem;
+  text-align: center;
+}

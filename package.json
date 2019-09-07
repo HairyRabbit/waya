@@ -43,6 +43,7 @@
     "@loadable/component": "^5.10.2",
     "@loadable/server": "^5.10.2",
     "@loadable/webpack-plugin": "^5.7.1",
+    "@svgr/webpack": "^4.3.2",
     "@types/loadable__component": "^5.10.0",
     "babel-loader": "^8.0.6",
     "body-parser": "^1.19.0",

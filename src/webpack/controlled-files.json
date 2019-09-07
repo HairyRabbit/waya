@@ -1,8 +1,13 @@
 {
+  "boot": [
+    "boot.ts"
+  ],
+  "entrypoint": [
+    "index.ts", "index.tsx"
+  ],
   "app": [
     "App.tsx",
-    "index.tsx", "index.ts",
-    "pages/index.tsx", "pages/index.ts"
+    "pages/index.tsx"
   ],
   "style": [
     "style.scss",

@@ -86,6 +86,7 @@ export function makeNormaleRules(): webpack.RuleSetUseItem[] {
   },{
     loader: Loader.css,
     options: {
+      modules: true,
       sourceMap: true,
       importLoaders: 2
     }

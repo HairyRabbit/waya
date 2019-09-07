@@ -3,7 +3,7 @@ import * as fs from 'fs'
 import * as files from './controlled-files.json'
 
 // const BootLoader = require.resolve('./boot-loader')
-// const RootLoader = require.resolve('./root-loader')
+const RootLoader = require.resolve('./root-loader')
 // const RootCssvarLoader = require.resolve('./root-cssvar-loader')
 
 interface Options {
@@ -31,12 +31,13 @@ export default function resolveEntry(context: string, options: Partial<Readonly<
     ...prepends,
     cssvarEntry,
     styleEntry,
-    [ 
-      // BootLoader,
-      // RootLoader + '?' + rootLoaderOptions, 
-      // scriptEntry 
-      path.resolve(context, 'boot.ts')
-    ].filter((filePath): filePath is string => null !== filePath).join('!')
+    [RootLoader, path.resolve(context, 'boot.ts')].join('!')
+    // [ 
+    //   // BootLoader,
+    //   // RootLoader + '?' + rootLoaderOptions, 
+    //   // scriptEntry 
+    //   path.resolve(context, 'boot.ts')
+    // ].filter((filePath): filePath is string => null !== filePath).join('!')
   ].filter((entry): entry is string => undefined !== entry)
 }
 

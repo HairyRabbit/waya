@@ -29,5 +29,8 @@
       "./types",
       "./node_modules/@types"
     ]
-  }
+  },
+  "files": [
+    "**/empty.ts"
+  ]
 }

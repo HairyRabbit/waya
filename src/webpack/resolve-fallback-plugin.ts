@@ -1,4 +1,5 @@
 import * as webpack from 'webpack'
+import * as path from 'path'
 // import * as fs from 'fs'
 
 declare module 'webpack' {
@@ -19,16 +20,18 @@ declare module 'webpack' {
 }
 
 export default class ResolveFallbackPlugin implements webpack.Plugin {
+  public fallback: string[]
   private name: string = this.constructor.name
   private matcher!: string[]
 
-  constructor(public target: string, public fallback: string | string[]) {}
+  constructor(public target: string, fallback: string | string[]) {
+    this.fallback = Array.isArray(fallback) ? fallback : [fallback]
+  }
 
   fileExists(compiler: webpack.Compiler, filePath: string): boolean {
     const fs = compiler.inputFileSystem
-    this.matcher.forEach(filePath => {
-      fs._statStorage.data.delete(filePath)
-    })
+    const files = [this.target, ...this.fallback]
+    files.forEach(filePath => fs._statStorage.data.delete(filePath))
     try {
       return fs.statSync(filePath).isFile()
     } catch(_e) { return false }
@@ -37,19 +40,27 @@ export default class ResolveFallbackPlugin implements webpack.Plugin {
   }
 
   getExistsResource(compiler: webpack.Compiler): string {
-    const resource = this.matcher.slice(1).find(filePath => this.fileExists(compiler, filePath))
+    const resource = this.fallback.find(filePath => this.fileExists(compiler, filePath))
     if(undefined === resource) throw new Error(`All resources not exists`)
     return resource
   }
 
+  trimExtension(filePath: string): string {
+    const ext = path.extname(filePath)
+    return filePath.replace(ext, '')
+  }
+
   apply(compiler: webpack.Compiler) {
+    const alias = this.target.replace(compiler.context, '@').replace(/\\/g, '\/')
     this.matcher = [
       this.target,
-      this.target.replace(compiler.context, '@').replace(/\\/g, '\/'),
+      alias,
+      this.trimExtension(this.target),
+      this.trimExtension(alias),
       ...Array.isArray(this.fallback) ? this.fallback : [ this.fallback ]
     ]
 
-    console.debug(this.name, this.matcher)
+    // console.debug(this.name, this.matcher)
 
     compiler.hooks.compilation.tap(this.name, compilation => {
       compilation.hooks.succeedModule.tap(this.name, normalModule => {
@@ -62,19 +73,25 @@ export default class ResolveFallbackPlugin implements webpack.Plugin {
 
     compiler.hooks.normalModuleFactory.tap(this.name, normalModuleFactory => {
       normalModuleFactory.hooks.beforeResolve.tap(this.name, request => {
-        const [ resource, ...loaders ] = request.request.split('!').reverse()
-        if(!this.matcher.includes(resource)) return
+        // const [ resource, ...loaders ] = request.request.split('!').reverse()
+        const matched = this.matcher.find(filePath => request.request.endsWith(filePath))
+        if(undefined === matched) return
+        // const loadersRequest = loaders.reverse().join('!')
         console.debug(this.name, request.request)
-        const loadersRequest = loaders.reverse().join('!')
-
-        if(this.fileExists(compiler, this.target)) return { 
-          ...request,
-          request: [loadersRequest, this.target].join('!')
-        } 
-        else return { 
-          ...request,
-          request: [loadersRequest, this.getExistsResource(compiler)].join('!')
+        const loaders = request.request.replace(matched, '')
+        
+        if(this.fileExists(compiler, this.target)) { 
+          // console.log(42, this.target, request,  [loadersRequest, this.target].join('!'))
+          // return
+          // request.context = compiler.context
+          request.request = loaders + this.target //[loadersRequest, this.target].join('!')
+        } else { 
+          // console.log(43, this.target, request,  [loadersRequest, this.getExistsResource(compiler)].join('!'))
+          // request.request = [loadersRequest, this.getExistsResource(compiler)].join('!')
+          request.request = loaders + this.getExistsResource(compiler)
         }
+
+        return request
       })
     })
   }
