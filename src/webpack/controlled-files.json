@@ -15,5 +15,8 @@
   ],
   "cssvar": [
     "style.json"
+  ],
+  "logo": [
+    "logo.svg"
   ]
 }

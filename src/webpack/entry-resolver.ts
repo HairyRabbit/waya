@@ -2,8 +2,8 @@ import * as path from 'path'
 import * as fs from 'fs'
 import * as files from './controlled-files.json'
 
-const BootLoader = require.resolve('./boot-loader')
-const RootLoader = require.resolve('./root-loader')
+// const BootLoader = require.resolve('./boot-loader')
+// const RootLoader = require.resolve('./root-loader')
 // const RootCssvarLoader = require.resolve('./root-cssvar-loader')
 
 interface Options {
@@ -18,23 +18,24 @@ const DEFAULT_OPTIONS: Options = {
 
 export default function resolveEntry(context: string, options: Partial<Readonly<Options>> = {}): string[] {
   const { prepends, } = { ...DEFAULT_OPTIONS, ...options }
-  const scriptEntry = filter(context, files.app)
+  // const scriptEntry = filter(context, files.app)
   const styleEntry = filter(context, files.style)
-  const storeEntry = filter(context, files.store)
+  // const storeEntry = filter(context, files.store)
   const cssvarEntry = filter(context, files.cssvar)
   
-  const rootLoaderOptions = makeRootLoaderOptions({
-    store: storeEntry,
-  })
+  // const rootLoaderOptions = makeRootLoaderOptions({
+  //   store: storeEntry,
+  // })
 
   return [
     ...prepends,
     cssvarEntry,
     styleEntry,
     [ 
-      BootLoader,
-      RootLoader + '?' + rootLoaderOptions, 
-      scriptEntry 
+      // BootLoader,
+      // RootLoader + '?' + rootLoaderOptions, 
+      // scriptEntry 
+      path.resolve(context, 'boot.ts')
     ].filter((filePath): filePath is string => null !== filePath).join('!')
   ].filter((entry): entry is string => undefined !== entry)
 }
@@ -47,8 +48,8 @@ function filter(context: string, matches: string[]): string | undefined {
   }).find((filePath): filePath is string => null !== filePath)
 }
 
-function makeRootLoaderOptions({ store }: { store: string | undefined }) {
-  const params = new URLSearchParams
-  store && params.append('store', store)
-  return params.toString()
-}
+// function makeRootLoaderOptions({ store }: { store: string | undefined }) {
+//   const params = new URLSearchParams
+//   store && params.append('store', store)
+//   return params.toString()
+// }

@@ -11,6 +11,7 @@ import resolvePackage from './package-resolver'
 import { WebpackDevMiddleware } from 'webpack-dev-middleware'
 import * as path from 'path'
 import * as vm from 'vm'
+import ResolveFallbackPlugin from './resolve-fallback-plugin'
 
 const EXTENSIONS: string[] = ['.js', '.json', '.ts', '.tsx']
 
@@ -32,6 +33,8 @@ const DEFAULT_OPTIONS: Options = {
   ssr: false
 }
 
+const PROJECT_CONTEXT: string = path.resolve(__dirname, '../project')
+
 export default function makeOptions(context: string, options: Partial<Readonly<Options>> = {}): { compiler: webpack.Configuration, server: WebpackDevServer.Configuration } {
   const opts = { ...DEFAULT_OPTIONS, ...options }
   const url = new URL('http://localhost:8080')
@@ -40,7 +43,8 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
   const scriptRules = getScriptRules(context)
   const styleRules = getStyleRules(context)
   const htmlPlugin = getHtmlPlugin({
-    url
+    url,
+    context
   })
   const entry = () => resolveEntry(context)
 
@@ -61,8 +65,20 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     resolve: {
       extensions: EXTENSIONS,
       alias: {
-        ...libraryOptions.alias
-      }
+        ...libraryOptions.alias,
+        '@': context
+      },
+      unsafeCache: true,
+      cachePredicate: (data) => {
+        if([
+          path.resolve(context, 'index.ts'),
+          require.resolve('../project/index.ts'),
+        ].includes(data.path)) return false
+        return true
+      },
+      plugins: [
+        
+      ]
     },
     module: {
       rules: [
@@ -73,6 +89,17 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     plugins: [
       ...Object.values(libraryOptions.plugins),
       ...htmlPlugin,
+
+      new ResolveFallbackPlugin(
+        path.resolve(context, 'index.ts'),
+        path.resolve(PROJECT_CONTEXT, 'index.ts')
+      ),
+      
+      new ResolveFallbackPlugin(
+        path.resolve(context, 'boot.ts'),
+        path.resolve(PROJECT_CONTEXT, 'boot.ts')
+      ),
+
       // new LoadablePlugin()
     ]
   }
