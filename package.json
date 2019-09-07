@@ -9,7 +9,8 @@
     "**/*.js",
     "**/*.json",
     "**/*.d.ts",
-    "./favicon.ico"
+    "favicon.ico",
+    "logo.svg"
   ],
   "scripts": {
     "start": "tsc -w",
