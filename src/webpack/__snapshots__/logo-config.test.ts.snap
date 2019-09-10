@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`default export logo config: default 1`] = `
+Object {
+  "plugins": Array [
+    FaviconsWebpackPlugin {
+      "options": Object {
+        "cache": false,
+        "favicons": Object {},
+        "inject": "force",
+        "logo": "D:\\\\Workspace\\\\waya\\\\src\\\\favicon.ico",
+        "prefix": "static/logo",
+      },
+    },
+  ],
+}
+`;
+
+exports[`merge plugin: merge plugin 1`] = `
+Object {
+  "plugins": Array [
+    Object {},
+    FaviconsWebpackPlugin {
+      "options": Object {
+        "cache": false,
+        "favicons": Object {},
+        "inject": "force",
+        "logo": "D:\\\\Workspace\\\\waya\\\\src\\\\favicon.ico",
+        "prefix": "static/logo",
+      },
+    },
+  ],
+}
+`;
+
+exports[`run default: run default 1`] = `
+Object {
+  "assets": Array [
+    Object {
+      "chunkNames": Array [
+        "main",
+      ],
+      "chunks": Array [
+        "main",
+      ],
+      "emitted": true,
+      "isOverSizeLimit": undefined,
+      "name": "main.js",
+      "size": 3694,
+    },
+    Object {
+      "chunkNames": Array [],
+      "chunks": Array [],
+      "emitted": true,
+      "isOverSizeLimit": undefined,
+      "name": "static/logo/favicon.ico",
+      "size": 62500,
+    },
+  ],
+  "main": "{/************************************************************************/
+
+
+/***/ \\"./src/index.js\\":
+/***/ (function(module, exports) {
+
+
+
+/***/ })}",
+  "output": "
+
+Hash: bc87a30579f19dc37598
+Version: webpack 4.39.2
+Time: 82ms
+Built at: 2019-09-10 16:05:45
+                  Asset      Size  Chunks             Chunk Names
+                main.js  3.61 KiB    main  [emitted]  main
+static/logo/favicon.ico    61 KiB          [emitted]  
+Entrypoint main = main.js
+[./src/index.js] /src/index.js 0 bytes {main} [built]
+",
+}
+`;
+
+exports[`run with html: run with html 1`] = `
+Object {
+  "assets": Array [
+    Object {
+      "chunkNames": Array [],
+      "chunks": Array [],
+      "emitted": true,
+      "isOverSizeLimit": undefined,
+      "name": "index.html",
+      "size": 230,
+    },
+    Object {
+      "chunkNames": Array [
+        "main",
+      ],
+      "chunks": Array [
+        "main",
+      ],
+      "emitted": true,
+      "isOverSizeLimit": undefined,
+      "name": "main.js",
+      "size": 7012,
+    },
+    Object {
+      "chunkNames": Array [],
+      "chunks": Array [],
+      "emitted": true,
+      "isOverSizeLimit": undefined,
+      "name": "static/logo/favicon.ico",
+      "size": 33310,
+    },
+  ],
+  "main": "{/************************************************************************/
+
+
+/***/ \\"./Workspace/waya/dist/package.json\\":
+/***/ (function(module) {
+
+module.exports = JSON.parse(\\"{\\\\\\"name\\\\\\":\\\\\\"waya\\\\\\",\\\\\\"version\\\\\\":\\\\\\"0.0.2\\\\\\",\\\\\\"description\\\\\\":\\\\\\"Yet another builder\\\\\\",\\\\\\"main\\\\\\":\\\\\\"index.js\\\\\\",\\\\\\"bin\\\\\\":\\\\\\"bin/waya\\\\\\",\\\\\\"files\\\\\\":[\\\\\\"project/**/*\\\\\\",\\\\\\"**/*.js\\\\\\",\\\\\\"**/*.json\\\\\\",\\\\\\"**/*.d.ts\\\\\\",\\\\\\"favicon.ico\\\\\\",\\\\\\"logo.svg\\\\\\"],\\\\\\"scripts\\\\\\":{\\\\\\"start\\\\\\":\\\\\\"tsc -w\\\\\\",\\\\\\"test\\\\\\":\\\\\\"jest\\\\\\",\\\\\\"build\\\\\\":\\\\\\"tsc\\\\\\",\\\\\\"build:bin\\\\\\":\\\\\\"bin-file-gen -y\\\\\\",\\\\\\"build:logo\\\\\\":\\\\\\"cp logo.svg dist\\\\\\",\\\\\\"build:ico\\\\\\":\\\\\\"node -e \\\\\\\\\\\\\\"require('favicons')('./logo.svg',{icons:{favicons:true,android:false,appleIcon:false,appleStartup:false,coast:false,firefox:false,windows:false,yandex:false}}).then(d=>d.images.find(v=>v.name==='favicon.ico').contents).then(c=>fs.writeFileSync('./dist/favicon.ico',c,'utf-8')).then(_=>process.exit(0)).catch(_=>process.exit(2))\\\\\\\\\\\\\\"\\\\\\",\\\\\\"build:project\\\\\\":\\\\\\"cp project -r dist\\\\\\",\\\\\\"postbuild\\\\\\":\\\\\\"npm-run-all -p build:**\\\\\\"},\\\\\\"repository\\\\\\":{\\\\\\"type\\\\\\":\\\\\\"git\\\\\\",\\\\\\"url\\\\\\":\\\\\\"git+https://github.com/HairyRabbit/webin.git\\\\\\"},\\\\\\"keywords\\\\\\":[],\\\\\\"author\\\\\\":\\\\\\"Rabbit <yfhj1990@hotmail.com>\\\\\\",\\\\\\"license\\\\\\":\\\\\\"MIT\\\\\\",\\\\\\"bugs\\\\\\":{\\\\\\"url\\\\\\":\\\\\\"https://github.com/HairyRabbit/webin/issues\\\\\\"},\\\\\\"homepage\\\\\\":\\\\\\"https://github.com/HairyRabbit/webin#readme\\\\\\",\\\\\\"dependencies\\\\\\":{\\\\\\"@babel/core\\\\\\":\\\\\\"^7.5.5\\\\\\",\\\\\\"@babel/plugin-transform-runtime\\\\\\":\\\\\\"^7.5.5\\\\\\",\\\\\\"@babel/polyfill\\\\\\":\\\\\\"^7.4.4\\\\\\",\\\\\\"@babel/preset-env\\\\\\":\\\\\\"^7.5.5\\\\\\",\\\\\\"@babel/preset-react\\\\\\":\\\\\\"^7.0.0\\\\\\",\\\\\\"@babel/preset-typescript\\\\\\":\\\\\\"^7.3.3\\\\\\",\\\\\\"@babel/runtime\\\\\\":\\\\\\"^7.5.5\\\\\\",\\\\\\"@loadable/babel-plugin\\\\\\":\\\\\\"^5.10.0\\\\\\",\\\\\\"@loadable/component\\\\\\":\\\\\\"^5.10.2\\\\\\",\\\\\\"@loadable/server\\\\\\":\\\\\\"^5.10.2\\\\\\",\\\\\\"@loadable/webpack-plugin\\\\\\":\\\\\\"^5.7.1\\\\\\",\\\\\\"@svgr/webpack\\\\\\":\\\\\\"^4.3.2\\\\\\",\\\\\\"@types/loadable__component\\\\\\":\\\\\\"^5.10.0\\\\\\",\\\\\\"babel-loader\\\\\\":\\\\\\"^8.0.6\\\\\\",\\\\\\"body-parser\\\\\\":\\\\\\"^1.19.0\\\\\\",\\\\\\"clean-webpack-plugin\\\\\\":\\\\\\"^3.0.0\\\\\\",\\\\\\"core-js\\\\\\":\\\\\\"^3.2.1\\\\\\",\\\\\\"css-loader\\\\\\":\\\\\\"^3.2.0\\\\\\",\\\\\\"express\\\\\\":\\\\\\"^4.17.1\\\\\\",\\\\\\"favicons-webpack-plugin\\\\\\":\\\\\\"^1.0.2\\\\\\",\\\\\\"html-webpack-plugin\\\\\\":\\\\\\"^3.2.0\\\\\\",\\\\\\"html-webpack-template\\\\\\":\\\\\\"^6.2.0\\\\\\",\\\\\\"jayson\\\\\\":\\\\\\"^3.0.2\\\\\\",\\\\\\"loader-utils\\\\\\":\\\\\\"^1.2.3\\\\\\",\\\\\\"node-sass\\\\\\":\\\\\\"^4.12.0\\\\\\",\\\\\\"normalize-package-data\\\\\\":\\\\\\"^2.5.0\\\\\\",\\\\\\"normalize.css\\\\\\":\\\\\\"^8.0.1\\\\\\",\\\\\\"postcss-loader\\\\\\":\\\\\\"^3.0.0\\\\\\",\\\\\\"postcss-preset-env\\\\\\":\\\\\\"^6.7.0\\\\\\",\\\\\\"postcss-scss\\\\\\":\\\\\\"^2.0.0\\\\\\",\\\\\\"react\\\\\\":\\\\\\"^16.9.0\\\\\\",\\\\\\"react-async-ssr\\\\\\":\\\\\\"^0.5.2\\\\\\",\\\\\\"react-dom\\\\\\":\\\\\\"^16.9.0\\\\\\",\\\\\\"react-redux\\\\\\":\\\\\\"^7.1.1\\\\\\",\\\\\\"react-router-dom\\\\\\":\\\\\\"^5.0.1\\\\\\",\\\\\\"redux\\\\\\":\\\\\\"^4.0.4\\\\\\",\\\\\\"sanitize.css\\\\\\":\\\\\\"^11.0.0\\\\\\",\\\\\\"sass-loader\\\\\\":\\\\\\"^7.3.1\\\\\\",\\\\\\"style-extra\\\\\\":\\\\\\"0.0.0-0\\\\\\",\\\\\\"style-loader\\\\\\":\\\\\\"^1.0.0\\\\\\",\\\\\\"ts-loader\\\\\\":\\\\\\"^6.0.4\\\\\\",\\\\\\"ts-morph\\\\\\":\\\\\\"^3.1.3\\\\\\",\\\\\\"webpack\\\\\\":\\\\\\"^4.39.2\\\\\\",\\\\\\"webpack-dev-server\\\\\\":\\\\\\"^3.8.0\\\\\\",\\\\\\"ws\\\\\\":\\\\\\"^7.1.2\\\\\\",\\\\\\"yargs\\\\\\":\\\\\\"^14.0.0\\\\\\"},\\\\\\"devDependencies\\\\\\":{\\\\\\"@types/babel__core\\\\\\":\\\\\\"^7.1.2\\\\\\",\\\\\\"@types/body-parser\\\\\\":\\\\\\"^1.17.1\\\\\\",\\\\\\"@types/enhanced-resolve\\\\\\":\\\\\\"^3.0.6\\\\\\",\\\\\\"@types/favicons\\\\\\":\\\\\\"^5.3.2\\\\\\",\\\\\\"@types/html-webpack-plugin\\\\\\":\\\\\\"^3.2.1\\\\\\",\\\\\\"@types/html-webpack-template\\\\\\":\\\\\\"^6.0.3\\\\\\",\\\\\\"@types/jest\\\\\\":\\\\\\"^24.0.18\\\\\\",\\\\\\"@types/loadable__server\\\\\\":\\\\\\"^5.9.1\\\\\\",\\\\\\"@types/loader-utils\\\\\\":\\\\\\"^1.1.3\\\\\\",\\\\\\"@types/node\\\\\\":\\\\\\"^12.7.2\\\\\\",\\\\\\"@types/normalize-package-data\\\\\\":\\\\\\"^2.4.0\\\\\\",\\\\\\"@types/react\\\\\\":\\\\\\"^16.9.2\\\\\\",\\\\\\"@types/react-dom\\\\\\":\\\\\\"^16.9.0\\\\\\",\\\\\\"@types/webpack\\\\\\":\\\\\\"^4.39.1\\\\\\",\\\\\\"@types/webpack-dev-middleware\\\\\\":\\\\\\"^2.0.3\\\\\\",\\\\\\"@types/webpack-dev-server\\\\\\":\\\\\\"^3.1.7\\\\\\",\\\\\\"@types/ws\\\\\\":\\\\\\"^6.0.3\\\\\\",\\\\\\"@types/yargs\\\\\\":\\\\\\"^13.0.2\\\\\\",\\\\\\"bin-file-gen\\\\\\":\\\\\\"0.0.5\\\\\\",\\\\\\"npm-run-all\\\\\\":\\\\\\"^4.1.5\\\\\\",\\\\\\"typescript\\\\\\":\\\\\\"^3.6.2\\\\\\"}}\\");
+
+/***/ })}",
+  "output": "
+
+Hash: 5135bcf2fb1acc9fdb4d
+Version: webpack 4.39.2
+Time: 322ms
+Built at: 2019-09-10 16:05:45
+                  Asset       Size  Chunks             Chunk Names
+             index.html  230 bytes          [emitted]  
+                main.js   6.85 KiB    main  [emitted]  main
+static/logo/favicon.ico   32.5 KiB          [emitted]  
+Entrypoint main = main.js
+[./Workspace/waya/dist/package.json] D:/Workspace/waya/dist/package.json 3.48 KiB {main} [built]
+Child html-webpack-plugin for \\"index.html\\":
+         Asset     Size  Chunks  Chunk Names
+    index.html  534 KiB       0  
+    Entrypoint undefined = index.html
+    [./Workspace/waya/node_modules/html-webpack-plugin/lib/loader.js!./Workspace/waya/node_modules/html-webpack-plugin/default_index.ejs] D:/Workspace/waya/node_modules/html-webpack-plugin/lib/loader.js!D:/Workspace/waya/node_modules/html-webpack-plugin/default_index.ejs 376 bytes {0} [built]
+    [./Workspace/waya/node_modules/lodash/lodash.js] D:/Workspace/waya/node_modules/lodash/lodash.js 528 KiB {0} [built]
+    [./Workspace/waya/node_modules/webpack/buildin/global.js] (webpack)/buildin/global.js 472 bytes {0} [built]
+    [./Workspace/waya/node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 497 bytes {0} [built]
+",
+}
+`;
+
+exports[`run with html: run with html content 1`] = `
+"<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=\\"UTF-8\\">
+    <title>Webpack App</title>
+  <link rel=\\"icon\\" href=\\"/static/logo/favicon.ico\\"></head>
+  <body>
+  <script type=\\"text/javascript\\" src=\\"/main.js\\"></script></body>
+</html>"
+`;

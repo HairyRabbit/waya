@@ -30,8 +30,8 @@ _`npm i -g waya `_
 - [Style](#style)
   - [Themes](#themes)
   - [Variables](#variables)
-- Static
-  - Logo
+- [Static](#static)
+  - [Logo](#logo)
   - Icon
   - Image
   - Others
@@ -159,6 +159,59 @@ Will transform to:
 <br />
 <br />
 
+
+## Static
+
+Static resource files can provide under `/static` directory. Like:
+
+```
+/static
+  - /logo   # logo file
+  - /icon   # icons
+  - /font   # web fonts
+  - /image  # images
+  - /media  # medias, like video and radio
+  - /other  # other static files
+```
+
+[[ Back to index ]](#index)
+
+
+### Logo
+
+Add logo can easy add a `favicon.ico` file to `/static/logo` directory. At development, this file use as favico for webpage, it inject a `<link>` tag to html `<head>`:
+
+```html
+<head>
+  <link id="logo" rel="shortcut icon" href="assets/icon/logo.svg" />
+</head>
+```
+
+At production will generate more formats by [favicons][favicon].
+
+The logo entrypoint default resolved by `static/favicon.ico`, and fallback to search matched `/logo\.(svg|png|jpg)$/`. If also not found, back to waya logo. 🙃
+
+Hot reload was supported.
+
+#### Badges
+
+```ts
+function Component() {
+  const [ incBadge ] = useBadge({ /* options */ })
+  incBadge()
+}
+```
+
+#### preview
+
+<todo>
+
+
+[[ Back to index ]](#index)
+
+<br />
+<br />
+
 ## VSCode
 
 [[ Back to index ]](#index)
@@ -177,3 +230,7 @@ Will transform to:
 ## cli
 
 [[ Back to index ]](#index)
+
+
+[favicon]: https://github.com/itgalaxy/favicons
+[favico.js]: https://github.com/ejci/favico.js

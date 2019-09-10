@@ -17,6 +17,11 @@ export const enum ServiceStatus {
   None, Initial, Start
 }
 
+// interface ServiceEnvironment {
+//   vscode: boolean
+//   chrome: boolean
+// }
+
 export class Service {
   ws!: WebSocket.Server
   server!: jayson.Server

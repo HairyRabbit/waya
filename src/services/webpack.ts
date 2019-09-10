@@ -6,7 +6,6 @@ import * as controlledFiles from '../webpack/controlled-files.json'
 import * as fs from 'fs'
 
 const files: ReadonlyArray<string> = Object.values(controlledFiles).flat()
-console.log(files)
 
 export const enum ErrorCode {
   ServerListenError = 40001,
@@ -27,7 +26,13 @@ export default class Webpack {
   configure(context: string) {
     const webpackOptions = makeOptions(context)
     this.compiler = webpack(webpackOptions.compiler)
-    this.server = new WebpackDevServer(this.compiler, webpackOptions.server)
+    this.server = new WebpackDevServer(this.compiler, {
+      ...webpackOptions.server,
+      proxy: {
+        ...webpackOptions.server.setup,
+        '/__service__': 'http://localhost:1973'
+      }
+    })
     return this
   }
 
@@ -48,7 +53,7 @@ export default class Webpack {
 
     this.watcher = fs.watch(args.context || process.cwd(), { persistent: false, recursive: true }, (eventType, filename) => {
       if('change' === eventType) return
-      console.log(eventType, filename)
+      console.log(this.constructor.name, eventType, filename)
       if(!filename) return
       if(!files.includes(filename.replace(/\\/, '\/'))) return
       (this.server as unknown as WebpackDevServer.WebpackDevServer).middleware.invalidate()
