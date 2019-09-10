@@ -179,27 +179,71 @@ Static resource files can provide under `/static` directory. Like:
 
 ### Logo
 
-Add logo can easy add a `favicon.ico` file to `/static/logo` directory. At development, this file use as favico for webpage, it inject a `<link>` tag to html `<head>`:
+Add logo can easy add a `logo.svg` file to `<root>` directory. At development, the file can used as favico, they will inject a simple `<link>` tag to `<head>`:
 
 ```html
 <head>
-  <link id="logo" rel="shortcut icon" href="assets/icon/logo.svg" />
+  <link rel="icon" type="image/png" href="[DATAURL..]" />
 </head>
 ```
 
-At production will generate more formats by [favicons][favicon].
+At production, It use [favicons][favicon] to generate more kinds of favicons to `<outroot>/static/logo` directory, and also inject `<link>` for generated file.
 
-The logo entrypoint default resolved by `static/favicon.ico`, and fallback to search matched `/logo\.(svg|png|jpg)$/`. If also not found, back to waya logo. 🙃
+```html
+<link rel="apple-touch-icon" sizes="60x60" href="/assets/apple-touch-icon-SIZE.png">
+<link rel="apple-touch-startup-image" media="SIZE" href="/assets/apple-touch-startup-image-SIZE.png">
+<link rel="icon" type="image/png" sizes="SIZE" href="/assets/favicon-SIZE.png">
+<link rel="manifest" href="/assets/manifest.json">
+<link rel="shortcut icon" href="/assets/favicon.ico">
+<link rel="yandex-tableau-widget" href="/assets/yandex-browser-manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title">
+<meta name="application-name">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="msapplication-TileColor" content="#fff">
+<meta name="msapplication-TileImage" content="/assets/mstile-SIZE.png">
+<meta name="msapplication-config" content="/assets/browserconfig.xml">
+<meta name="theme-color" content="#fff">
+```
+
+The logo entrypoint default resolve matched `<root>/logo.(svg|png|jpg)`, If not matched, back to use waya logo. 😭
 
 Hot reload was supported.
 
 #### Badges
 
-```ts
-function Component() {
-  const [ incBadge ] = useBadge({ /* options */ })
-  incBadge()
+If you want can set badges to favico at runtime. The `BadgeContext` provide a context help to setup badges. You can use `BadgeProvider` and `useBadge` hook to update badges value. For example:
+
+```tsx
+import { useEffect } from 'react'
+import { BadgeProvider, useBadge } from 'react-extra/runtime/badge'
+
+function App() {
+  return (
+    <BadgeProvider value={initBadge}>
+      <Component />
+    </BadgeProvider>
+  )
 }
+
+function Component() {
+  const [ badge, setBadge ] = useBadge()
+  setBadge(badge + 1)
+  return <span>unread messages: {badge}</span>
+}
+```
+
+Interface:
+
+```ts
+interface BadgeProvider {
+  readonly value: boolean | number
+}
+
+type badgeValue = BadgeProvider['value']
+type setBadge = (value: BadgeProvider['value']) => void
+function useBadge(): [ badgeValue, setBadge ]
 ```
 
 #### preview
