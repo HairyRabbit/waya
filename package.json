@@ -24,15 +24,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HairyRabbit/webin.git"
+    "url": "git+https://github.com/HairyRabbit/waya.git"
   },
   "keywords": [],
   "author": "Rabbit <yfhj1990@hotmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/HairyRabbit/webin/issues"
+    "url": "https://github.com/HairyRabbit/waya/issues"
   },
-  "homepage": "https://github.com/HairyRabbit/webin#readme",
+  "homepage": "https://github.com/HairyRabbit/waya#readme",
   "dependencies": {
     "@babel/core": "^7.5.5",
     "@babel/plugin-transform-runtime": "^7.5.5",
@@ -41,6 +41,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "@babel/runtime": "^7.5.5",
+    "@hot-loader/react-dom": "^16.9.0",
     "@loadable/babel-plugin": "^5.10.0",
     "@loadable/component": "^5.10.2",
     "@loadable/server": "^5.10.2",
@@ -69,16 +70,19 @@
     "react": "^16.9.0",
     "react-async-ssr": "^0.5.2",
     "react-dom": "^16.9.0",
+    "react-hot-loader": "^4.12.12",
+    "react-hot-ts": "^0.7.3",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
     "sanitize.css": "^11.0.0",
-    "sass-loader": "^7.3.1",
+    "sass-loader": "^8.0.0",
     "style-extra": "0.0.0-0",
     "style-loader": "^1.0.0",
     "ts-loader": "^6.0.4",
-    "ts-morph": "^3.1.3",
+    "ts-morph": "^4.0.1",
     "url-loader": "^2.1.0",
+    "util-extra": "0.0.21",
     "webpack": "^4.39.2",
     "webpack-dev-server": "^3.8.0",
     "webpack-merge": "^4.2.2",
