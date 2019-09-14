@@ -13,6 +13,9 @@ _Yet another builder_
 
 _VSCode . TypeScript . React/Redux . Sass . Chrome_
 
+[![npm version](https://badge.fury.io/js/waya.svg)](https://badge.fury.io/js/waya)
+[![dependencies](https://david-dm.org/hairyrabbit/waya.svg)](https://david-dm.org/hairyrabbit/waya)
+
 _`npm i -g waya `_
 
 </div>
@@ -187,7 +190,7 @@ Add logo can easy add a `logo.svg` file to `<root>` directory. At development, t
 </head>
 ```
 
-At production, It use [favicons][favicon] to generate more kinds of favicons to `<outroot>/static/logo` directory, and also inject `<link>` for generated file.
+At production, Use [favicons][favicon] to generate more kinds of favicons, output to `<outroot>/static/logo` directory. It also inject `<link>` for generated file to html.
 
 ```html
 <link rel="apple-touch-icon" sizes="60x60" href="/assets/apple-touch-icon-SIZE.png">
@@ -207,9 +210,28 @@ At production, It use [favicons][favicon] to generate more kinds of favicons to 
 <meta name="theme-color" content="#fff">
 ```
 
-The logo entrypoint default resolve matched `<root>/logo.(svg|png|jpg)`, If not matched, back to use waya logo. 😭
+The logo entrypoint default resolved by `/<root>\/logo.(svg|png|jpg)$/`, If not found, keep to find `<root>/favicon.ico`. If also not found, fallback to use waya logo. 
 
-Hot reload was supported.
+I recommend to use `logo.svg`, If you want to display for yor app. 
+The logo svg file will transform to tsx based component. Other formats transform to base64 data url. For example:
+
+```ts svg-demo.ts
+import Logo from '@/logo.svg'
+
+function Header() {
+  return <Logo />
+}
+```
+
+```ts png-demo.ts
+import Logo from '@/logo.png'
+
+function Header() {
+  return <img src={Logo} />
+}
+```
+
+> Hot reload was supported.
 
 #### Badges
 
