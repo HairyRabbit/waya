@@ -1,4 +1,5 @@
 import * as webpack from 'webpack'
+import * as webpackMerge from 'webpack-merge'
 import * as WebpackDevServer from 'webpack-dev-server'
 import * as express from 'express'
 import resolveEntry from './entry-resolver'
@@ -12,8 +13,9 @@ import { WebpackDevMiddleware } from 'webpack-dev-middleware'
 import * as path from 'path'
 import * as vm from 'vm'
 import ResolveFallbackPlugin from './resolve-fallback-plugin'
+import createLogoConfig from './logo-config'
 
-const EXTENSIONS: string[] = ['.js', '.json', '.ts', '.tsx']
+const EXTENSIONS: string[] = ['.js', '.json', '.mjs', '.ts', '.tsx']
 
 declare module 'webpack-dev-server' {
   interface Configuration {
@@ -46,9 +48,20 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     url,
     context
   })
-  const entry = () => resolveEntry(context)
+  const logoConfig = createLogoConfig(context)
 
-  const compilerOptions: webpack.Configuration = {
+  const entry = () => resolveEntry(context, { prepends: [ 
+    require.resolve('webpack-dev-server/client')+ '?http://localhost:8080',
+    require.resolve('webpack/hot/dev-server'),
+    // require.resolve('react-hot-loader/patch'),
+    logoConfig.entry as string
+  ]})
+  // delete logoConfig.entry
+  // console.log(entry())
+
+  const compilerOptions: webpack.Configuration = webpackMerge.smartStrategy({
+    // 'entry.main': 'prepend'
+  })(logoConfig, {
     mode: 'development',
     name: pkg.name + '-dev',
     devtool: 'inline-source-map',
@@ -67,18 +80,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
       alias: {
         ...libraryOptions.alias,
         '@': context
-      },
-      // unsafeCache: true,
-      // cachePredicate: (data) => {
-      //   if([
-      //     path.resolve(context, 'index.ts'),
-      //     require.resolve('../project/index.ts'),
-      //   ].includes(data.path)) return false
-      //   return true
-      // },
-      // plugins: [
-        
-      // ]
+      }
     },
     module: {
       rules: [
@@ -96,6 +98,8 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     plugins: [
       ...Object.values(libraryOptions.plugins),
       ...htmlPlugin,
+
+      new webpack.HotModuleReplacementPlugin(),
 
       new ResolveFallbackPlugin(
         path.resolve(context, 'boot.ts'),
@@ -119,11 +123,12 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
 
       // new LoadablePlugin()
     ]
-  }
+  })
 
   const serverOptions: WebpackDevServer.Configuration = {
     port: parseInt(url.port),
     host: url.host,
+    hot: true,
     historyApiFallback: {
       verbose: true
     },

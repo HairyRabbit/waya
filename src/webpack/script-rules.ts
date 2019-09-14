@@ -4,6 +4,7 @@ import * as babelLoader from 'babel-loader'
 import * as ts from 'typescript'
 import transformImportFactory from '../transform/ts-import-factory'
 import transformReactMemo from '../transform/ts-react-memo'
+// import transformRH = require('react-hot-ts/lib/transformer')
 import './default-tsconfig.json'
 
 const TSConfig = require.resolve('./default-tsconfig.json')
@@ -15,6 +16,11 @@ export default function makeScriptRules(context: string, isProduction: boolean =
     loader: require.resolve('babel-loader'),
     options: makeBabelLoaderOptions()
   })
+
+  // else use.push({
+  //   loader: require.resolve('react-hot-loader/webpack'),
+  //   options: {}
+  // })
 
   use.push({
     loader: require.resolve('ts-loader'),
@@ -32,7 +38,8 @@ export function makeTSLoaderOptions(context: string): Partial<tsLoader.Options> 
     getCustomTransformers: (program: ts.Program) => {
       return {
         before: [
-          transformImportFactory(`react`, `React`)
+          transformImportFactory(`react`, `React`),
+          // transformRH({}) as any
         ],
         after: [
           transformReactMemo(program.getTypeChecker())

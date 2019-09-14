@@ -1,6 +1,7 @@
 import * as path from 'path'
-import * as fs from 'fs'
+// import * as fs from 'fs'
 import * as files from './controlled-files.json'
+import fileResolve from './files-resolver'
 
 // const BootLoader = require.resolve('./boot-loader')
 const RootLoader = require.resolve('./root-loader')
@@ -17,11 +18,12 @@ const DEFAULT_OPTIONS: Options = {
 }
 
 export default function resolveEntry(context: string, options: Partial<Readonly<Options>> = {}): string[] {
-  const { prepends, } = { ...DEFAULT_OPTIONS, ...options }
+  const { prepends } = { ...DEFAULT_OPTIONS, ...options }
+  // console.log(prepends)
   // const scriptEntry = filter(context, files.app)
-  const styleEntry = filter(context, files.style)
+  const styleEntry = fileResolve(context, files.style)
   // const storeEntry = filter(context, files.store)
-  const cssvarEntry = filter(context, files.cssvar)
+  const cssvarEntry = fileResolve(context, files.cssvar)
   
   // const rootLoaderOptions = makeRootLoaderOptions({
   //   store: storeEntry,
@@ -31,7 +33,7 @@ export default function resolveEntry(context: string, options: Partial<Readonly<
     ...prepends,
     cssvarEntry,
     styleEntry,
-    [RootLoader, path.resolve(context, 'boot.ts')].join('!')
+    [ RootLoader, path.resolve(context, 'boot.ts') ].join('!')
     // [ 
     //   // BootLoader,
     //   // RootLoader + '?' + rootLoaderOptions, 
@@ -39,14 +41,6 @@ export default function resolveEntry(context: string, options: Partial<Readonly<
     //   path.resolve(context, 'boot.ts')
     // ].filter((filePath): filePath is string => null !== filePath).join('!')
   ].filter((entry): entry is string => undefined !== entry)
-}
-
-function filter(context: string, matches: string[]): string | undefined {
-  return matches.map(filePath => {
-    const absoluteFilePath = path.resolve(context, filePath)
-    const isExists = fs.existsSync(absoluteFilePath)
-    return isExists ? absoluteFilePath : null
-  }).find((filePath): filePath is string => null !== filePath)
 }
 
 // function makeRootLoaderOptions({ store }: { store: string | undefined }) {

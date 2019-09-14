@@ -33,7 +33,7 @@ export default function getLibraryOptions(): LibraryOptions {
       const { type, globalName, bundle } = library
       const modulePath = LibraryType.Unknown === type
         ? path.dirname(require.resolve(name + '/package.json'))
-        : require.resolve(name)
+        : require.resolve(library.name)
       
       acc.alias[name] = modulePath
       if(globalName) acc.externals[name] = { this: globalName, commonjs2: name }

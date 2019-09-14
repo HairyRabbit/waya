@@ -22,6 +22,7 @@
     "style.json"
   ],
   "logo": [
-    "logo.svg"
+    "logo.svg", "logo.png", "logo.jpg",
+    "favicon.ico"
   ]
 }
