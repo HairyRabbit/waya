@@ -132,6 +132,11 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     historyApiFallback: {
       verbose: true
     },
+    contentBase: [
+      path.resolve(context, 'static/other'),
+      path.resolve(context, 'static/media'),
+      path.resolve(context, 'static/image')
+    ],
     injectClient: false,
     // stats: 'minimal',
 

@@ -7,7 +7,7 @@ import filesResolve from './files-resolver'
 const UrlLoader = require.resolve('url-loader')
 const LogoLoader = require.resolve('./logo-loader')
 
-export const DEFAULT_LOGO = path.resolve(__dirname, '../icon.svg')
+export const DEFAULT_LOGO = path.resolve(__dirname, '../logo.svg')
 
 export interface LogoConfigOptions {
   readonly context: string
