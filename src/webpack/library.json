@@ -29,6 +29,12 @@
     "type": "script",
     "bundle": "dist/react-redux.min.js"
   },
+  "react-transition-group": {
+    "name": "react-transition-group",
+    "globalName": "ReactTransitionGroup",
+    "type": "script",
+    "bundle": "dist/react-transition-group.min.js"
+  },
   "normalize.css": {
     "name": "normalize.css",
     "type": "style",

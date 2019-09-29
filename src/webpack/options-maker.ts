@@ -14,6 +14,7 @@ import * as path from 'path'
 import * as vm from 'vm'
 import ResolveFallbackPlugin from './resolve-fallback-plugin'
 import createLogoConfig from './logo-config'
+import createImageConfig from './image-config'
 
 const EXTENSIONS: string[] = ['.js', '.json', '.mjs', '.ts', '.tsx']
 
@@ -49,6 +50,9 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     context
   })
   const logoConfig = createLogoConfig(context)
+  const imageConfig = createImageConfig({
+    isProduction: false
+  })
 
   const entry = () => resolveEntry(context, { prepends: [ 
     require.resolve('webpack-dev-server/client')+ '?http://localhost:8080',
@@ -61,7 +65,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
 
   const compilerOptions: webpack.Configuration = webpackMerge.smartStrategy({
     // 'entry.main': 'prepend'
-  })(logoConfig, {
+  })(logoConfig, imageConfig, {
     mode: 'development',
     name: pkg.name + '-dev',
     devtool: 'inline-source-map',
@@ -132,11 +136,6 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     historyApiFallback: {
       verbose: true
     },
-    contentBase: [
-      path.resolve(context, 'static/other'),
-      path.resolve(context, 'static/media'),
-      path.resolve(context, 'static/image')
-    ],
     injectClient: false,
     // stats: 'minimal',
 
