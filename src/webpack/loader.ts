@@ -16,7 +16,7 @@ export const enum Loader {
 }
 
 interface LoaderOptions {
-  [Loader.TS]: TSLoaderOptions
+  [Loader.TS]: Partial<TSLoaderOptions>
   [Loader.Babel]: BabelLoaderOptions
   [Loader.Style]: StyleLoaderOptions
   [Loader.Css]: CssLoaderOptions

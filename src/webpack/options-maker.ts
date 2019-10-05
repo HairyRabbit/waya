@@ -4,8 +4,8 @@ import * as WebpackDevServer from 'webpack-dev-server'
 import * as express from 'express'
 import resolveEntry from './entry-resolver'
 import getLibraryOptions from './library'
-import getScriptRules from './script-rules'
-import getStyleRules from './style-config'
+import createScriptConfig from './script-config'
+import createStyleConfig from './style-config'
 import getHtmlPlugin from './html-plugin'
 import resolvePackage from './package-resolver'
 // import * as LoadablePlugin from '@loadable/webpack-plugin'
@@ -43,8 +43,8 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
   const url = new URL('http://localhost:8080')
   const pkg = resolvePackage(context)
   const libraryOptions = getLibraryOptions()
-  const scriptRules = getScriptRules(context)
-  const styleRules = getStyleRules(context)
+  const scriptConfig = createScriptConfig(context)
+  const styleConfig = createStyleConfig(context)
   const htmlPlugin = getHtmlPlugin({
     url,
     context
@@ -65,7 +65,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
 
   const compilerOptions: webpack.Configuration = webpackMerge.smartStrategy({
     // 'entry.main': 'prepend'
-  })(logoConfig, imageConfig, {
+  })(scriptConfig, styleConfig, logoConfig, imageConfig, {
     mode: 'development',
     name: pkg.name + '-dev',
     devtool: 'inline-source-map',
@@ -92,8 +92,6 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     },
     module: {
       rules: [
-        ...scriptRules,
-        ...styleRules,
         {
           test: /logo\.svg$/,
           use: [{
@@ -199,8 +197,12 @@ export function makeBuildOptions(context: string): webpack.Configuration[] {
     isProduction: true
   })
   const libraryOptions = getLibraryOptions()
-  const scriptRules = getScriptRules(context, true)
-  const styleRules = getStyleRules(context)
+  const scriptConfig = createScriptConfig(context, {
+    isBuild: true
+  })
+  const styleConfig = createStyleConfig(context, {
+    isBuild: true
+  })
   const htmlPlugin = getHtmlPlugin({ 
     name: pkg.name, 
     description: pkg.description,
@@ -214,11 +216,14 @@ export function makeBuildOptions(context: string): webpack.Configuration[] {
     isProduction: false
   })
   
-  console.log(libraryOptions.alias)
   // const compilerOptions: webpack.Configuration = {
   const compilerOptions: webpack.Configuration = webpackMerge.smartStrategy({
       // 'entry.main': 'prepend'
-  })(logoConfig, imageConfig, {
+  })(
+    scriptConfig,
+    styleConfig,
+    logoConfig, 
+    imageConfig, {
     mode: 'production',
     name: pkg.name,
     context,
@@ -241,12 +246,6 @@ export function makeBuildOptions(context: string): webpack.Configuration[] {
     },
     externals: {
       ...libraryOptions.externals
-    },
-    module: {
-      rules: [
-        ...scriptRules,
-        ...styleRules
-      ]
     },
     plugins: [
       ...htmlPlugin,
