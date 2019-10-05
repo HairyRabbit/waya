@@ -33,8 +33,8 @@ export default function getLibraryOptions(): LibraryOptions {
       const { type, globalName, bundle } = library
       const modulePath = LibraryType.Unknown === type
         ? path.dirname(require.resolve(name + '/package.json'))
-        : require.resolve(library.name)
-      
+        // : require.resolve(library.name)
+        : path.dirname(require.resolve(library.name + '/package.json'))
       acc.alias[name] = modulePath
       if(globalName) acc.externals[name] = { this: globalName, commonjs2: name }
       if(LibraryType.Unknown !== type) acc.plugins[name] = new webpack.PrefetchPlugin(path.dirname(modulePath), name)

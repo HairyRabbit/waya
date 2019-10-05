@@ -5,7 +5,7 @@ import * as express from 'express'
 import resolveEntry from './entry-resolver'
 import getLibraryOptions from './library'
 import getScriptRules from './script-rules'
-import getStyleRules from './style-rules'
+import getStyleRules from './style-config'
 import getHtmlPlugin from './html-plugin'
 import resolvePackage from './package-resolver'
 // import * as LoadablePlugin from '@loadable/webpack-plugin'
@@ -82,9 +82,13 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     resolve: {
       extensions: EXTENSIONS,
       alias: {
-        ...libraryOptions.alias,
+        // ...libraryOptions.alias,
         '@': context
-      }
+      },
+      modules: [
+        path.resolve(context, 'node_modules'),
+        path.resolve(__dirname, '../../node_modules')
+      ]
     },
     module: {
       rules: [
@@ -204,14 +208,23 @@ export function makeBuildOptions(context: string): webpack.Configuration[] {
     scripts: libraryOptions.script,
     isProduction: true
   })
+
+  const logoConfig = createLogoConfig(context)
+  const imageConfig = createImageConfig({
+    isProduction: false
+  })
   
-  const compilerOptions: webpack.Configuration = {
+  console.log(libraryOptions.alias)
+  // const compilerOptions: webpack.Configuration = {
+  const compilerOptions: webpack.Configuration = webpackMerge.smartStrategy({
+      // 'entry.main': 'prepend'
+  })(logoConfig, imageConfig, {
     mode: 'production',
     name: pkg.name,
     context,
     entry: { 
       main: entries,
-      boot: require.resolve('./app-bootstrapper')
+      // boot: require.resolve('./app-bootstrapper')
     },
     output: {
       filename: '[name].[hash].js',
@@ -222,6 +235,7 @@ export function makeBuildOptions(context: string): webpack.Configuration[] {
     resolve: {
       extensions: EXTENSIONS,
       alias: {
+        ...libraryOptions.alias,
         'core-js': libraryOptions.alias['core-js']
       }
     },
@@ -235,25 +249,44 @@ export function makeBuildOptions(context: string): webpack.Configuration[] {
       ]
     },
     plugins: [
-      ...htmlPlugin
+      ...htmlPlugin,
+      new ResolveFallbackPlugin(
+        path.resolve(context, 'boot.ts'),
+        path.resolve(PROJECT_CONTEXT, 'boot.ts')
+      ),
+
+      new ResolveFallbackPlugin(
+        path.resolve(context, 'index.ts'),
+        path.resolve(PROJECT_CONTEXT, 'index.ts')
+      ),
+
+      new ResolveFallbackPlugin(
+        path.resolve(context, 'index.tsx'),
+        path.resolve(PROJECT_CONTEXT, 'index.ts')
+      ),
+      
+      new ResolveFallbackPlugin(
+        path.resolve(context, 'App.tsx'),
+        path.resolve(PROJECT_CONTEXT, 'App.tsx')
+      )
     ]
-  }
+  })
 
   return [
     compilerOptions,
-    {
-      ...compilerOptions,
-      name: compilerOptions.name + '-server',
-      target: 'node',
-      output: {
-        ...compilerOptions.output,
-        libraryTarget: 'commonjs2',
-        filename: '[name].server.js',
-      },
-      optimization: {
-        ...compilerOptions.optimization,
-        minimize: false
-      }
-    }
+    // {
+    //   ...compilerOptions,
+    //   name: compilerOptions.name + '-server',
+    //   target: 'node',
+    //   output: {
+    //     ...compilerOptions.output,
+    //     libraryTarget: 'commonjs2',
+    //     filename: '[name].server.js',
+    //   },
+    //   optimization: {
+    //     ...compilerOptions.optimization,
+    //     minimize: false
+    //   }
+    // }
   ]
 }

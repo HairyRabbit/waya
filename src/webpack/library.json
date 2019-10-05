@@ -61,6 +61,14 @@
     "name": "@babel/ployfill",
     "type": "unknown"
   },
+  "@babel/runtime": {
+    "name": "@babel/runtime",
+    "type": "unknown"
+  },
+  "regenerator-runtime": {
+    "name": "regenerator-runtime",
+    "type": "unknown"
+  },
   "core-js": {
     "name": "core-js",
     "type": "unknown"
