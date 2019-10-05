@@ -64,20 +64,12 @@
     "memfs": "^2.15.5",
     "node-sass": "^4.12.0",
     "normalize-package-data": "^2.5.0",
-    "normalize.css": "^8.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
     "postcss-scss": "^2.0.0",
-    "react": "^16.9.0",
     "react-async-ssr": "^0.5.2",
-    "react-dom": "^16.9.0",
     "react-hot-loader": "^4.12.12",
     "react-hot-ts": "^0.7.3",
-    "react-redux": "^7.1.1",
-    "react-router-dom": "^5.0.1",
-    "react-transition-group": "^4.3.0",
-    "redux": "^4.0.4",
-    "sanitize.css": "^11.0.0",
     "sass-loader": "^8.0.0",
     "style-extra": "0.0.0-0",
     "style-loader": "^1.0.0",
@@ -123,6 +115,16 @@
     "npm-run-all": "^4.1.5",
     "ts-jest": "^24.0.2",
     "typescript": "^3.6.2"
+  },
+  "optionalDependencies": {
+    "normalize.css": "^8.0.1",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-redux": "^7.1.1",
+    "react-router-dom": "^5.1.2",
+    "react-transition-group": "^4.3.0",
+    "redux": "^4.0.4",
+    "sanitize.css": "^11.0.0"
   },
   "jest": {
     "preset": "ts-jest"
