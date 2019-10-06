@@ -6,7 +6,7 @@ import * as OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import * as path from 'path'
 import * as files from './controlled-files.json'
 import * as loaderUtils from 'loader-utils'
-import { Loader, createLoaderUse } from './loader.js'
+import { Loader, createLoaderUse } from './loader'
 
 function makeRootCssVariableRules(isBuild: boolean = false): webpack.RuleSetUseItem[] {
   const globalUses = createGlobalStyleUses(isBuild)

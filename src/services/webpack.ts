@@ -1,8 +1,8 @@
 import * as webpack from 'webpack'
 import * as WebpackDevServer from 'webpack-dev-server'
 import { Service, ServiceCallback } from '../service'
-import makeOptions, { makeBuildOptions } from '../webpack/options-maker'
-import * as controlledFiles from '../webpack/controlled-files.json'
+import makeOptions, { makeBuildOptions } from '../bundler/options-maker'
+import * as controlledFiles from '../bundler/controlled-files.json'
 import * as fs from 'fs'
 
 const files: ReadonlyArray<string> = Object.values(controlledFiles).flat()

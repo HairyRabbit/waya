@@ -4,8 +4,7 @@ import * as WebpackDevServer from 'webpack-dev-server'
 import * as express from 'express'
 import resolveEntry from './entry-resolver'
 import getLibraryOptions from './library'
-import createScriptConfig from './script-config'
-import createStyleConfig from './style-config'
+
 import getHtmlPlugin from './html-plugin'
 import resolvePackage from './package-resolver'
 // import * as LoadablePlugin from '@loadable/webpack-plugin'
@@ -13,8 +12,11 @@ import { WebpackDevMiddleware } from 'webpack-dev-middleware'
 import * as path from 'path'
 import * as vm from 'vm'
 import ResolveFallbackPlugin from './resolve-fallback-plugin'
+
 import createLogoConfig from './logo-config'
 import createImageConfig from './image-config'
+import createScriptConfig from './script-config'
+import createStyleConfig from './style-config'
 
 const EXTENSIONS: string[] = ['.js', '.json', '.mjs', '.ts', '.tsx']
 

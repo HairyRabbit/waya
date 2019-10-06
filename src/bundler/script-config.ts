@@ -1,10 +1,11 @@
 import * as webpack from 'webpack'
 import * as ts from 'typescript'
-import transformImportFactory from '../transform/ts-import-factory'
-import transformReactMemo from '../transform/ts-react-memo'
+import transformImportFactory from './plugin/ts-import-factory'
+import transformReactMemo from './plugin/ts-react-memo'
+import * as TerserWebpackPlugin from 'terser-webpack-plugin'
 import { Loader, createLoaderUse } from './loader'
 // import transformRH = require('react-hot-ts/lib/transformer')
-import './default-tsconfig.json'
+import './default-tsconfig.json.js'
 
 const TSConfig = require.resolve('./default-tsconfig.json')
 
@@ -78,6 +79,11 @@ function createBuildScriptConfig(context: string): webpack.Configuration {
           })
         ]
       }]
+    },
+    optimization: {
+      minimizer: [
+        new TerserWebpackPlugin()
+      ]
     }
   }
 }
