@@ -13,12 +13,12 @@ import * as path from 'path'
 import * as vm from 'vm'
 import ResolveFallbackPlugin from './resolve-fallback-plugin'
 
+import createDefaultConfig from './default-config'
 import createLogoConfig from './logo-config'
 import createImageConfig from './image-config'
 import createScriptConfig from './script-config'
 import createStyleConfig from './style-config'
 
-const EXTENSIONS: string[] = ['.js', '.json', '.mjs', '.ts', '.tsx']
 
 declare module 'webpack-dev-server' {
   interface Configuration {
@@ -45,6 +45,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
   const url = new URL('http://localhost:8080')
   const pkg = resolvePackage(context)
   const libraryOptions = getLibraryOptions()
+  const defaultConfig = createDefaultConfig(context)
   const scriptConfig = createScriptConfig(context)
   const styleConfig = createStyleConfig(context)
   const htmlPlugin = getHtmlPlugin({
@@ -67,11 +68,14 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
 
   const compilerOptions: webpack.Configuration = webpackMerge.smartStrategy({
     // 'entry.main': 'prepend'
-  })(scriptConfig, styleConfig, logoConfig, imageConfig, {
-    mode: 'development',
+  })(
+    defaultConfig,
+    scriptConfig, 
+    styleConfig, 
+    logoConfig, 
+    imageConfig, {
     name: pkg.name + '-dev',
     devtool: 'inline-source-map',
-    context,
     entry,
     output: {
       library: 'Application',
@@ -82,7 +86,6 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
       process: true
     },
     resolve: {
-      extensions: EXTENSIONS,
       alias: {
         // ...libraryOptions.alias,
         '@': context
@@ -106,8 +109,6 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     plugins: [
       ...Object.values(libraryOptions.plugins),
       ...htmlPlugin,
-
-      new webpack.HotModuleReplacementPlugin(),
 
       new ResolveFallbackPlugin(
         path.resolve(context, 'boot.ts'),
@@ -199,6 +200,9 @@ export function makeBuildOptions(context: string): webpack.Configuration[] {
     isProduction: true
   })
   const libraryOptions = getLibraryOptions()
+  const defaultConfig = createDefaultConfig(context, {
+    isBuild: true
+  })
   const scriptConfig = createScriptConfig(context, {
     isBuild: true
   })
@@ -222,13 +226,12 @@ export function makeBuildOptions(context: string): webpack.Configuration[] {
   const compilerOptions: webpack.Configuration = webpackMerge.smartStrategy({
       // 'entry.main': 'prepend'
   })(
+    defaultConfig,
     scriptConfig,
     styleConfig,
     logoConfig, 
     imageConfig, {
-    mode: 'production',
     name: pkg.name,
-    context,
     entry: { 
       main: entries,
       // boot: require.resolve('./app-bootstrapper')
@@ -240,10 +243,9 @@ export function makeBuildOptions(context: string): webpack.Configuration[] {
       globalObject: 'globalThis'
     },
     resolve: {
-      extensions: EXTENSIONS,
       alias: {
-        ...libraryOptions.alias,
-        'core-js': libraryOptions.alias['core-js']
+        // ...libraryOptions.alias,
+        // 'core-js': libraryOptions.alias['core-js']
       }
     },
     externals: {

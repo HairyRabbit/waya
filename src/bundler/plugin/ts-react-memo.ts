@@ -1,4 +1,7 @@
+import * as createDebug from 'debug'
 import * as ts from 'typescript'
+
+const debug = createDebug('ts-transform-react-memo')
 
 export default function transformImportProvider<T extends ts.Node>(checker: ts.TypeChecker): ts.TransformerFactory<T> {
   return context => {
@@ -6,7 +9,7 @@ export default function transformImportProvider<T extends ts.Node>(checker: ts.T
       if (ts.isSourceFile(node)) {
         const fileName = node.getSourceFile().fileName
         if(!fileName.endsWith(`.tsx`)) return node
-        console.debug(`ts`, `ts-react-memo`, `Found "${fileName}"`)
+        debug(`Found "${fileName}"`)
 
         const decl = node.statements.find((stmt): stmt is ts.FunctionDeclaration => ts.isFunctionDeclaration(stmt) && isFunctionDeclarationDefaultExported(stmt))
         if(undefined === decl) return ts.visitEachChild(node, visitor, context)
@@ -14,7 +17,7 @@ export default function transformImportProvider<T extends ts.Node>(checker: ts.T
         if(undefined === iden) return ts.visitEachChild(node, visitor, context)
 
         decl.modifiers = decl.modifiers ? ts.createNodeArray(decl.modifiers.filter(modifier => !(modifier.kind === ts.SyntaxKind.DefaultKeyword || modifier.kind === ts.SyntaxKind.ExportKeyword))) : undefined
-        console.debug(`ts`, `ts-react-memo`, `Transformed FunctionDeclaration "${iden.getText()}"`)
+        debug(`Transformed FunctionDeclaration "${iden.getText()}"`)
 
         return ts.updateSourceFileNode(
           node,
@@ -49,7 +52,7 @@ export default function transformImportProvider<T extends ts.Node>(checker: ts.T
         if(undefined === symbol) return node
         const decl = symbol.valueDeclaration
         if(!ts.isFunctionDeclaration(decl)) return node
-        console.debug(`ts`, `ts-react-memo`, `Transformed ExportAssignment "${iden.getText()}"`)
+        debug(`Transformed ExportAssignment "${iden.getText()}"`)
         return ts.updateExportAssignment(
           node, 
           node.decorators,

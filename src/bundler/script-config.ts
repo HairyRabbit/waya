@@ -5,7 +5,7 @@ import transformReactMemo from './plugin/ts-react-memo'
 import * as TerserWebpackPlugin from 'terser-webpack-plugin'
 import { Loader, createLoaderUse } from './loader'
 // import transformRH = require('react-hot-ts/lib/transformer')
-import './default-tsconfig.json.js'
+import './default-tsconfig.json'
 
 const TSConfig = require.resolve('./default-tsconfig.json')
 

@@ -1,4 +1,7 @@
+import * as createDebug from 'debug'
 import * as ts from 'typescript'
+
+const debug = createDebug('ts-transform-import-factory')
 
 export default function transformImportFactory<T extends ts.Node>(libraryName: string, factoryName: string): ts.TransformerFactory<T> {
   return context => {
@@ -6,7 +9,7 @@ export default function transformImportFactory<T extends ts.Node>(libraryName: s
       if (ts.isSourceFile(node)) {
         const fileName = node.getSourceFile().fileName
         if(!fileName.endsWith(`.tsx`)) return node
-        console.debug(`ts`, `transform-inject-react`, `Found "${fileName}"`)
+        debug(`Found "${fileName}"`)
 
         const decl = node.statements
           .filter((stmt): stmt is ts.ImportDeclaration => ts.isImportDeclaration(stmt))
@@ -14,7 +17,7 @@ export default function transformImportFactory<T extends ts.Node>(libraryName: s
 
         if(undefined !== decl) return ts.visitEachChild(node, visitor, context)
 
-        console.debug(`ts`, `transform-inject-react`, `Transform **Append**`)
+        debug(`Transform **Append**`)
         
         return ts.updateSourceFileNode(
           node,
@@ -45,7 +48,7 @@ export default function transformImportFactory<T extends ts.Node>(libraryName: s
         const clause = node
         const name = clause.name
         if(undefined !== name) return node
-        console.debug(`ts`, `transform-inject-react`, `Transform **Override**`)
+        debug(`Transform **Override**`)
         return ts.updateImportClause(node, ts.createIdentifier(factoryName), node.namedBindings)
       }
       else return node
