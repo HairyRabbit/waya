@@ -13,7 +13,7 @@ import * as path from 'path'
 import * as vm from 'vm'
 import ResolveFallbackPlugin from './resolve-fallback-plugin'
 
-import createDefaultConfig from './default-config'
+import { createDevDefaultConfig } from './default-config'
 import createLogoConfig from './logo-config'
 import createImageConfig from './image-config'
 import createScriptConfig from './script-config'
@@ -40,12 +40,12 @@ const DEFAULT_OPTIONS: Options = {
 
 const PROJECT_CONTEXT: string = path.resolve(__dirname, '../project')
 
-export default function makeOptions(context: string, options: Partial<Readonly<Options>> = {}): { compiler: webpack.Configuration, server: WebpackDevServer.Configuration } {
+export default function createWebpackConfig(context: string, options: Partial<Readonly<Options>> = {}): { compiler: webpack.Configuration, server: WebpackDevServer.Configuration } {
   const opts = { ...DEFAULT_OPTIONS, ...options }
   const url = new URL('http://localhost:8080')
   const pkg = resolvePackage(context)
   const libraryOptions = getLibraryOptions()
-  const defaultConfig = createDefaultConfig(context)
+  const defaultConfig = createDevDefaultConfig({ context, name: pkg.name })
   const scriptConfig = createScriptConfig(context)
   const styleConfig = createStyleConfig(context)
   const htmlPlugin = getHtmlPlugin({
@@ -66,6 +66,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
   // delete logoConfig.entry
   // console.log(entry())
 
+
   const compilerOptions: webpack.Configuration = webpackMerge.smartStrategy({
     // 'entry.main': 'prepend'
   })(
@@ -75,7 +76,7 @@ export default function makeOptions(context: string, options: Partial<Readonly<O
     logoConfig, 
     imageConfig, {
     name: pkg.name + '-dev',
-    devtool: 'inline-source-map',
+    
     entry,
     output: {
       library: 'Application',
@@ -192,104 +193,4 @@ ${bundle};
     compiler: compilerOptions,
     server: serverOptions
   }
-}
-
-export function makeBuildOptions(context: string): webpack.Configuration[] {
-  const pkg = resolvePackage(context)
-  const entries = resolveEntry(context, {
-    isProduction: true
-  })
-  const libraryOptions = getLibraryOptions()
-  const defaultConfig = createDefaultConfig(context, {
-    isBuild: true
-  })
-  const scriptConfig = createScriptConfig(context, {
-    isBuild: true
-  })
-  const styleConfig = createStyleConfig(context, {
-    isBuild: true
-  })
-  const htmlPlugin = getHtmlPlugin({ 
-    name: pkg.name, 
-    description: pkg.description,
-    links: libraryOptions.style,
-    scripts: libraryOptions.script,
-    isProduction: true
-  })
-
-  const logoConfig = createLogoConfig(context)
-  const imageConfig = createImageConfig({
-    isProduction: false
-  })
-  
-  // const compilerOptions: webpack.Configuration = {
-  const compilerOptions: webpack.Configuration = webpackMerge.smartStrategy({
-      // 'entry.main': 'prepend'
-  })(
-    defaultConfig,
-    scriptConfig,
-    styleConfig,
-    logoConfig, 
-    imageConfig, {
-    name: pkg.name,
-    entry: { 
-      main: entries,
-      // boot: require.resolve('./app-bootstrapper')
-    },
-    output: {
-      filename: '[name].[hash].js',
-      library: 'Application',
-      libraryTarget: 'this',
-      globalObject: 'globalThis'
-    },
-    resolve: {
-      alias: {
-        // ...libraryOptions.alias,
-        // 'core-js': libraryOptions.alias['core-js']
-      }
-    },
-    externals: {
-      ...libraryOptions.externals
-    },
-    plugins: [
-      ...htmlPlugin,
-      new ResolveFallbackPlugin(
-        path.resolve(context, 'boot.ts'),
-        path.resolve(PROJECT_CONTEXT, 'boot.ts')
-      ),
-
-      new ResolveFallbackPlugin(
-        path.resolve(context, 'index.ts'),
-        path.resolve(PROJECT_CONTEXT, 'index.ts')
-      ),
-
-      new ResolveFallbackPlugin(
-        path.resolve(context, 'index.tsx'),
-        path.resolve(PROJECT_CONTEXT, 'index.ts')
-      ),
-      
-      new ResolveFallbackPlugin(
-        path.resolve(context, 'App.tsx'),
-        path.resolve(PROJECT_CONTEXT, 'App.tsx')
-      )
-    ]
-  })
-
-  return [
-    compilerOptions,
-    // {
-    //   ...compilerOptions,
-    //   name: compilerOptions.name + '-server',
-    //   target: 'node',
-    //   output: {
-    //     ...compilerOptions.output,
-    //     libraryTarget: 'commonjs2',
-    //     filename: '[name].server.js',
-    //   },
-    //   optimization: {
-    //     ...compilerOptions.optimization,
-    //     minimize: false
-    //   }
-    // }
-  ]
 }

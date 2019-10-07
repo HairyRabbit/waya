@@ -1,7 +1,8 @@
 import * as webpack from 'webpack'
 import * as WebpackDevServer from 'webpack-dev-server'
 import { Service, ServiceCallback } from '../service'
-import makeOptions, { makeBuildOptions } from '../bundler/options-maker'
+import createWebpackConfig from '../bundler/webpack-config'
+import createWebpackBuildConfig from '../bundler/webpack-build-config'
 import * as controlledFiles from '../bundler/controlled-files.json'
 import * as fs from 'fs'
 
@@ -24,7 +25,7 @@ export default class Webpack {
   constructor(_service: Service) {}
   
   configure(context: string) {
-    const webpackOptions = makeOptions(context)
+    const webpackOptions = createWebpackConfig(context)
     this.compiler = webpack(webpackOptions.compiler)
     this.server = new WebpackDevServer(this.compiler, {
       ...webpackOptions.server,
@@ -91,9 +92,9 @@ export default class Webpack {
   }
 
   build(args: { context: string }, callback: ServiceCallback<webpack.Stats.ToJsonOutput>) {
-    const options = makeBuildOptions(args.context || process.cwd())
+    const options = createWebpackBuildConfig(args.context || process.cwd())
     webpack(options).run((err, stats) => {
-      console.log(err, stats.toString({}))
+      console.log(err, stats.toString({ colors: true }))
       if(err) return callback({
         code: ErrorCode.BuildError,
         message: 'webpack build error',

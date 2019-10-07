@@ -36,7 +36,7 @@ function createDevScriptConfig(context: string): webpack.Configuration {
   }
 }
 
-function createBuildScriptConfig(context: string): webpack.Configuration {
+export function createBuildScriptConfig(context: string): webpack.Configuration {
   return {
     module: {
       rules: [{
@@ -82,7 +82,9 @@ function createBuildScriptConfig(context: string): webpack.Configuration {
     },
     optimization: {
       minimizer: [
-        new TerserWebpackPlugin()
+        new TerserWebpackPlugin({
+          sourceMap: true
+        })
       ]
     }
   }

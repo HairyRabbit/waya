@@ -1,6 +1,9 @@
 import * as webpack from 'webpack'
 import * as path from 'path'
+import * as createDebugger from 'debug'
 // import * as fs from 'fs'
+
+const debug = createDebugger('resolve-fallback-plugin')
 
 declare module 'webpack' {
   namespace compilation {
@@ -77,7 +80,7 @@ export default class ResolveFallbackPlugin implements webpack.Plugin {
         const matched = this.matcher.find(filePath => request.request.endsWith(filePath))
         if(undefined === matched) return
         // const loadersRequest = loaders.reverse().join('!')
-        console.debug(this.name, request.request)
+        debug(this.name, request.request)
         const loaders = request.request.replace(matched, '')
         
         if(this.fileExists(compiler, this.target)) { 

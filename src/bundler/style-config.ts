@@ -93,7 +93,7 @@ interface Options {
 //   else return null
 // }
 
-function createBuildStyleConfig(context: string): webpack.Configuration {
+export function createBuildStyleConfig(context: string): webpack.Configuration {
   const styles = files.style.map(fileName => path.resolve(context, fileName))
   const cssvar = path.resolve(context, files.cssvar[0])
   const test = /s?css$/
@@ -149,7 +149,7 @@ function createBuildStyleConfig(context: string): webpack.Configuration {
   }
 }
 
-function createDevStyleConfig(context: string): webpack.Configuration {
+export function createDevStyleConfig(context: string): webpack.Configuration {
   const styles = files.style.map(fileName => path.resolve(context, fileName))
   const cssvar = path.resolve(context, files.cssvar[0])
   const test = /s?css$/
