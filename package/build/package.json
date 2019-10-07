@@ -1,0 +1,42 @@
+{
+  "name": "waya-builder",
+  "version": "0.0.2",
+  "description": "waya builder",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "HairyRabbit <yfhj1990@hotmail.com>",
+  "files": [
+    "lib",
+    "types"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "favicons-webpack-plugin": "^1.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-template": "^6.2.0",
+    "image-webpack-loader": "^6.0.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-scss": "^2.0.0",
+    "terser-webpack-plugin": "^2.1.2",
+    "waya-core": "0.0.4",
+    "webpack-merge": "^4.2.2"
+  },
+  "peerDependencies": {
+    "webpack": "^4"
+  },
+  "devDependencies": {
+    "@types/favicons-webpack-plugin": "^1.0.0",
+    "@types/html-webpack-plugin": "^3.2.1",
+    "@types/html-webpack-template": "^6.0.3",
+    "@types/mini-css-extract-plugin": "^0.8.0",
+    "@types/optimize-css-assets-webpack-plugin": "^5.0.0",
+    "@types/webpack": "^4.39.2",
+    "@types/webpack-merge": "^4.1.5",
+    "typescript": "^3.6.3"
+  }
+}

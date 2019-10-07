@@ -5,6 +5,7 @@ import createWebpackConfig from '../bundler/webpack-config'
 import createWebpackBuildConfig from '../bundler/webpack-build-config'
 import * as controlledFiles from '../bundler/controlled-files.json'
 import * as fs from 'fs'
+import lazyRequire from '../lazy-require'
 
 const files: ReadonlyArray<string> = Object.values(controlledFiles).flat()
 
@@ -91,7 +92,9 @@ export default class Webpack {
     callback(null, this.stats)
   }
 
-  build(args: { context: string }, callback: ServiceCallback<webpack.Stats.ToJsonOutput>) {
+  async build(args: { context: string }, callback: ServiceCallback<webpack.Stats.ToJsonOutput>) {
+    const builder = await lazyRequire('waya-builder')
+    console.log(builder)
     const options = createWebpackBuildConfig(args.context || process.cwd())
     webpack(options).run((err, stats) => {
       console.log(err, stats.toString({ colors: true }))

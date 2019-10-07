@@ -3,9 +3,9 @@
  * @see https://github.com/babel/babel-loader
  * @version 8.0.6
  */
-import { TransformOptions } from '@babel/core'
-
 declare module "babel-loader" {
+  import { TransformOptions } from '@babel/core'
+  
   export interface Options extends TransformOptions {
     /**
      * When set, the given directory will be used to cache the results of the loader. Future webpack builds will attempt to read from the cache to avoid needing to run the potentially expensive Babel recompilation process on each run. If the value is set to true in options ({cacheDirectory: true}), the loader will use the default cache directory in node_modules/.cache/babel-loader or fallback to the default OS temporary file directory if no node_modules folder could be found in any root directory.
@@ -28,3 +28,4 @@ declare module "babel-loader" {
     customize?: null | Function
   }
 }
+

@@ -3,9 +3,8 @@
  * @see https://github.com/webpack-contrib/css-loader
  * @version 3.2.0
  */
-import * as webpack from 'webpack'
-
- declare module 'css-loader' {
+declare module "css-loader" {
+  import * as webpack from 'webpack'
   /**
    * Style of exported classnames.
    */
@@ -31,7 +30,7 @@ import * as webpack from 'webpack'
      */
     DashesOnly = 'dashesOnly'
   }
-  
+
   /**
    * Setup mode option. You can omit the value when you want local mode.
    */
@@ -111,4 +110,4 @@ import * as webpack from 'webpack'
      */
     onlyLocals?: boolean
   }
- }
+}

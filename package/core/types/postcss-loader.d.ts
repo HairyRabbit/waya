@@ -3,20 +3,20 @@
  * @see https://github.com/postcss/postcss-loader
  * @version 3.0.0
  */
-import * as webpack from 'webpack'
+declare module 'postcss-loader' {
+  import * as webpack from 'webpack'
+  // import * as postcss from 'postcss'
+  interface Context {
+    /**
+     * process.env.NODE_ENV
+     * @default 'development''
+     */
+    env?: string,
+    file?: object,
+    options?: object
+  }
 
- declare module 'postcss-loader' {
-   interface Context {
-     /**
-      * process.env.NODE_ENV
-      * @default 'development''
-      */
-     env?: string,
-     file?: object,
-     options?: object
-   }
-
-   export interface Options {
+  export interface Options {
     /**
      * Enable PostCSS Parser support in CSS-in-JS
      */
@@ -36,13 +36,13 @@ import * as webpack from 'webpack'
     /**
      * Set postcss.config.js config path && ctx
      */
-    config?: { 
+    config?: {
       /**
        * You can manually specify the path to search for your config (`postcss.config.js`) with the config.path option. This is needed if you store your config in a separate e.g `./config` || `./.config` folder.
        */
-      path?: string, 
-      context?: { [key:string]: Context },
-      ctx?: { [key:string]: Context }
+      path?: string,
+      context?: { [key: string]: Context },
+      ctx?: { [key: string]: Context }
     }
     /**
      * Set PostCSS Plugins
@@ -54,5 +54,5 @@ import * as webpack from 'webpack'
      * @default false
      */
     sourceMap?: string | boolean
-   }
- }
+  }
+}

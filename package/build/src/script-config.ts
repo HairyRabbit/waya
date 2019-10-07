@@ -1,40 +1,16 @@
+import * as path from 'path'
 import * as webpack from 'webpack'
-import * as ts from 'typescript'
 import * as TerserWebpackPlugin from 'terser-webpack-plugin'
+import { Program } from 'typescript'
 import { Loader, createLoaderUse, transformImportFactory, transformReactMemo } from 'waya-core'
-// import transformRH = require('react-hot-ts/lib/transformer')
-import './default-tsconfig.json'
 
-const TSConfig = require.resolve('./default-tsconfig.json')
+const TSConfig = path.join(__dirname, 'default-tsconfig.json')
 
-
-function createDevScriptConfig(context: string): webpack.Configuration {
-  return {
-    module: {
-      rules: [{
-        test: /\.tsx?/,
-        use: createLoaderUse(Loader.TS, {
-          context,
-          transpileOnly: true,
-          configFile: TSConfig,
-          getCustomTransformers: (program: ts.Program) => {
-            return {
-              before: [
-                transformImportFactory(`react`, `React`),
-                // transformRH({}) as any
-              ],
-              after: [
-                transformReactMemo(program.getTypeChecker())
-              ]
-            }
-          }
-        })
-      }]
-    }
-  }
+interface Options {
+  readonly context: string
 }
 
-export function createBuildScriptConfig(context: string): webpack.Configuration {
+export default function createScriptConfig({ context }: Options): webpack.Configuration {
   return {
     module: {
       rules: [{
@@ -63,7 +39,7 @@ export function createBuildScriptConfig(context: string): webpack.Configuration 
             context,
             transpileOnly: true,
             configFile: TSConfig,
-            getCustomTransformers: (program: ts.Program) => {
+            getCustomTransformers: (program: Program) => {
               return {
                 before: [
                   transformImportFactory(`react`, `React`),
@@ -86,14 +62,4 @@ export function createBuildScriptConfig(context: string): webpack.Configuration 
       ]
     }
   }
-}
-
-interface Options {
-  isBuild?: boolean
-}
-
-export default function createScriptConfig(context: string, options: Options = {}) {
-  return !options.isBuild
-    ? createDevScriptConfig(context)
-    : createBuildScriptConfig(context)
 }

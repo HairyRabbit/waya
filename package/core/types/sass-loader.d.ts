@@ -3,20 +3,20 @@
  * @see https://github.com/webpack-contrib/sass-loader
  * @version 8.0.0
  */
-import * as webpack from 'webpack'
-import * as NodeSass from 'node-sass'
-import * as DartSass from 'sass'
-
 declare module 'sass-loader' {
-  type SassOptions<T extends SassLibrary> 
-    = T extends SassLibrary.NodeSass 
+  import * as webpack from 'webpack'
+  import * as NodeSass from 'node-sass'
+  import * as DartSass from 'sass'
+
+  type SassOptions<T extends SassLibrary>
+    = T extends SassLibrary.NodeSass
     ? NodeSass.Options
     : T extends SassLibrary.DartSass
     ? DartSass.Options
     : never
 
   type SassImplementation<T extends SassLibrary>
-    = T extends SassLibrary.NodeSass 
+    = T extends SassLibrary.NodeSass
     ? typeof NodeSass
     : T extends SassLibrary.DartSass
     ? typeof DartSass
@@ -26,7 +26,7 @@ declare module 'sass-loader' {
     NodeSass = 'node-sass',
     DartSass = 'sass'
   }
-  
+
   export interface Options<T extends SassLibrary = SassLibrary.NodeSass> {
     /**
      * The special `implementation` option determines which implementation of Sass to use.
