@@ -52,7 +52,7 @@
     "ts-morph": "^4.0.1",
     "util-extra": "0.0.21",
     "waya-core": "0.0.4",
-    "waya-dever": "0.0.5",
+    "waya-dever": "0.0.6",
     "webpack": "^4.39.2",
     "webpack-dev-server": "^3.8.0",
     "webpack-merge": "^4.2.2",

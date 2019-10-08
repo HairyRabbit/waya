@@ -1,6 +1,6 @@
 {
   "name": "waya-core",
-  "version": "0.0.9",
+  "version": "0.0.12",
   "description": "waya core utils",
   "main": "lib/index.js",
   "author": "HairyRabbit <yfhj1990@hotmail.com>",
@@ -16,6 +16,8 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@types/node-sass": "^4.11.0",
+    "@types/sass": "^1.16.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
     "debug": "^4.1.1",
@@ -29,8 +31,6 @@
     "url-loader": "^2.2.0"
   },
   "devDependencies": {
-    "@types/node-sass": "^4.11.0",
-    "@types/sass": "^1.16.0",
     "@types/webpack": "^4.39.2",
     "typescript": "^3.6.3"
   },

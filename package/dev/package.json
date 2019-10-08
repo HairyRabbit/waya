@@ -1,6 +1,6 @@
 {
   "name": "waya-dever",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "waya dev tools",
   "main": "lib/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "loader-utils": "^1.2.3",
     "postcss-preset-env": "^6.7.0",
     "postcss-scss": "^2.0.0",
-    "waya-core": "0.0.8",
+    "waya-core": "0.0.11",
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
