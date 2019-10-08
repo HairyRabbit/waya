@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "author": "HairyRabbit <yfhj1990@hotmail.com>",
   "scripts": {
+    "start": "tsc -w",
     "build": "tsc",
     "prerelease": "npm run build",
     "release": "npm version patch && npm publish"
@@ -28,6 +29,8 @@
     "url-loader": "^2.2.0"
   },
   "devDependencies": {
+    "@types/node-sass": "^4.11.0",
+    "@types/sass": "^1.16.0",
     "@types/webpack": "^4.39.2",
     "typescript": "^3.6.3"
   },
