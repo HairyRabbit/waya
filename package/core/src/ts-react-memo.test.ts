@@ -1,5 +1,5 @@
 import { ts, Project } from 'ts-morph'
-import transform from './ts-react-memo'
+import { transformReactMemo } from './ts-react-memo'
 
 describe(`transformReactMemo()`, () => {
   test(`export assignment`, () => {
@@ -25,7 +25,7 @@ function print(code: string, file: string = `tmp.tsx`): string {
   proj.createSourceFile(file, code)
   const result = proj.emitToMemory({
     customTransformers: {
-      before: [ transform(proj.getTypeChecker().compilerObject) ]
+      before: [ transformReactMemo(proj.getTypeChecker().compilerObject) ]
     }
   })
   const resolved = result.getFiles()[0].text

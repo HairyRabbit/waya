@@ -11,7 +11,19 @@ export default function createLogoConfig({ context, logo }: Options): webpack.Co
     logo,
     inject: true,
     cache: false,
-    prefix: context
+    prefix: context,
+    favicons: {
+      icons: {
+        android: false,
+        appleIcon: false,
+        appleStartup: false,
+        coast: false,
+        firefox: false,
+        windows: false,
+        yandex: false,
+        favicons: true
+      }
+    }
   }
 
   return {

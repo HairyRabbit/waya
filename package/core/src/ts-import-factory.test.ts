@@ -1,5 +1,5 @@
 import { Project, ts } from 'ts-morph'
-import transform from './ts-import-factory'
+import { transformImportFactory } from './ts-import-factory'
 
 describe(`transformImportProvider()`, () => {
   describe(`react`, () => {
@@ -57,7 +57,7 @@ function print(code: string, file: string = `tmp.tsx`): string {
   proj.createSourceFile(file, code)
   const result = proj.emitToMemory({
     customTransformers: {
-      before: [ transform(`react`, `React`) ]
+      before: [ transformImportFactory(`react`, `React`) ]
     }
   })
   const resolved = result.getFiles()[0].text

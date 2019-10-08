@@ -52,7 +52,7 @@ function createCommonDefaultConfig(context: string, libraryContext: string): web
             chunks: 'all',
             priority: 1000,
             enforce: true
-          },
+          }
         }
       }
     }

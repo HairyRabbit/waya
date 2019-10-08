@@ -1,0 +1,1 @@
+{"version":3,"file":"image-config.js","sourceRoot":"","sources":["../src/image-config.ts"],"names":[],"mappings":";;AACA,yCAAmD;AAKnD,SAAwB,iBAAiB,CAAC,EAAa;IACrD,OAAO;QACL,MAAM,EAAE;YACN,KAAK,EAAE,CAAC;oBACN,IAAI,EAAE,6BAA6B;oBACnC,GAAG,EAAE;wBACH,2BAAe,iBAAY;qBAC5B;iBACF,CAAC;SACH;KACF,CAAA;AACH,CAAC;AAXD,oCAWC"}

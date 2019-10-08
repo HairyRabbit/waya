@@ -1,10 +1,13 @@
 {
   "name": "waya-builder",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "waya builder",
   "main": "lib/index.js",
   "scripts": {
-    "build": "tsc"
+    "start": "tsc -w",
+    "build": "tsc",
+    "prerelease": "npm run build",
+    "release": "npm version patch && npm publish"
   },
   "author": "HairyRabbit <yfhj1990@hotmail.com>",
   "files": [
@@ -13,6 +16,13 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/polyfill": "^7.6.0",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.6.0",
+    "@babel/runtime": "^7.6.2",
     "clean-webpack-plugin": "^3.0.0",
     "favicons-webpack-plugin": "^1.0.2",
     "html-webpack-plugin": "^3.2.0",
@@ -23,7 +33,7 @@
     "postcss-preset-env": "^6.7.0",
     "postcss-scss": "^2.0.0",
     "terser-webpack-plugin": "^2.1.2",
-    "waya-core": "0.0.4",
+    "waya-core": "0.0.9",
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
@@ -35,6 +45,7 @@
     "@types/html-webpack-template": "^6.0.3",
     "@types/mini-css-extract-plugin": "^0.8.0",
     "@types/optimize-css-assets-webpack-plugin": "^5.0.0",
+    "@types/terser-webpack-plugin": "^1.2.1",
     "@types/webpack": "^4.39.2",
     "@types/webpack-merge": "^4.1.5",
     "typescript": "^3.6.3"

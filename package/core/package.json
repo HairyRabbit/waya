@@ -1,9 +1,14 @@
 {
   "name": "waya-core",
-  "version": "0.0.4",
+  "version": "0.0.9",
   "description": "waya core utils",
   "main": "lib/index.js",
   "author": "HairyRabbit <yfhj1990@hotmail.com>",
+  "scripts": {
+    "build": "tsc",
+    "prerelease": "npm run build",
+    "release": "npm version patch && npm publish"
+  },
   "files": [
     "lib",
     "types"
@@ -14,6 +19,7 @@
     "css-loader": "^3.2.0",
     "debug": "^4.1.1",
     "file-loader": "^4.2.0",
+    "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
@@ -24,5 +30,8 @@
   "devDependencies": {
     "@types/webpack": "^4.39.2",
     "typescript": "^3.6.3"
+  },
+  "peerDependencies": {
+    "webpack": "^4"
   }
 }

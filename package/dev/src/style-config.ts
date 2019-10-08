@@ -1,12 +1,12 @@
 ///<reference path="../types/postcss-scss.d.ts" />
 ///<reference path="../types/postcss-preset-env.d.ts" />
 
+import * as path from 'path'
 import * as webpack from 'webpack'
 import * as postcssSyntaxScss from 'postcss-scss'
 import * as postcssPresetEnv from 'postcss-preset-env'
-import * as MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import * as OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import { Loader, createLoaderUse } from 'waya-core'
+import * as loaderUtils from 'loader-utils'
 
 interface Options {
   readonly context: string
@@ -17,7 +17,7 @@ interface Options {
 function makeRootCssVariableRules(): webpack.RuleSetUseItem[] {
   const globalUses = createGlobalStyleUses()
   globalUses.push({
-    loader: require.resolve('waya-core/lib/root-cssvar-loader')
+    loader: require.resolve('./root-cssvar-loader')
   })
   return globalUses
 }
@@ -41,7 +41,7 @@ function createGlobalStyleUses(): webpack.RuleSetUseItem[] {
     importLoaders: rules.length
   }))
 
-  rules.push(MiniCssExtractPlugin.loader)
+  rules.push(createLoaderUse(Loader.Style))
   return rules.reverse().slice()
 }
 
@@ -52,31 +52,46 @@ function createModuleStyleUses(): webpack.RuleSetUseItem[] {
   }))
   rules.push(createLoaderUse(Loader.Css, { 
     importLoaders: rules.length,
-    modules: true,
+    modules: {
+      localIdentName: '[path][local]-[hash:base64:5]',
+      getLocalIdent: overrideLibraryClassName
+    },
     sourceMap: true 
   }))
-  rules.push(MiniCssExtractPlugin.loader)
+  rules.push(createLoaderUse(Loader.Style))
   return rules.reverse().slice()
+}
+
+function overrideLibraryClassName(
+  loaderContext: webpack.loader.LoaderContext, 
+  localIdentName: string, 
+  localName: string, 
+  options: any
+): string {
+  if (!options.context) {
+    options.context = loaderContext.rootContext || '.'
+  }
+
+  const request = path.relative(options.context, loaderContext.resourcePath).replace(/\\/g, '/')
+  options.content = `${options.hashPrefix + request} + ${unescape(localName)}`
+  localIdentName = localIdentName.replace(/\[local\]/gi, localName)
+
+  const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options)
+  const ret = hash.replace(new RegExp('[^a-zA-Z0-9\\-_\u00A0-\uFFFF]', 'g'), '@').replace(/^((-?[0-9])|--)/, '_$1')
+
+  // /^(node_modules|_+)/
+  if(!/^node_modules/.test(ret)) return ret.replace(/@/g, '-')
+  const arr = ret.split('@')
+  arr.shift()
+  // const moduleName = arr[0]
+  /* @todo module alias */
+  return '~' + arr.join('-')
 }
 
 export default function createStyleConfig({ globals, cssvar }: Options): webpack.Configuration {
   const test = /s?css$/
 
   return {
-    optimization: {
-      minimizer: [
-        new OptimizeCSSAssetsPlugin({
-          cssProcessorPluginOptions: {
-            preset: [ 'default', { discardComments: { removeAll: true } }],
-          }
-        })
-      ]
-    },
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].css',
-      })
-    ],
     module: {
       rules: [{
         test,

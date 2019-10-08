@@ -1,13 +1,29 @@
 import * as webpack from 'webpack'
 import * as WebpackDevServer from 'webpack-dev-server'
 import { Service, ServiceCallback } from '../service'
-import createWebpackConfig from '../bundler/webpack-config'
-import createWebpackBuildConfig from '../bundler/webpack-build-config'
+// import createWebpackConfig from '../bundler/webpack-config'
+// import createWebpackBuildConfig from '../bundler/webpack-build-config'
+import { createWebpackConfig, createServerConfig, CreateWebpackOptions } from 'waya-dever'
 import * as controlledFiles from '../bundler/controlled-files.json'
 import * as fs from 'fs'
 import lazyRequire from '../lazy-require'
+import * as path from 'path'
+import resolvePackage from '../bundler/package-resolver'
+import contextResolve from '../context-resolve'
+import { WebpackDevMiddleware } from 'webpack-dev-middleware'
 
 const files: ReadonlyArray<string> = Object.values(controlledFiles).flat()
+const RootLoader = require.resolve('../bundler/root-loader')
+
+declare module 'webpack-dev-server' {
+  // interface Configuration {
+  //   injectClient: boolean
+  // }
+
+  interface WebpackDevServer {
+    middleware: WebpackDevMiddleware
+  }
+}
 
 export const enum ErrorCode {
   ServerListenError = 40001,
@@ -26,12 +42,55 @@ export default class Webpack {
   constructor(_service: Service) {}
   
   configure(context: string) {
-    const webpackOptions = createWebpackConfig(context)
-    this.compiler = webpack(webpackOptions.compiler)
+    const url = new URL('http://localhost:8080')
+    const pkg = resolvePackage(context)
+    const project = contextResolve('project')
+    const libraryContext = contextResolve('node_modules')
+    const logo = contextResolve('logo.svg')
+    const fallbacks: CreateWebpackOptions['fallbacks'] = [
+      { fileName: 'boot.ts' },
+      { fileName: 'index.ts' },
+      { fileName: 'App.tsx' },
+      { fileName: 'style.scss', options: { extensionsFree: false } },
+      { fileName: 'style.json', options: { extensionsFree: false } }
+    ]
+    
+
+    // const webpackOptions = createWebpackConfig(context)
+    const webpackOptions = createWebpackConfig({ 
+      context, 
+      project, 
+      url,
+      pkg,
+      fallbacks,
+      entry: {
+        style: [
+          path.resolve(context, controlledFiles.style[0]),
+          path.resolve(context, controlledFiles.cssvar[0])
+        ],
+        script: [
+          [ RootLoader, path.resolve(context, 'boot.ts') ].join('!')
+        ]
+      },
+      style: {
+        globals: path.resolve(context, controlledFiles.style[0]),
+        cssvar: path.resolve(context, controlledFiles.cssvar[0])
+      },
+      library: {
+        context: libraryContext,
+        include: {
+          style: [],
+          script: []
+        }
+      },
+      logo
+    })
+    const serverOptions = createServerConfig({ url })
+    this.compiler = webpack(webpackOptions)
     this.server = new WebpackDevServer(this.compiler, {
-      ...webpackOptions.server,
+      ...serverOptions,
       proxy: {
-        ...webpackOptions.server.setup,
+        ...serverOptions.proxy,
         '/__service__': 'http://localhost:1973'
       }
     })
@@ -92,10 +151,52 @@ export default class Webpack {
     callback(null, this.stats)
   }
 
-  async build(args: { context: string }, callback: ServiceCallback<webpack.Stats.ToJsonOutput>) {
-    const builder = await lazyRequire('waya-builder')
-    console.log(builder)
-    const options = createWebpackBuildConfig(args.context || process.cwd())
+  async build([ context = process.cwd() ]: [ string, ], callback: ServiceCallback<webpack.Stats.ToJsonOutput>) {
+    const { createWebpackBuildConfig } = await lazyRequire('waya-builder')
+    const pkg = resolvePackage(context)
+    const project = contextResolve('project')
+    const libraryContext = contextResolve('node_modules')
+    const logo = contextResolve('logo.svg')
+    const fallbacks: CreateWebpackOptions['fallbacks'] = [
+      { fileName: 'boot.ts' },
+      { fileName: 'index.ts' },
+      { fileName: 'App.tsx' },
+      { fileName: 'style.scss', options: { extensionsFree: false } },
+      { fileName: 'style.json', options: { extensionsFree: false } }
+    ]
+
+    const options = createWebpackBuildConfig({
+      context,
+      project,
+      pkg,
+      fallbacks,
+      // entries: [
+      //   fallbackResolve(controlledFiles.style[0], context, project),
+      //   fallbackResolve(controlledFiles.cssvar[0], context, project),
+      //   [ 
+      //     RootLoader, 
+      //     fallbackResolve('boot.ts', context, project)
+      //   ].join('!')
+      // ],
+      entries: [
+        path.resolve(context, controlledFiles.style[0]),
+        path.resolve(context, controlledFiles.cssvar[0]),
+        [ RootLoader, path.resolve(context, 'boot.ts') ].join('!')
+      ],
+      style: {
+        globals: path.resolve(context, controlledFiles.style[0]),
+        cssvar: path.resolve(context, controlledFiles.cssvar[0])
+      },
+      library: {
+        context: libraryContext,
+        exclude: {},
+        include: {
+          style: [],
+          script: []
+        }
+      },
+      logo
+    })
     webpack(options).run((err, stats) => {
       console.log(err, stats.toString({ colors: true }))
       if(err) return callback({
