@@ -56,7 +56,7 @@ export function createWebpackConfig({
   const imageConfig = createImageConfig({ })
 
   const prependEntries = [
-    require.resolve('webpack-dev-server/client')+ '?' + url.toString(),
+    require.resolve('webpack-dev-server/client') + '?' + url.toString(),
     require.resolve('webpack/hot/dev-server')
   ]
 
