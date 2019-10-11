@@ -42,7 +42,7 @@ export default class Webpack {
   constructor(_service: Service) {}
   
   configure(context: string) {
-    const url = new URL('http://localhost:8080')
+    const url = new URL('https://localhost:8080')
     const pkg = resolvePackage(context)
     const project = contextResolve('project')
     const libraryContext = contextResolve('node_modules')

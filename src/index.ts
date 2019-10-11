@@ -1,4 +1,5 @@
 import createService from './service'
+import log from './log'
 import * as services from './services'
 
 const service = createService()
@@ -18,13 +19,13 @@ service.initial()
 
 export default async function main() {
   const port = await service.start()
-  console.info(`Service listen on port ${port}`)
+  log(`Service listen on port ${port}`)
   await service.call('webpack/start')
 }
 
 export async function build() {
   const port = await service.start()
-  console.info(`Service listen on port ${port}`)
+  log(`Service listen on port ${port}`)
   await service.call('webpack/build')
   await service.stop()
 }

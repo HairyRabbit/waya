@@ -9,6 +9,9 @@ function createDefaultConfig({ context, name, libraryContext }) {
         context,
         name: name + '-dev',
         devtool: 'inline-source-map',
+        output: {
+            publicPath: '/'
+        },
         resolve: {
             extensions: DEFAULT_EXTENSIONS,
             alias: {

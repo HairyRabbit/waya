@@ -1,16 +1,23 @@
 import * as WebpackDevServer from 'webpack-dev-server'
+import * as createDebugger from 'debug'
+
+const historyDebug = createDebugger('history-fallback')
 
 export interface CreateServerOptions {
   readonly url: URL
+  readonly contents?: string[]
 }
 
-export function createServerConfig({ url }: CreateServerOptions): WebpackDevServer.Configuration {
+export function createServerConfig({ url, contents }: CreateServerOptions): WebpackDevServer.Configuration {
   return {
     port: parseInt(url.port),
-    host: url.host,
+    host: url.hostname,
+    https: url.protocol.startsWith('https'),
     hot: true,
     historyApiFallback: {
-      verbose: true
-    }
+      logger: historyDebug
+    },
+    publicPath: '/',
+    contentBase: contents
   }
 }

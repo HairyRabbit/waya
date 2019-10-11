@@ -15,6 +15,6 @@ import { getOptions } from 'loader-utils'
 
 export default function loader(this: webpack.loader.LoaderContext, data: string) {
   const options = getOptions(this) || {}
-  console.log(data, options)
+  // console.log(data, options)
   return data
 }
