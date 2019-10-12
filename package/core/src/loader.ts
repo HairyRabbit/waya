@@ -27,7 +27,7 @@ export const enum Loader {
   File = 'file'
 }
 
-interface LoaderOptions {
+export interface LoaderOptions {
   [Loader.TS]: Partial<TSLoaderOptions>
   [Loader.Babel]: BabelLoaderOptions
   [Loader.Style]: StyleLoaderOptions
@@ -39,8 +39,8 @@ interface LoaderOptions {
 }
 
 export function createLoaderUse<T extends Loader>(loader: T, options?: LoaderOptions[T]): webpack.RuleSetUseItem {
-  return {
-    loader: require.resolve(loader + '-loader'),
-    options: options || {}
-  }
+  const use = Object.create(null)
+  use.loader = require.resolve(loader + '-loader')
+  if(options) use.options = options
+  return use
 }
