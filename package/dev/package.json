@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "tsc -w",
+    "prebuild": "rm lib -rf",
     "build": "tsc",
     "prerelease": "npm run build",
     "release": "npm version patch && npm publish"
@@ -21,7 +22,7 @@
     "loader-utils": "^1.2.3",
     "postcss-preset-env": "^6.7.0",
     "postcss-scss": "^2.0.0",
-    "waya-core": "0.0.11",
+    "waya-core": "0.0.13",
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {

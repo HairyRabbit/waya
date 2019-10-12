@@ -17,7 +17,7 @@ interface Options {
 function makeRootCssVariableRules(): webpack.RuleSetUseItem[] {
   const globalUses = createGlobalStyleUses()
   globalUses.push({
-    loader: require.resolve('./root-cssvar-loader')
+    loader: require.resolve('waya-core/lib/root-cssvar-loader')
   })
   return globalUses
 }

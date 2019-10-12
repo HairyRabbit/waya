@@ -1,37 +1,40 @@
 import * as path from 'path'
 import * as webpack from 'webpack'
 import { Program } from 'typescript'
-import { Loader, createLoaderUse, transformImportFactory, transformReactMemo } from 'waya-core'
+import { Loader, LoaderOptions, createLoaderUse, transformImportFactory, transformReactMemo } from 'waya-core'
 
-const TSConfig = path.join(__dirname, 'default-tsconfig.json')
+export const DEFAULT_TSCONFIG = path.join(__dirname, 'default-tsconfig.json')
 
-interface Options {
+export interface createScriptConfigOptions {
   readonly context: string
 }
 
-export default function createScriptConfig({ context }: Options): webpack.Configuration {
+export function createScriptLoaderUse(context: string, options: LoaderOptions[Loader.TS] = {}) {
+  return createLoaderUse(Loader.TS, {
+    ...options,
+    context,
+    transpileOnly: true,
+    configFile: DEFAULT_TSCONFIG,
+    // appendTsxSuffixTo: [ /route\.json$/ ],
+    getCustomTransformers: (program: Program) => {
+      return {
+        before: [
+          transformImportFactory(`react`, `React`)
+        ],
+        after: [
+          transformReactMemo(program.getTypeChecker())
+        ]
+      }
+    }
+  })
+}
+
+export default function createScriptConfig({ context }: createScriptConfigOptions): webpack.Configuration {
   return {
     module: {
       rules: [{
         test: /\.tsx?$/,
-        use: [
-          createLoaderUse(Loader.TS, {
-            context,
-            transpileOnly: true,
-            configFile: TSConfig,
-            getCustomTransformers: (program: Program) => {
-              return {
-                before: [
-                  transformImportFactory(`react`, `React`),
-                  // transformRH({}) as any
-                ],
-                after: [
-                  transformReactMemo(program.getTypeChecker())
-                ]
-              }
-            }
-          })
-        ]
+        use: [ createScriptLoaderUse(context) ]
       }]
     }
   }
