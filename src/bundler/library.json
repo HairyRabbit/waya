@@ -33,7 +33,8 @@
     "name": "react-transition-group",
     "globalName": "ReactTransitionGroup",
     "type": "script",
-    "bundle": "dist/react-transition-group.min.js"
+    "bundle": "dist/react-transition-group.min.js",
+    "homepage": "https://reactcommunity.org/react-transition-group"
   },
   "normalize.css": {
     "name": "normalize.css",

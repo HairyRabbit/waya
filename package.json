@@ -51,8 +51,8 @@
     "style-extra": "0.0.0-0",
     "ts-morph": "^4.0.1",
     "util-extra": "0.0.21",
-    "waya-core": "0.0.4",
-    "waya-dever": "0.0.6",
+    "waya-core": "0.0.13",
+    "waya-dever": "0.0.8",
     "webpack": "^4.39.2",
     "webpack-dev-server": "^3.8.0",
     "webpack-merge": "^4.2.2",
@@ -69,6 +69,7 @@
     "@types/normalize-package-data": "^2.4.0",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^5.1.0",
     "@types/react-transition-group": "^4.2.2",
     "@types/webpack": "^4.39.2",
     "@types/webpack-dev-middleware": "^2.0.3",
@@ -81,7 +82,7 @@
     "jest": "^24.9.0",
     "npm-run-all": "^4.1.5",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.6.2"
+    "typescript": "^3.7.0-dev.20191011"
   },
   "optionalDependencies": {
     "normalize.css": "^8.0.1",

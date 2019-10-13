@@ -66,6 +66,7 @@ dist
 # test temps example
 test
 example
+lib
 
 # Design files
 *.afdesign

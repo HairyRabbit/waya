@@ -32,6 +32,7 @@ function createCommonDefaultConfig(context: string, libraryContext: string): web
       ]
     },
     output: {
+      publicPath: '/',
       filename: '[name].[hash].js'
     },
     plugins: [

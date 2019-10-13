@@ -1,6 +1,6 @@
 {
   "name": "waya-dever",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "waya dev tools",
   "main": "lib/index.js",
   "scripts": {
@@ -36,6 +36,6 @@
     "@types/webpack": "^4.39.2",
     "@types/webpack-dev-server": "^3.1.7",
     "@types/webpack-merge": "^4.1.5",
-    "typescript": "^3.6.3"
+    "typescript": "^3.7.0-dev.20191011"
   }
 }

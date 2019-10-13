@@ -1,9 +1,7 @@
 import * as webpack from 'webpack'
 import * as WebpackDevServer from 'webpack-dev-server'
 import { Service, ServiceCallback } from '../service'
-// import createWebpackConfig from '../bundler/webpack-config'
-// import createWebpackBuildConfig from '../bundler/webpack-build-config'
-import { createWebpackConfig, createServerConfig, CreateWebpackOptions } from 'waya-dever'
+import { createWebpackConfig, createServerConfig, CreateWebpackOptions, createScriptLoaderUse } from 'waya-dever'
 import * as controlledFiles from '../bundler/controlled-files.json'
 import * as fs from 'fs'
 import lazyRequire from '../lazy-require'
@@ -85,6 +83,16 @@ export default class Webpack {
       },
       logo
     })
+
+    webpackOptions.module!.rules.push({
+      test: /route\.json$/,
+      type: 'javascript/auto',
+      use: [
+        createScriptLoaderUse(context, { appendTsxSuffixTo: [/route\.json$/] }),
+        { loader: contextResolve('bundler', 'route-json-loader'), options: { component: contextResolve('component') } },
+      ]
+    })
+
     const serverOptions = createServerConfig({ url })
     this.compiler = webpack(webpackOptions)
     this.server = new WebpackDevServer(this.compiler, {
