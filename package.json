@@ -15,7 +15,7 @@
   "scripts": {
     "start": "tsc -w",
     "test": "jest",
-    "build": "tsc",
+    "build": "ttsc --build tsconfig.build.json",
     "build:bin": "bin-file-gen -y",
     "build:logo": "cp logo.svg dist",
     "buildico": "node -e \"require('favicons')('./logo.svg',{icons:{favicons:true,android:false,appleIcon:false,appleStartup:false,coast:false,firefox:false,windows:false,yandex:false}}).then(d=>d.images.find(v=>v.name==='favicon.ico').contents).then(c=>fs.writeFileSync('./dist/favicon.ico',c,'utf-8')).then(_=>process.exit(0)).catch(_=>process.exit(2))\"",
@@ -42,6 +42,7 @@
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "jayson": "^3.0.2",
+    "js-yaml": "^3.13.1",
     "loader-utils": "^1.2.3",
     "memfs": "^2.15.5",
     "normalize-package-data": "^2.5.0",
@@ -52,7 +53,7 @@
     "ts-morph": "^4.0.1",
     "util-extra": "0.0.21",
     "waya-core": "0.0.13",
-    "waya-dever": "0.0.8",
+    "waya-dever": "0.0.10",
     "webpack": "^4.39.2",
     "webpack-dev-server": "^3.8.0",
     "webpack-merge": "^4.2.2",
@@ -64,6 +65,7 @@
     "@types/body-parser": "^1.17.1",
     "@types/debug": "^4.1.5",
     "@types/jest": "^24.0.18",
+    "@types/js-yaml": "^3.12.1",
     "@types/loader-utils": "^1.1.3",
     "@types/node": "^12.7.2",
     "@types/normalize-package-data": "^2.4.0",
@@ -82,6 +84,8 @@
     "jest": "^24.9.0",
     "npm-run-all": "^4.1.5",
     "ts-jest": "^24.0.2",
+    "ts-node": "^8.4.1",
+    "ttypescript": "^1.5.7",
     "typescript": "^3.7.0-dev.20191011"
   },
   "optionalDependencies": {

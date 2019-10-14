@@ -1,6 +1,6 @@
 {
   "name": "waya-core",
-  "version": "0.0.13",
+  "version": "0.0.15",
   "description": "waya core utils",
   "main": "lib/index.js",
   "author": "HairyRabbit <yfhj1990@hotmail.com>",
@@ -13,7 +13,8 @@
   },
   "files": [
     "lib",
-    "types"
+    "types",
+    "default-tsconfig.json"
   ],
   "license": "MIT",
   "dependencies": {

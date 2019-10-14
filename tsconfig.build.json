@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "plugins": [
+      // { "transform": "./script/transform-package-path.ts", "after": true, "afterDeclarations": true }
+    ]
+  }
+}

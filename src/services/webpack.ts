@@ -9,6 +9,7 @@ import * as path from 'path'
 import resolvePackage from '../bundler/package-resolver'
 import contextResolve from '../context-resolve'
 import { WebpackDevMiddleware } from 'webpack-dev-middleware'
+import resolveConfig from '../config-resolve'
 
 const files: ReadonlyArray<string> = Object.values(controlledFiles).flat()
 const RootLoader = require.resolve('../bundler/root-loader')
@@ -42,6 +43,7 @@ export default class Webpack {
   configure(context: string) {
     const url = new URL('https://localhost:8080')
     const pkg = resolvePackage(context)
+    const config = resolveConfig(context)
     const project = contextResolve('project')
     const libraryContext = contextResolve('node_modules')
     const logo = contextResolve('logo.svg')
@@ -81,8 +83,12 @@ export default class Webpack {
           script: []
         }
       },
-      logo
+      logo,
+      lang: config.lang,
+      locales: config.locales
     })
+
+    webpackOptions.resolve!.alias!['@component'] = contextResolve('component')
 
     webpackOptions.module!.rules.push({
       test: /route\.json$/,

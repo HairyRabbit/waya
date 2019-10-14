@@ -1,17 +1,17 @@
 # Router
 
-The router defined how to display view when location path changed, by default waya use [react-router](react-router) as router library.
+The router have two major features:
 
-the router has some features:
+1. render view base on location
+2. code split, reduce bundle size and lazy load modules
 
-- auto injection, also sub routes
-- code split and async router
-- view transition
+waya use the most popular router library [react-router](react-router) by default.
 
+To enable router fature, you need to create a route.json file at  root directory.
 
 When a `route.json` file exists at root directory. waya will enable router features. At first, waya inject `react-router-dom` Provider to `<Main>` component:
 
-```tsx
+```tsx main.tsx
 import { BrowserRouter as Router } from 'react-router-dom'
 
 function Main() {
@@ -28,9 +28,9 @@ function Main() {
 you can require in your root `App` component, e.g.
 
 ```
-<root>
-  |- App.tsx
-  |- route.json
+@
+|- App.tsx
+|- route.json
 ```
 
 ```tsx

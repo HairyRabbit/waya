@@ -1,0 +1,21 @@
+$ui-size: 12px !default;
+
+.main {
+  background-color: transparent;
+  border: none;
+  font-size: var(--ui-size, $ui-size);
+  font-family: inherit;
+  background-color: #232323;
+  color: #ffffff;
+  padding: 0.35rem 1.25rem;
+  border-radius: 4px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.default {
+  background-color: #dadde2;
+  color: #4c4b4b;
+}
