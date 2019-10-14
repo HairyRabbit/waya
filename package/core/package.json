@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@types/webpack": "^4.39.2",
-    "typescript": "^3.6.3"
+    "typescript": "^3.7.0-dev.20191013"
   },
   "peerDependencies": {
     "webpack": "^4"
