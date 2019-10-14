@@ -1,6 +1,6 @@
 {
   "name": "waya-dever",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "waya dev tools",
   "main": "lib/index.js",
   "scripts": {
@@ -13,7 +13,8 @@
   "author": "HairyRabbit <yfhj1990@hotmail.com>",
   "files": [
     "lib",
-    "types"
+    "types",
+    "./default-tsconfig.json"
   ],
   "license": "MIT",
   "dependencies": {
@@ -22,7 +23,7 @@
     "loader-utils": "^1.2.3",
     "postcss-preset-env": "^6.7.0",
     "postcss-scss": "^2.0.0",
-    "waya-core": "0.0.13",
+    "waya-core": "0.0.15",
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {

@@ -25,6 +25,7 @@ export default function createHtmlConfig({
 }: Options): webpack.Configuration {
   const meta = metas.slice()
   if(description) meta.unshift({ content: description, name: 'description' })
+  console.log('lang', lang)
 
   const options: HTMLEWebpackTemplate.Options = {
     template: HTMLEWebpackTemplate,

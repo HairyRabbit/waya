@@ -11,27 +11,29 @@ import createImageConfig from './image-config'
 import { WebpackResolveFallbackPlugin, WebpackResolveFallbackPluginOptions } from 'waya-core'
 
 export interface CreateWebpackOptions {
-  readonly context: string
-  readonly project: string
-  readonly pkg: normalizeData.Package
-  readonly entry: {
+  context: string
+  project: string
+  pkg: normalizeData.Package
+  entry: {
     style: (string | undefined)[]
     script: (string | undefined)[]
   }
-  readonly fallbacks: { fileName: string, options?: Partial<WebpackResolveFallbackPluginOptions> }[]
-  readonly style: {
-    readonly globals: string
-    readonly cssvar: string
+  fallbacks: { fileName: string, options?: Partial<WebpackResolveFallbackPluginOptions> }[]
+  style: {
+    globals: string
+    cssvar: string
   }
-  readonly logo: string
-  readonly library: {
-    readonly context: string,
-    readonly include: {
+  logo: string
+  library: {
+    context: string,
+    include: {
       style: string[]
       script: string[]
     }
   }
-  readonly url: URL
+  url: URL
+  lang: string
+  locales: string
 }
 
 export function createWebpackConfig({ 
@@ -46,12 +48,14 @@ export function createWebpackConfig({
     cssvar 
   }, 
   logo,
-  url
-}: CreateWebpackOptions): webpack.Configuration {
+  url,
+  lang,
+  // locales
+}: Readonly<CreateWebpackOptions>): webpack.Configuration {
   const defaultConfig = createDefaultConfig({ context, name: pkg.name, libraryContext: library.context })
   const scriptConfig = createScriptConfig({ context })
   const styleConfig = createStyleConfig({ context, globals, cssvar })
-  const htmlConfig = createHtmlConfig({ name: pkg.name, ...library.include })
+  const htmlConfig = createHtmlConfig({ name: pkg.name, ...library.include, lang })
   const logoConfig = createLogoConfig({ context, logo })
   const imageConfig = createImageConfig({ })
 

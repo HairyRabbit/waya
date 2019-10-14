@@ -1,10 +1,6 @@
-import * as path from 'path'
 import * as webpack from 'webpack'
 import { Program } from 'typescript'
-import { Loader, LoaderOptions, createLoaderUse, transformImportFactory, transformReactMemo } from 'waya-core'
-import './default-tsconfig.json'
-
-export const DEFAULT_TSCONFIG = path.join(__dirname, 'default-tsconfig.json')
+import { DEFAULT_TSCONFIG, Loader, LoaderOptions, createLoaderUse, transformImportFactory, transformReactMemo } from 'waya-core'
 
 export interface createScriptConfigOptions {
   readonly context: string
