@@ -1,16 +1,18 @@
 import * as webpack from 'webpack'
 import * as createDebugger from 'debug'
 
-const debug = createDebugger('root-css-loader')
+const debug = createDebugger('style-json-loader')
 
-export function rootCssloader(this: webpack.loader.LoaderContext, data: string) {
+export function styleJsonLoader(this: webpack.loader.LoaderContext, data: string) {
   this.cacheable && this.cacheable(true)
   const result = transformJson(JSON.parse(data))
   if(0 === result.length) return ''
-  const ret = `:root {\n  ${result.join('\n')}\n}`
+  const ret = `:root {\n${result.join('\n')}\n}`
   debug(ret)
   return ret
 }
+
+styleJsonLoader.filePath = __filename
 
 function transformJson(json: { [key: string]: string }): string[] {
   return Object.keys(json).reverse().reduce<string[]>((acc, key) => {
@@ -20,3 +22,5 @@ function transformJson(json: { [key: string]: string }): string[] {
     return acc
   }, [])
 }
+
+export default styleJsonLoader
