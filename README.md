@@ -14,7 +14,7 @@ _Yet another builder_
 _VSCode . TypeScript . React/Redux . Sass . Chrome_
 
 [![npm version](https://badge.fury.io/js/waya.svg)](https://badge.fury.io/js/waya)
-[![dependencies](https://david-dm.org/hairyrabbit/waya.svg)](https://david-dm.org/hairyrabbit/waya)
+[![dependencies](https://david-dm.org/hairyrabbit/waya.svg)](https://david-dm.org/hairyrabbit/waya) [![Greenkeeper badge](https://badges.greenkeeper.io/HairyRabbit/waya.svg)](https://greenkeeper.io/)
 
 _`npm i -g waya `_
 
