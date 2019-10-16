@@ -5,8 +5,11 @@ import * as path from 'path'
 import * as webpack from 'webpack'
 import * as postcssSyntaxScss from 'postcss-scss'
 import * as postcssPresetEnv from 'postcss-preset-env'
-import { Loader, createLoaderUse } from 'waya-core'
+import * as createDebugger from 'debug'
+import { Loader, createLoaderUse, styleJsonLoader } from 'waya-core'
 import * as loaderUtils from 'loader-utils'
+
+const debug = createDebugger('style-config')
 
 interface Options {
   readonly context: string
@@ -17,7 +20,7 @@ interface Options {
 function makeRootCssVariableRules(): webpack.RuleSetUseItem[] {
   const globalUses = createGlobalStyleUses()
   globalUses.push({
-    loader: require.resolve('waya-core/lib/root-cssvar-loader')
+    loader: styleJsonLoader.filePath
   })
   return globalUses
 }
@@ -79,6 +82,7 @@ function overrideLibraryClassName(
   const hash = loaderUtils.interpolateName(loaderContext, localIdentName, options)
   const ret = hash.replace(new RegExp('[^a-zA-Z0-9\\-_\u00A0-\uFFFF]', 'g'), '@').replace(/^((-?[0-9])|--)/, '_$1')
 
+  debug(ret)
   // /^(node_modules|_+)/
   if(!/^node_modules/.test(ret)) return ret.replace(/@/g, '-')
   const arr = ret.split('@')

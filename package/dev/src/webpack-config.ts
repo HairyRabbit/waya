@@ -34,6 +34,8 @@ export interface CreateWebpackOptions {
   url: URL
   lang: string
   locales: string
+  image: string
+  icon: string
 }
 
 export function createWebpackConfig({ 
@@ -50,6 +52,7 @@ export function createWebpackConfig({
   logo,
   url,
   lang,
+  image
   // locales
 }: Readonly<CreateWebpackOptions>): webpack.Configuration {
   const defaultConfig = createDefaultConfig({ context, name: pkg.name, libraryContext: library.context })
@@ -57,7 +60,7 @@ export function createWebpackConfig({
   const styleConfig = createStyleConfig({ context, globals, cssvar })
   const htmlConfig = createHtmlConfig({ name: pkg.name, ...library.include, lang })
   const logoConfig = createLogoConfig({ context, logo })
-  const imageConfig = createImageConfig({ })
+  const imageConfig = createImageConfig({ context: image })
 
   const prependEntries = [
     require.resolve('webpack-dev-server/client') + '?' + url.toString(),
