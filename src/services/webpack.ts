@@ -7,7 +7,7 @@ import * as fs from 'fs'
 import lazyRequire from '../lazy-require'
 import * as path from 'path'
 import resolvePackage from '../bundler/package-resolver'
-import contextResolve from '../context-resolve'
+import contextResolve, { MODULE_CONTEXT } from '../context-resolve'
 import { WebpackDevMiddleware } from 'webpack-dev-middleware'
 import resolveConfig from '../config-resolve'
 
@@ -45,7 +45,7 @@ export default class Webpack {
     const pkg = resolvePackage(context)
     const config = resolveConfig(context)
     const project = contextResolve('project')
-    const libraryContext = contextResolve('node_modules')
+    const libraryContext = MODULE_CONTEXT
     const logo = contextResolve('logo.svg')
     const fallbacks: CreateWebpackOptions['fallbacks'] = [
       { fileName: 'boot.ts' },
@@ -85,7 +85,9 @@ export default class Webpack {
       },
       logo,
       lang: config.lang,
-      locales: config.locales
+      locales: config.locales,
+      image: path.resolve(context, 'asset', 'image'),
+      icon: path.resolve(context, 'asset', 'icon'),
     })
 
     webpackOptions.resolve!.alias!['@component'] = contextResolve('component')
@@ -95,8 +97,22 @@ export default class Webpack {
       type: 'javascript/auto',
       use: [
         createScriptLoaderUse(context, { appendTsxSuffixTo: [/route\.json$/] }),
-        { loader: contextResolve('bundler', 'route-json-loader'), options: { component: contextResolve('component') } },
+        { loader: contextResolve('bundler', 'route-json-loader'), options: { component: path.join(context, 'component') } },
       ]
+    })
+
+    webpackOptions.module!.rules.push({
+      test: /\.yaml$/,
+      type: 'json',
+      use: [
+        require.resolve('yaml-loader')
+      ]
+    })
+
+    webpackOptions.module!.rules.unshift({
+      test: /\.svg$/,
+      include: path.resolve(context, 'asset', 'icon'),
+      use: require.resolve('@svgr/webpack')
     })
 
     const serverOptions = createServerConfig({ url })

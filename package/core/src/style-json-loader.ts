@@ -7,7 +7,7 @@ export function styleJsonLoader(this: webpack.loader.LoaderContext, data: string
   this.cacheable && this.cacheable(true)
   const result = transformJson(JSON.parse(data))
   if(0 === result.length) return ''
-  const ret = `:root {\n${result.join('\n')}\n}`
+  const ret = `:root {\n${result.join(',\n')}\n}`
   debug(ret)
   return ret
 }

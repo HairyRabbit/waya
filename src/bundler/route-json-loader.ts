@@ -45,13 +45,15 @@ export default async function load(this: webpack.loader.LoaderContext, data: str
     this.addDependency(moduleRequest)
     const routeModule = stringifyRequest(this, moduleRequest)
     const routePath = (context + route.path).replace(/^\/\//, '/')
-    const routeName = context.replace(/^\/+/, '').replace(/\//g, '-')
+    const moduleName = path.basename(route.component, path.extname(route.component)).toLowerCase()
+    const routeName = (context + '-' + moduleName).replace(/^\/+/, '').replace(/\//g, '-').toLowerCase()
 
     const inject = '{' + 
       `exact: ${JSON.stringify(route.exact)}, ` +
       `path: ${JSON.stringify(routePath)}, ` +
+      `name: ${JSON.stringify(moduleName)},`+
       (!async 
-          ? `component: require(${routeModule}).default`
+          ? `component: require(${routeModule}).default /* name: "${routeName}" */`
           : `component: import(/* webpackMode: "eager", webpackChunkName: "${routeName}" */${routeModule})`) +
     '}'
     routesInjects.push(inject)
@@ -60,18 +62,18 @@ export default async function load(this: webpack.loader.LoaderContext, data: str
   debug(routesInjects)
 
   const content = '' +
-  `import { RouteContainer } from '${component.replace(/\\/g, '\\\\')}'\n` +
+  `import { RouteView } from '${component.replace(/\\/g, '\\\\')}'\n` +
   '\n' + 
+  `const async = ${JSON.stringify(async)}\n` +
   'const routes = [\n' + 
   routesInjects.join(',\n') + '\n' + 
   ']\n' + 
-  `const async = ${JSON.stringify(async)}\n` +
   '\n' + 
-  'export default function PageRoute({ ...props }) {\n' + 
-  '  return <RouteContainer async={async} routes={routes} {...props} />\n' + 
+  'export default function PageRouteView(props) {\n' +
+  '  return <RouteView async={async} routes={routes} {...props} />\n' + 
   '}\n' + 
   '\n' +
-  `PageRoute.displayName = 'PageRoute(${context})'`
+  `PageRouteView.displayName = 'PageRouteView(${context})'`
 
   done!(null, content)
 }
