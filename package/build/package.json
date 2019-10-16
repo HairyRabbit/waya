@@ -33,7 +33,7 @@
     "postcss-preset-env": "^6.7.0",
     "postcss-scss": "^2.0.0",
     "terser-webpack-plugin": "^2.1.2",
-    "waya-core": "0.0.9",
+    "waya-core": "0.0.19",
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
