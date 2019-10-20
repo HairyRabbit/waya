@@ -1,6 +1,6 @@
 {
   "name": "waya-core",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "waya core utils",
   "main": "lib/index.js",
   "author": "HairyRabbit <yfhj1990@hotmail.com>",

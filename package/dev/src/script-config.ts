@@ -32,6 +32,9 @@ export default function createScriptConfig({ context }: createScriptConfigOption
         test: /\.tsx?$/,
         use: [ createScriptLoaderUse(context) ]
       }]
+    },
+    stats: {
+      warningsFilter: /export .* was not found in/
     }
   }
 }
