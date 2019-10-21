@@ -1,12 +1,16 @@
-import { Project, ts } from 'ts-morph'
-import { transformImportFactory } from './ts-import-factory'
+import createPrint from './ts-transform-print'
+import transformImportFactory from './ts-import-factory'
+
+const print = createPrint({
+  before: [
+    () => transformImportFactory('react', 'React')
+  ]
+})
 
 describe(`transformImportProvider()`, () => {
   describe(`react`, () => {
     test(`no import`, () => {
-      const code = `\
-<div />
-`
+      const code = `<div />`
       const resolved = print(code)
       expect(resolved).toBe(`\
 import React from "react";
@@ -45,21 +49,3 @@ React.createElement("div", null);
       expect(resolved).toBe(`42;\n`)
   })
 })
-
-function print(code: string, file: string = `tmp.tsx`): string {
-  const proj = new Project({
-    compilerOptions: {
-      target: ts.ScriptTarget.ESNext,
-      module: ts.ModuleKind.ESNext,
-      jsx: ts.JsxEmit.React
-    }
-  })
-  proj.createSourceFile(file, code)
-  const result = proj.emitToMemory({
-    customTransformers: {
-      before: [ transformImportFactory(`react`, `React`) ]
-    }
-  })
-  const resolved = result.getFiles()[0].text
-  return resolved
-}

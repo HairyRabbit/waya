@@ -62,3 +62,5 @@ function isLibImportModuleSpecifier(node: ts.ImportDeclaration, lib: string): bo
   const specifier = node.moduleSpecifier
   return ts.isStringLiteral(specifier) && lib === specifier.text
 }
+
+export default transformImportFactory

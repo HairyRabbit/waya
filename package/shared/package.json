@@ -1,11 +1,13 @@
 {
-  "name": "waya-core",
-  "version": "0.0.19",
-  "description": "waya core utils",
+  "name": "waya-shared",
+  "version": "0.0.0",
+  "description": "waya shared library between development server and production builder",
   "main": "lib/index.js",
   "author": "HairyRabbit <yfhj1990@hotmail.com>",
   "scripts": {
+    "setup": "npm link typescript",
     "start": "tsc -w",
+    "test": "jest",
     "prebuild": "rm lib -rf",
     "build": "tsc",
     "prerelease": "npm run build",
@@ -18,14 +20,15 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@types/node-sass": "^4.11.0",
-    "@types/sass": "^1.16.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
     "debug": "^4.1.1",
+    "fibers": "^4.0.1",
     "file-loader": "^4.2.0",
-    "node-sass": "^4.12.0",
+    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-template": "^6.2.0",
     "postcss-loader": "^3.0.0",
+    "sass": "^1.23.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "ts-loader": "^6.2.0",
@@ -33,10 +36,18 @@
     "url-loader": "^2.2.0"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.19",
+    "@types/node": "^12.11.1",
+    "@types/node-sass": "^4.11.0",
+    "@types/sass": "^1.16.0",
     "@types/webpack": "^4.39.2",
-    "typescript": "^3.7.0-dev.20191013"
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0"
   },
   "peerDependencies": {
     "webpack": "^4"
+  },
+  "jest": {
+    "preset": "ts-jest"
   }
 }

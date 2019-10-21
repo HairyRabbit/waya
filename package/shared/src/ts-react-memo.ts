@@ -82,3 +82,5 @@ function isFunctionDeclarationDefaultExported(node: ts.FunctionDeclaration): boo
     && node.modifiers[1] && node.modifiers[1].kind === ts.SyntaxKind.DefaultKeyword
   )
 }
+
+export default transformReactMemo
