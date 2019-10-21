@@ -8,7 +8,7 @@ import createStyleConfig from './style-config'
 import createHtmlConfig from './html-config'
 import createLogoConfig from './logo-config'
 import createImageConfig from './image-config'
-import { WebpackResolveFallbackPlugin, WebpackResolveFallbackPluginOptions } from 'waya-core'
+import { WebpackResolveFallbackPlugin, WebpackResolveFallbackPluginOptions } from 'waya-shared'
 
 export interface CreateWebpackOptions {
   context: string

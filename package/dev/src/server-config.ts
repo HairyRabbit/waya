@@ -4,11 +4,18 @@ import * as createDebugger from 'debug'
 const historyDebug = createDebugger('history-fallback')
 
 export interface CreateServerOptions {
-  readonly url: URL
-  readonly contents?: string[]
+  url: URL
+  contents?: string[]
+  proxy?: {
+    [name: string]: string
+  }
 }
 
-export function createServerConfig({ url, contents }: CreateServerOptions): WebpackDevServer.Configuration {
+export function createServerConfig({ 
+  url, 
+  contents: contentBase = [], 
+  proxy = {} 
+}: Readonly<CreateServerOptions>): WebpackDevServer.Configuration {
   return {
     port: parseInt(url.port),
     host: url.hostname,
@@ -18,6 +25,7 @@ export function createServerConfig({ url, contents }: CreateServerOptions): Webp
       logger: historyDebug
     },
     publicPath: '/',
-    contentBase: contents
+    contentBase,
+    proxy
   }
 }

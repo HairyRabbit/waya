@@ -1,6 +1,5 @@
 import * as webpack from 'webpack'
-import * as HTMLWebpackPlugin from 'html-webpack-plugin'
-import * as HTMLEWebpackTemplate from 'html-webpack-template'
+import { HTMLWebpackPlugin, HTMLWebpackTemplate } from 'waya-shared'
 
 const DEFAULT_TITLE: string = 'Application'
 
@@ -25,14 +24,13 @@ export default function createHtmlConfig({
 }: Options): webpack.Configuration {
   const meta = metas.slice()
   if(description) meta.unshift({ content: description, name: 'description' })
-  console.log('lang', lang)
 
-  const options: HTMLEWebpackTemplate.Options = {
-    template: HTMLEWebpackTemplate,
+  const options: HTMLWebpackTemplate.Options = {
+    template: HTMLWebpackTemplate,
     inject: false,
     mobile: true,
     title,
-    meta,
+    // meta,
     scripts,
     links,
     lang,

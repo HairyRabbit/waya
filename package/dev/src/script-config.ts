@@ -1,6 +1,6 @@
 import * as webpack from 'webpack'
 import { Program } from 'typescript'
-import { DEFAULT_TSCONFIG, Loader, LoaderOptions, createLoaderUse, transformImportFactory, transformReactMemo } from 'waya-core'
+import { DEFAULT_TSCONFIG, Loader, LoaderOptions, createLoaderUse, transformImportFactory, transformReactMemo } from 'waya-shared'
 
 export interface createScriptConfigOptions {
   readonly context: string

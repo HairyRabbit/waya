@@ -1,5 +1,5 @@
 import * as webpack from 'webpack'
-import { createLoaderUse, Loader } from 'waya-core'
+import { createLoaderUse, Loader } from 'waya-shared'
 
 interface Options {
   readonly context: string

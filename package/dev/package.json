@@ -1,6 +1,6 @@
 {
   "name": "waya-dever",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "waya dev tools",
   "main": "lib/index.js",
   "scripts": {
@@ -18,25 +18,24 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "html-webpack-plugin": "^3.2.0",
-    "html-webpack-template": "^6.2.0",
     "loader-utils": "^1.2.3",
     "postcss-preset-env": "^6.7.0",
     "postcss-scss": "^2.0.0",
-    "waya-core": "0.0.19",
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
+    "waya-shared": "*",
     "webpack": "^4",
     "webpack-dev-server": "^3"
   },
   "devDependencies": {
-    "@types/html-webpack-plugin": "^3.2.1",
+    "@types/babel__core": "^7.1.3",
     "@types/html-webpack-template": "^6.0.3",
     "@types/loader-utils": "^1.1.3",
-    "@types/webpack": "^4.39.2",
+    "@types/node-sass": "^4.11.0",
+    "@types/sass": "^1.16.0",
+    "@types/webpack": "^4.39.4",
     "@types/webpack-dev-server": "^3.1.7",
-    "@types/webpack-merge": "^4.1.5",
-    "typescript": "^3.7.0-dev.20191011"
+    "@types/webpack-merge": "^4.1.5"
   }
 }

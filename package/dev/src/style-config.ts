@@ -6,7 +6,7 @@ import * as webpack from 'webpack'
 import * as postcssSyntaxScss from 'postcss-scss'
 import * as postcssPresetEnv from 'postcss-preset-env'
 import * as createDebugger from 'debug'
-import { Loader, createLoaderUse, styleJsonLoader } from 'waya-core'
+import { Loader, createLoaderUse, styleJsonLoader } from 'waya-shared'
 import * as loaderUtils from 'loader-utils'
 
 const debug = createDebugger('style-config')
