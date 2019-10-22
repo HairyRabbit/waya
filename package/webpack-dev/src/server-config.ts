@@ -13,7 +13,7 @@ export interface CreateServerOptions {
 
 export function createServerConfig({ 
   url, 
-  contents: contentBase = [], 
+  contents, 
   proxy = {} 
 }: Readonly<CreateServerOptions>): WebpackDevServer.Configuration {
   return {
@@ -25,7 +25,7 @@ export function createServerConfig({
       logger: historyDebug
     },
     publicPath: '/',
-    contentBase,
+    contentBase: contents,
     proxy
   }
 }

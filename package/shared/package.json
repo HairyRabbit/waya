@@ -1,6 +1,6 @@
 {
   "name": "waya-shared",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "waya shared library between development server and production builder",
   "main": "lib/index.js",
   "author": "HairyRabbit <yfhj1990@hotmail.com>",
@@ -36,6 +36,8 @@
     "url-loader": "^2.2.0"
   },
   "devDependencies": {
+    "@types/html-webpack-plugin": "^3.2.1",
+    "@types/html-webpack-template": "^6.0.3",
     "@types/jest": "^24.0.19",
     "@types/node": "^12.11.1",
     "@types/node-sass": "^4.11.0",
@@ -45,7 +47,12 @@
     "ts-jest": "^24.1.0"
   },
   "peerDependencies": {
-    "webpack": "^4"
+    "webpack": "^4",
+    "@types/webpack": "^4",
+    "@types/node-sass": "*",
+    "@types/sass": "*",
+    "@types/html-webpack-plugin": "*",
+    "@types/html-webpack-template": "*"
   },
   "jest": {
     "preset": "ts-jest"

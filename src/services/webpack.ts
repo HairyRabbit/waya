@@ -116,14 +116,17 @@ export default class Webpack {
     })
 
     const serverOptions = createServerConfig({ url })
-    this.compiler = webpack(webpackOptions)
-    this.server = new WebpackDevServer(this.compiler, {
+    const compiler = webpack(webpackOptions)
+    const server = new WebpackDevServer(compiler, {
       ...serverOptions,
       proxy: {
         ...serverOptions.proxy,
         '/__service__': 'http://localhost:1973'
       }
     })
+
+    this.compiler = compiler
+    this.server = server
     return this
   }
 

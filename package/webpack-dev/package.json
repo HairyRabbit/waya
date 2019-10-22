@@ -1,7 +1,7 @@
 {
-  "name": "waya-dever",
-  "version": "0.0.15",
-  "description": "waya dev tools",
+  "name": "waya-webpack-dev",
+  "version": "0.0.0",
+  "description": "webpack dev tools for waya",
   "main": "lib/index.js",
   "scripts": {
     "start": "tsc -w",
@@ -21,6 +21,7 @@
     "loader-utils": "^1.2.3",
     "postcss-preset-env": "^6.7.0",
     "postcss-scss": "^2.0.0",
+    "waya-shared": "0.0.2",
     "webpack-merge": "^4.2.2"
   },
   "peerDependencies": {
