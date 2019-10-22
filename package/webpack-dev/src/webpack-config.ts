@@ -1,14 +1,20 @@
+import * as path from 'path'
 import * as webpack from 'webpack'
 import * as webpackMerge from 'webpack-merge'
 import * as normalizeData from 'normalize-package-data'
-import * as path from 'path'
+import { 
+  WebpackResolveFallbackPlugin, 
+  WebpackResolveFallbackPluginOptions 
+} from 'waya-shared'
 import createDefaultConfig from './default-config'
 import createScriptConfig from './script-config'
 import createStyleConfig from './style-config'
 import createHtmlConfig from './html-config'
 import createLogoConfig from './logo-config'
 import createImageConfig from './image-config'
-import { WebpackResolveFallbackPlugin, WebpackResolveFallbackPluginOptions } from 'waya-shared'
+import createI18nConfig from './i18n-config'
+import createIconConfig from './icon-config'
+
 
 export interface CreateWebpackOptions {
   context: string
@@ -52,15 +58,18 @@ export function createWebpackConfig({
   logo,
   url,
   lang,
-  image
-  // locales
+  image,
+  locales,
+  icon
 }: Readonly<CreateWebpackOptions>): webpack.Configuration {
-  const defaultConfig = createDefaultConfig({ context, name: pkg.name, libraryContext: library.context })
+  const defaultConfig = createDefaultConfig({ context, name: pkg.name, modulesContext: library.context })
   const scriptConfig = createScriptConfig({ context })
   const styleConfig = createStyleConfig({ context, globals, cssvar })
   const htmlConfig = createHtmlConfig({ name: pkg.name, ...library.include, lang })
   const logoConfig = createLogoConfig({ context, logo })
   const imageConfig = createImageConfig({ context: image })
+  const i18nConfig = createI18nConfig({ context: locales })
+  const iconConfig = createIconConfig({ context: icon })
 
   const prependEntries = [
     require.resolve('webpack-dev-server/client') + '?' + url.toString(),
@@ -89,6 +98,10 @@ export function createWebpackConfig({
     htmlConfig,
     logoConfig, 
     imageConfig, 
+    i18nConfig,
+    iconConfig,
     commons
   )
 }
+
+export default createWebpackConfig

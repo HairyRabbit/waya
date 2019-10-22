@@ -1,39 +1,138 @@
-<br/>
+## Default
 
-<div align=center>
+### `const DEFAULT_EXTENSIONS`
 
-<br />
-<img src="./logo.svg" alt="logo" title="logo" width="240" />
-<br />
-<br />
+```ts
+const DEFAULT_EXTENSIONS: string[]
+```
 
-# waya
+default file extensions for webpack resolver, default to:
 
-_Yet another builder_
-
-_VSCode . TypeScript . React/Redux . Sass . Chrome_
-
-[![npm version](https://badge.fury.io/js/waya.svg)](https://badge.fury.io/js/waya)
-[![dependencies](https://david-dm.org/hairyrabbit/waya.svg)](https://david-dm.org/hairyrabbit/waya)
-
-_`npm i -d waya-builder `_
-
-</div>
-
-<br />
-<br />
-
-## Index
+- `js`, `mjs`
+- `ts`, `tsx`
+- `json`
 
 
+### `function createDefaultConfig`
 
-<br />
-<br />
+```ts
+function createDefaultConfig(
+  options: DefaultConfigOptions
+): webpack.Configuration
+```
+
+create default config for dev mode. includes:
+
+- set `mode` to `development`
+- set `context` to project root
+- set `@` alias for project root
+- set `ts` / `tsx` for extension free resolve
+- set `devtool` to `inline-source-map` for sourcemap debug
+- append `modulesContext` for modules search path
+- add `webpack.HotModuleReplacementPlugin` plugin to enable HMR feature
+- set `output.publicPath` to `/` for history fallback.
 
 
+### `interface DefaultConfigOptions`
 
-[[ Back to index ]](#index)
+```ts
+interface DefaultConfigOptions {
+  context: string
+  name?: string
+  modulesContext?: string
+}
+```
+
+- `name` was the compiler name, default to `app`
+
+## Script
+
+### `function createScriptConfig`
+
+```ts
+function createScriptConfig(): webpack.Configuration
+```
+
+create script config for dev mode, use `ts-loader` only.
 
 
-[favicon]: https://github.com/itgalaxy/favicons
-[favico.js]: https://github.com/ejci/favico.js
+### `const DEFAULT_IMAGE_EXTENSIONS`
+
+```ts
+const DEFAULT_IMAGE_EXTENSIONS: string[]
+```
+
+image extensions for resolver. default to:
+
+- jpg, jpeg
+- png
+- gif
+- webp
+- svg
+
+### `function createImageLoaderUse`
+
+```ts
+function createImageLoaderUse(): webpack.RuleSetUse
+```
+
+just apply url-loader for load image resources.
+
+### `function createImageConfig`
+
+```ts
+function createImageConfig(options: ImageConfigOptions): webpack.Configuration
+```
+
+setup image loader rules.
+
+### `interface ImageConfigOptions`
+
+```ts
+interface ImageConfigOptions {
+  context: string
+}
+```
+
+- `context` - image resources directory, only can load image file under this context.
+
+
+## Icon
+
+### `function createIconConfig`
+
+```ts
+function createIconConfig(options: IconConfigOptions): webpack.Configuration
+```
+
+create icon config. icon was set of svg files.
+
+### `interface IconConfigOptions`
+
+```ts
+interface IconConfigOptions {
+  context: string
+}
+```
+
+- `context` - svg sources directory, only can load svg file under this context directory.
+
+## I18n
+
+### `function createI18nConfig`
+
+```ts
+function createI18nConfig(options: I18nConfigOptions): webpack.Configuration
+```
+
+create i18n config. locales file was set of yaml files.
+
+### `interface I18nConfigOptions`
+
+```ts
+interface I18nConfigOptions {
+  context: string
+}
+```
+
+- `context` - i18n locales directory, only can load locales file under the context directory.

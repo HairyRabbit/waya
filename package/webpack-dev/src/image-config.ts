@@ -1,11 +1,11 @@
 import * as webpack from 'webpack'
 import { createLoaderUse, Loader } from 'waya-shared'
 
-interface Options {
+export const DEFAULT_IMAGE_EXTENSIONS = ['jpeg', 'jpg', 'png', 'gif', 'webp', 'svg']
+
+export interface ImageConfigOptions {
   context: string
 }
-
-export const DEFAULT_IMAGE_EXTENSIONS = ['jpeg', 'jpg', 'png', 'gif', 'webp', 'svg']
 
 export function createImageLoaderUse(): webpack.RuleSetUse {
   return [
@@ -13,7 +13,7 @@ export function createImageLoaderUse(): webpack.RuleSetUse {
   ]
 }
 
-export default function createImageConfig({ context }: Options): webpack.Configuration {
+export function createImageConfig({ context }: Readonly<ImageConfigOptions>): webpack.Configuration {
   const regexp = new RegExp(`(${DEFAULT_IMAGE_EXTENSIONS.join('|')})$`)
   return {
     module: {
@@ -25,3 +25,5 @@ export default function createImageConfig({ context }: Options): webpack.Configu
     }
   }
 }
+
+export default createImageConfig

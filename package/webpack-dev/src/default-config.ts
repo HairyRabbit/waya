@@ -1,19 +1,23 @@
-import * as path from 'path'
 import * as webpack from 'webpack'
 
-const DEFAULT_EXTENSIONS: string[] = ['.js', '.json', '.mjs', '.ts', '.tsx']
+export const DEFAULT_EXTENSIONS: string[] = ['.js', '.mjs', '.json', '.ts', '.tsx']
+const DEFAULT_NAME: string = 'app'
+const DEFAULT_MODULES: string = 'node_modules'
 
-interface Options {
-  readonly context: string
-  readonly name: string
-  readonly libraryContext: string
+export interface DefaultConfigOptions {
+  context: string
+  name?: string
+  modulesContext?: string
 }
 
-export default function createDefaultConfig({ context, name, libraryContext }: Options): webpack.Configuration {
-  return {
+export function createDefaultConfig({ 
+  context, 
+  name = DEFAULT_NAME, 
+  modulesContext 
+}: Readonly<DefaultConfigOptions>): webpack.Configuration {
+  let common: webpack.Configuration = {
     mode: 'development',
     context,
-    name: name + '-dev',
     devtool: 'inline-source-map',
     output: {
       publicPath: '/'
@@ -22,14 +26,26 @@ export default function createDefaultConfig({ context, name, libraryContext }: O
       extensions: DEFAULT_EXTENSIONS,
       alias: {
         '@': context
-      },
-      modules: [
-        path.resolve(context, 'node_modules'),
-        libraryContext
-      ]
+      }
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin()
     ]
   }
+
+  if(name) {
+    common.name = name + '-dev'
+  }
+
+  if(modulesContext) {
+    common.resolve = common.resolve || {}
+    common.resolve.modules = [
+      DEFAULT_MODULES,
+      modulesContext
+    ]
+  }
+
+  return common
 }
+
+export default createDefaultConfig
