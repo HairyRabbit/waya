@@ -1,6 +1,6 @@
 {
   "name": "waya-webpack-dev",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "webpack dev tools for waya",
   "main": "lib/index.js",
   "scripts": {

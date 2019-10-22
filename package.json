@@ -56,6 +56,8 @@
     "util-extra": "0.0.21",
     "waya-core": "0.0.19",
     "waya-dever": "0.0.15",
+    "waya-shared": "0.0.3",
+    "waya-webpack-dev": "0.0.1",
     "webpack": "^4.41.2",
     "webpack-dev-server": "^3.8.2",
     "webpack-merge": "^4.2.2",
@@ -67,6 +69,8 @@
   "devDependencies": {
     "@types/body-parser": "^1.17.1",
     "@types/debug": "^4.1.5",
+    "@types/html-webpack-plugin": "^3.2.1",
+    "@types/html-webpack-template": "^6.0.3",
     "@types/jest": "^24.0.18",
     "@types/js-yaml": "^3.12.1",
     "@types/loader-utils": "^1.1.3",
